@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --card: 255 255 255;
+}
+.card {
+  @apply bg-white shadow-sm rounded-2xl border border-gray-200;
+}
+.card-header {
+  @apply px-4 pt-4 pb-2;
+}
+.card-title {
+  @apply text-lg font-semibold;
+}
+.card-content {
+  @apply px-4 pb-4;
+}
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition;
+}
+.btn-ghost { @apply hover:bg-gray-100; }
+.btn-outline { @apply border border-gray-300 bg-white hover:bg-gray-50; }
+.btn-primary { @apply bg-gray-900 text-white hover:bg-black; }
+.badge {
+  @apply inline-flex items-center rounded-full border border-gray-300 bg-gray-100 px-2 py-0.5 text-xs font-medium;
+}
+.muted { @apply text-gray-500; }
