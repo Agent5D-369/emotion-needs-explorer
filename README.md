@@ -1,13 +1,13 @@
-# Emotion → Unmet Needs Explorer
+# Emotion → Unmet Needs Explorer (Final)
+- Mobile-first selectors + desktop columns
+- Reliable copy with iframe fallback
+- Pasted text includes: CC BY 4.0 (link) · Rick Broider · Agent5D.com · HolisticLifeTribe.com
 
-## One-click deploy (Option A)
-1) Push this folder to a new GitHub repo.
-2) In Netlify: **Add new site → Import from Git** → pick your repo.
-3) Accept defaults (build: `npm run build`, publish: `dist`) → **Deploy**.
-4) Netlify gives you a URL like `https://your-site-name.netlify.app`.
+## Deploy on Netlify
+1) Push this folder to GitHub.
+2) On Netlify: Add new site → Import from Git → pick repo.
+3) Build: `npm run build` • Publish: `dist`.
+4) Optional: Set env var NODE_VERSION=20 for stability.
 
-## Local dev (optional)
-```bash
-npm i
-npm run dev
-```
+## Embed (Mighty / Notion / GoDaddy)
+<iframe src="YOUR_NETLIFY_URL" style="width:100%;height:80vh;border:0" loading="lazy" allow="clipboard-write"></iframe>

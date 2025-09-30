@@ -1,5 +1,33 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { EMOTION_DATA, toRows } from './emotionData.js'
+import './index.css'
+
+const ATTR_LINE = "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) · Rick Broider · Agent5D.com · HolisticLifeTribe.com";
+
+function copyText(text) {
+  if (navigator.clipboard?.writeText) {
+    return navigator.clipboard.writeText(text).then(() => true).catch(() => fallback());
+  }
+  return fallback();
+  function fallback() {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-9999px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) {
+      document.body.removeChild(ta);
+      return false;
+    }
+  }
+}
 
 function Button({ children, onClick, variant='ghost', className='' }) {
   const base = 'btn ' + (variant === 'primary' ? 'btn-primary' : variant === 'outline' ? 'btn-outline' : 'btn-ghost');
@@ -31,7 +59,16 @@ function Column({ title, items, selected, onSelect }) {
 }
 
 function NeedsPanel({ core, sub, specific, needs }) {
-  const path = [core, sub, specific].filter(Boolean).join(' / ')
+  const [copied, setCopied] = React.useState(false);
+  const path = [core, sub, specific].filter(Boolean).join(' / ');
+
+  const doCopy = async () => {
+    const payload = `${specific}: ${needs.join(', ')}\n\n${ATTR_LINE}`;
+    const ok = await copyText(payload);
+    setCopied(!!ok);
+    window.setTimeout(() => setCopied(false), 1500);
+  };
+
   return (
     <div className="card h-full">
       <div className="card-header">
@@ -40,17 +77,19 @@ function NeedsPanel({ core, sub, specific, needs }) {
       </div>
       <div className="card-content space-y-3">
         {needs?.length ? (
-          <div className="flex flex-wrap gap-2">
-            {needs.map((n) => <Badge key={n}>{n}</Badge>)}
-          </div>
+          <>
+            <div className="flex flex-wrap gap-2">
+              {needs.map((n) => <span key={n} className="badge">{n}</span>)}
+            </div>
+            <div className="flex gap-2 pt-2 items-center">
+              <button className="btn btn-outline" onClick={doCopy}>
+                {copied ? '✓ Copied' : 'Copy'}
+              </button>
+            </div>
+          </>
         ) : (
           <p className="muted">No needs selected yet.</p>
         )}
-        {needs?.length ? (
-          <div className="flex gap-2 pt-2">
-            <Button onClick={() => navigator.clipboard?.writeText(`${specific}: ${needs.join(', ')}`)}>Copy</Button>
-          </div>
-        ) : null}
       </div>
     </div>
   )
@@ -59,7 +98,7 @@ function NeedsPanel({ core, sub, specific, needs }) {
 function downloadCSV(rows) {
   const header = ['Core Emotion','Sub-Emotion','Specific Emotion','Unmet Needs'].join(',');
   const lines = rows.map(r => [r.core, r.sub, r.specific, r.needs.join('; ')].map(v => `"${v}"`).join(','));
-  const csv = [header, ...lines].join('\n');
+  const csv = [header, ...lines, '', ATTR_LINE].join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -107,25 +146,64 @@ export default function App() {
 
       <div className="card">
         <div className="card-content">
+          {/* Tabs */}
           <div className="flex gap-2 mb-4">
             <button className={`btn ${tab==='explore' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('explore')}>Explore</button>
             <button className={`btn ${tab==='search' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('search')}>Search</button>
           </div>
 
-          {tab === 'explore' && (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Column title="Core Emotions" items={cores} selected={core} onSelect={setCore} />
-              <Column title="Sub-Emotions" items={subs} selected={sub} onSelect={setSub} />
-              <Column title="Specific Emotions" items={specifics} selected={specific} onSelect={setSpecific} />
-              <NeedsPanel core={core} sub={sub} specific={specific} needs={needs} />
-            </div>
+          {tab === 'explore' and (
+            <>
+              {/* Mobile selectors */}
+              <div className="block md:hidden space-y-3">
+                <div>
+                  <label className="text-xs uppercase tracking-wide muted">Core Emotion</label>
+                  <select
+                    className="mt-1 w-full rounded-xl border border-gray-300 px-3 py-3 text-base"
+                    value={core}
+                    onChange={(e) => setCore(e.target.value)}
+                  >
+                    {cores.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs uppercase tracking-wide muted">Sub-Emotion</label>
+                  <select
+                    className="mt-1 w-full rounded-xl border border-gray-300 px-3 py-3 text-base"
+                    value={sub}
+                    onChange={(e) => setSub(e.target.value)}
+                  >
+                    {subs.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs uppercase tracking-wide muted">Specific Emotion</label>
+                  <select
+                    className="mt-1 w-full rounded-xl border border-gray-300 px-3 py-3 text-base"
+                    value={specific}
+                    onChange={(e) => setSpecific(e.target.value)}
+                  >
+                    {specifics.map(sp => <option key={sp} value={sp}>{sp}</option>)}
+                  </select>
+                </div>
+                <div className="sticky bottom-3 z-10"><NeedsPanel core={core} sub={sub} specific={specific} needs={needs} /></div>
+              </div>
+
+              {/* Desktop columns */}
+              <div className="hidden md:grid grid-cols-4 gap-4">
+                <Column title="Core Emotions" items={cores} selected={core} onSelect={setCore} />
+                <Column title="Sub-Emotions" items={subs} selected={sub} onSelect={setSub} />
+                <Column title="Specific Emotions" items={specifics} selected={specific} onSelect={setSpecific} />
+                <NeedsPanel core={core} sub={sub} specific={specific} needs={needs} />
+              </div>
+            </>
           )}
 
-          {tab === 'search' && (
+          {tab === 'search' and (
             <div className="space-y-3">
               <div className="flex gap-2">
                 <input
-                  className="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-gray-300 px-3 py-3 text-base"
                   placeholder="Type an emotion or need…"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -149,7 +227,7 @@ export default function App() {
                     </div>
                     <div className="pt-2">
                       <Button variant="ghost" onClick={() => { setCore(r.core); setSub(r.sub); setSpecific(r.specific); setTab('explore'); }}>View in Explorer</Button>
-                      <Button variant="outline" onClick={() => navigator.clipboard?.writeText(`${r.specific}: ${r.needs.join(', ')}`)} className="ml-2">Copy</Button>
+                      <Button variant="outline" onClick={() => copyText(`${r.specific}: ${r.needs.join(', ')}\n\n${ATTR_LINE}`)} className="ml-2">Copy</Button>
                     </div>
                   </div>
                 ))}
