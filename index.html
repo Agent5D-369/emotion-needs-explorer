@@ -8,6 +8,7 @@
   </head>
   <body class="bg-gray-50">
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- Use relative path to avoid Rollup externalization quirks on Netlify -->
+    <script type="module" src="./src/main.jsx"></script>
   </body>
 </html>
