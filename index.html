@@ -1,14 +1,291 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Emotion → Unmet Needs Explorer</title>
-    <link rel="icon" href="/favicon.ico">
     <meta name="theme-color" content="#111827">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23111827'/%3E%3Ctext x='50' y='58' font-size='42' text-anchor='middle' fill='white' font-family='Arial'%3EEN%3C/text%3E%3C/svg%3E">
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .card { @apply bg-white shadow-sm rounded-2xl border border-gray-200; }
+      .card-header { @apply px-4 pt-4 pb-2; }
+      .card-title { @apply text-lg font-semibold; }
+      .card-content { @apply px-4 pb-4; }
+
+      .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-medium transition; }
+      .btn-ghost { @apply hover:bg-gray-100; }
+      .btn-outline { @apply border border-gray-300 bg-white hover:bg-gray-50; }
+      .btn-primary { @apply bg-gray-900 text-white hover:bg-black; }
+
+      .badge { @apply inline-flex items-center rounded-full border border-gray-300 bg-gray-100 px-3 py-1 text-sm font-medium; }
+
+      .muted { @apply text-gray-500; }
+    </style>
+    <!-- React + Babel (no build needed) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body class="bg-gray-50">
     <div id="root"></div>
-    <script type="module" src="./src/main.jsx"></script>
+
+    <script type="text/babel">
+      const ATTR_LINE = "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) · Rick Broider · Agent5D.com · HolisticLifeTribe.com";
+
+      const EMOTION_DATA = {
+        Anger: {
+          Rage: { Hateful: ["acceptance","belonging","unconditional regard"], Hostile: ["safety","trust","respect"], Agitated: ["rest","calm","regulation"] },
+          Exasperated: { Frustrated: ["progress","effectiveness","clarity"], Aggravated: ["ease","cooperation","understanding"], Irritable: ["space","rest","reduced stimulation"] },
+          Envy: { Jealous: ["assurance","recognition","exclusivity","value"], Resentful: ["fairness","equality","reciprocity"], Envious: ["abundance","opportunity","self-worth"] },
+          Disgust: { Disapproving: ["alignment","integrity","values honored"], Contempt: ["respect","dignity","authenticity"] },
+        },
+        Fear: {
+          Horror: { Dread: ["safety","predictability","protection"], Mortified: ["acceptance","dignity","belonging"], Appalled: ["alignment with values","order","justice"] },
+          Nervous: { Insecure: ["stability","reassurance","self-worth"], Anxious: ["safety","grounding","clarity"], Hysterical: ["soothing","regulation","containment"] },
+          Scared: { Helpless: ["support","empowerment","agency"], Frightened: ["safety","reassurance","protection"], Panic: ["grounding","breath","support"] },
+          Terror: { Worried: ["certainty","clarity","solutions"], Uneasy: ["comfort","reassurance","grounding"], Apprehensive: ["preparation","trust","protection"] },
+        },
+        Sadness: {
+          Agony: { Hurt: ["care","compassion","being seen"], Depressed: ["purpose","connection","vitality"], Sorrow: ["acknowledgment","shared mourning","love"] },
+          Disappointed: { Dismayed: ["hope","stability","restoration"], Displeased: ["preference honored","harmony","choice"], Regretful: ["forgiveness","repair","acceptance"] },
+          Guilt: { Isolated: ["connection","inclusion","belonging"], Lonely: ["companionship","love","shared presence"], Grief: ["mourning","remembrance","support"] },
+          Despair: { Neglected: ["attention","nurturing","recognition"], Hopeless: ["hope","meaning","encouragement"], Suffering: ["relief","healing","compassion"] },
+        },
+        Surprise: {
+          Stunned: { Confused: ["clarity","orientation","understanding"], Amazed: ["wonder","meaning","integration"], Overcome: ["containment","grounding","support"] },
+          Shock: { Dismayed: ["reassurance","stability","recovery"], Perplexed: ["answers","understanding","guidance"], Awestruck: ["awe","connection","spiritual meaning"] },
+          Astounded: { Speechless: ["expression","integration","sharing"], Touched: ["connection","recognition","intimacy"], Moved: ["meaning","resonance","belonging"] },
+          Astonished: { Amazed: ["wonder","meaning","integration"], Dumbfounded: ["sense-making","orientation","clarity"], Flabbergasted: ["processing","grounding","explanation"] },
+        },
+        Joy: {
+          Optimistic: { Hopeful: ["vision","possibility","encouragement"], Eager: ["engagement","opportunity","momentum"], Enthusiastic: ["expression","outlet","contribution"] },
+          Proud: { Triumphant: ["recognition","accomplishment","celebration"], Illustrious: ["respect","legacy","honor"], Accomplished: ["acknowledgment","pride","closure"] },
+          Cheerful: { Joyful: ["play","freedom","aliveness"], Excited: ["adventure","novelty","creativity"], Enthralled: ["immersion","stimulation","connection"] },
+          Content: { Happy: ["connection","enjoyment","fulfillment"], Delighted: ["surprise","joy","gratitude"], Blissful: ["union","transcendence","peace"] },
+        },
+        Love: {
+          Peaceful: { Satisfied: ["contentment","completion","enoughness"], Relieved: ["ease","release","resolution"], Compassionate: ["connection","empathy","contribution"] },
+          Tenderness: { Caring: ["purpose","affection","giving/receiving"], Compassion: ["understanding","resonance","healing"], Affection: ["touch","closeness","warmth"] },
+          Desire: { Infatuated: ["connection","novelty","passion"], Passionate: ["expression","creativity","purpose"], Romantic: ["intimacy","bonding","shared meaning"] },
+          Affectionate: { Fondness: ["closeness","appreciation","affection"], Attachment: ["stability","continuity","bonding"], Admiration: ["recognition","inspiration","aspiration"] },
+        },
+      };
+
+      function toRows() {
+        const rows = [];
+        Object.entries(EMOTION_DATA).forEach(([core, subs]) => {
+          Object.entries(subs).forEach(([sub, specifics]) => {
+            Object.entries(specifics).forEach(([specific, needs]) => {
+              rows.push({ core, sub, specific, needs });
+            });
+          });
+        });
+        return rows;
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard?.writeText) {
+          return navigator.clipboard.writeText(text).then(() => true).catch(() => fallback());
+        }
+        return fallback();
+        function fallback() {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.top = '-9999px';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+          } catch (e) {
+            document.body.removeChild(ta);
+            return false;
+          }
+        }
+      }
+
+      function Button({ children, onClick, variant='ghost', className='' }) {
+        const base = 'btn ' + (variant === 'primary' ? 'btn-primary' : variant === 'outline' ? 'btn-outline' : 'btn-ghost');
+        return <button onClick={onClick} className={base + ' ' + className}>{children}</button>
+      }
+      const Badge = ({ children }) => <span className="badge">{children}</span>;
+
+      function Column({ title, items, selected, onSelect }) {
+        return (
+          <div className="card h-full">
+            <div className="card-header"><div className="card-title">{title}</div></div>
+            <div className="card-content space-y-2 max-h-[56vh] overflow-auto pr-2">
+              {items.map((item) => (
+                <Button key={item} variant={selected === item ? 'primary' : 'ghost'} className="w-full justify-between text-left" onClick={() => onSelect(item)}>
+                  <span>{item}</span><span className="opacity-60">›</span>
+                </Button>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      function NeedsPanel({ core, sub, specific, needs }) {
+        const [copied, setCopied] = React.useState(false);
+        const path = [core, sub, specific].filter(Boolean).join(' / ');
+        const doCopy = async () => {
+          const payload = `${specific}: ${needs.join(', ')}\\n\\n${ATTR_LINE}`;
+          const ok = await copyText(payload);
+          setCopied(!!ok);
+          window.setTimeout(() => setCopied(false), 1500);
+        };
+        return (
+          <div className="card h-full">
+            <div className="card-header">
+              <div className="card-title">Unmet Needs</div>
+              <p className="text-sm muted">{path || 'Select an emotion to view its needs.'}</p>
+            </div>
+            <div className="card-content space-y-3">
+              {needs?.length ? (
+                <>
+                  <div className="flex flex-wrap gap-2">{needs.map((n) => <span key={n} className="badge">{n}</span>)}</div>
+                  <div className="flex gap-2 pt-2 items-center">
+                    <button className="btn btn-outline" onClick={doCopy}>{copied ? '✓ Copied' : 'Copy'}</button>
+                  </div>
+                </>
+              ) : <p className="muted">No needs selected yet.</p>}
+            </div>
+          </div>
+        )
+      }
+
+      function downloadCSV(rows) {
+        const header = ['Core Emotion','Sub-Emotion','Specific Emotion','Unmet Needs'].join(',');
+        const lines = rows.map(r => [r.core, r.sub, r.specific, r.needs.join('; ')].map(v => `"${v}"`).join(','));
+        const csv = [header, ...lines, '', ATTR_LINE].join('\\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'emotion_needs.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function App() {
+        const rows = React.useMemo(() => toRows(), []);
+        const cores = React.useMemo(() => Object.keys(EMOTION_DATA), []);
+
+        const [tab, setTab] = React.useState('explore');
+        const [search, setSearch] = React.useState('');
+        const [core, setCore] = React.useState('Anger');
+        const [sub, setSub] = React.useState('Rage');
+        const [specific, setSpecific] = React.useState('Hateful');
+
+        const subs = React.useMemo(() => Object.keys(EMOTION_DATA[core] || {}), [core]);
+        const specifics = React.useMemo(() => Object.keys(EMOTION_DATA[core]?.[sub] || {}), [core, sub]);
+        const needs = React.useMemo(() => EMOTION_DATA[core]?.[sub]?.[specific] || [], [core, sub, specific]);
+
+        const filtered = React.useMemo(() => {
+          const q = search.trim().toLowerCase();
+          if (!q) return rows;
+          return rows.filter((r) => [r.core, r.sub, r.specific, r.needs.join(' ')].join(' ').toLowerCase().includes(q));
+        }, [rows, search]);
+
+        React.useEffect(() => { setSub(Object.keys(EMOTION_DATA[core] || {})[0]) }, [core]);
+        React.useEffect(() => { setSpecific(Object.keys(EMOTION_DATA[core]?.[sub] || {})[0]) }, [core, sub]);
+
+        return (
+          <div className="mx-auto max-w-6xl p-4 md:p-8 space-y-4">
+            <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Emotion → Unmet Needs Explorer</h1>
+                <p className="text-sm muted mt-1">Select an emotion, then drill down to reveal the hidden unmet needs. Built for self-awareness, coaching, and conflict repair.</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => { setCore('Anger'); setSub('Rage'); setSpecific('Hateful'); }}>Reset</Button>
+                <Button variant="primary" onClick={() => downloadCSV(filtered)}>Export CSV</Button>
+              </div>
+            </header>
+
+            <div className="card">
+              <div className="card-content">
+                <div className="flex gap-2 mb-4">
+                  <button className={`btn ${tab==='explore' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('explore')}>Explore</button>
+                  <button className={`btn ${tab==='search' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('search')}>Search</button>
+                </div>
+
+                {tab === 'explore' && (
+                  <>
+                    <div className="block md:hidden space-y-3">
+                      <div>
+                        <label className="text-xs uppercase tracking-wide muted">Core Emotion</label>
+                        <select className="mt-1 w-full rounded-xl border border-gray-300 px-3 py-3 text-base" value={core} onChange={(e) => setCore(e.target.value)}>
+                          {cores.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-xs uppercase tracking-wide muted">Sub-Emotion</label>
+                        <select className="mt-1 w-full rounded-xl border border-gray-300 px-3 py-3 text-base" value={sub} onChange={(e) => setSub(e.target.value)}>
+                          {subs.map(s => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-xs uppercase tracking-wide muted">Specific Emotion</label>
+                        <select className="mt-1 w-full rounded-xl border border-gray-300 px-3 py-3 text-base" value={specific} onChange={(e) => setSpecific(e.target.value)}>
+                          {specifics.map(sp => <option key={sp} value={sp}>{sp}</option>)}
+                        </select>
+                      </div>
+                      <div className="sticky bottom-3 z-10"><NeedsPanel core={core} sub={sub} specific={specific} needs={needs} /></div>
+                    </div>
+
+                    <div className="hidden md:grid grid-cols-4 gap-4">
+                      <Column title="Core Emotions" items={cores} selected={core} onSelect={setCore} />
+                      <Column title="Sub-Emotions" items={subs} selected={sub} onSelect={setSub} />
+                      <Column title="Specific Emotions" items={specifics} selected={specific} onSelect={setSpecific} />
+                      <NeedsPanel core={core} sub={sub} specific={specific} needs={needs} />
+                    </div>
+                  </>
+                )}
+
+                {tab === 'search' && (
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <input className="w-full rounded-xl border border-gray-300 px-3 py-3 text-base" placeholder="Type an emotion or need…" value={search} onChange={(e) => setSearch(e.target.value)} />
+                      <Button variant="outline" onClick={() => setSearch('')}>Clear</Button>
+                    </div>
+
+                    <div className="max-h-[60vh] overflow-auto pr-2 space-y-2">
+                      {filtered.map((r) => (
+                        <div key={`${r.core}-${r.sub}-${r.specific}`} className="p-3 rounded-xl border hover:bg-gray-50 transition">
+                          <div className="flex items-center gap-2 text-sm">
+                            <Badge>{r.core}</Badge><span className="opacity-60">›</span><span className="font-medium">{r.sub}</span><span className="opacity-60">›</span><span className="italic">{r.specific}</span>
+                          </div>
+                          <div className="my-2 h-px bg-gray-200" />
+                          <div className="flex flex-wrap gap-2">{r.needs.map((n) => <Badge key={n}>{n}</Badge>)}</div>
+                          <div className="pt-2">
+                            <Button variant="ghost" onClick={() => { setCore(r.core); setSub(r.sub); setSpecific(r.specific); setTab('explore'); }}>View in Explorer</Button>
+                            <Button variant="outline" onClick={() => copyText(`${r.specific}: ${r.needs.join(', ')}\\n\\n${ATTR_LINE}`)} className="ml-2">Copy</Button>
+                          </div>
+                        </div>
+                      ))}
+                      {!filtered.length && (<p className="text-sm muted">No matches yet. Try a simpler term (e.g., "lonely", "respect").</p>)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <footer className="text-xs muted pt-2">
+              <p>Tip: When you locate an unmet need, translate it into a doable request (e.g., “I’m feeling irritable and need more rest. Can we end by 9pm tonight?”).</p>
+            </footer>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
   </body>
 </html>
