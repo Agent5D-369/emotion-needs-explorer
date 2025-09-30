@@ -134,8 +134,15 @@
       function NeedsPanel({ core, sub, specific, needs }) {
         const [copied, setCopied] = React.useState(false);
         const path = [core, sub, specific].filter(Boolean).join(' / ');
+        const payload = [
+          `I am currently feeling ${core}, ${sub}, and ${specific}.  My current related emotional needs are ${needs.join(', ')}`,
+          '',
+          'Tip: Translate these feelings and unmet needs into a doable request:',
+          'Example: “I’m feeling ' + core + ' and need more rest. Can we end by 9pm tonight?”).',
+          '',
+          ATTR_LINE
+        ].join('\\n');
         const doCopy = async () => {
-          const payload = `${specific}: ${needs.join(', ')}\\n\\n${ATTR_LINE}`;
           const ok = await copyText(payload);
           setCopied(!!ok);
           window.setTimeout(() => setCopied(false), 1500);
@@ -257,19 +264,30 @@
                     </div>
 
                     <div className="max-h-[60vh] overflow-auto pr-2 space-y-2">
-                      {filtered.map((r) => (
-                        <div key={`${r.core}-${r.sub}-${r.specific}`} className="p-3 rounded-xl border hover:bg-gray-50 transition">
-                          <div className="flex items-center gap-2 text-sm">
-                            <Badge>{r.core}</Badge><span className="opacity-60">›</span><span className="font-medium">{r.sub}</span><span className="opacity-60">›</span><span className="italic">{r.specific}</span>
+                      {filtered.map((r) => {
+                        const payload = [
+                          `I am currently feeling ${r.core}, ${r.sub}, and ${r.specific}.  My current related emotional needs are ${r.needs.join(', ')}`,
+                          '',
+                          'Tip: Translate these feelings and unmet needs into a doable request:',
+                          `Example: “I’m feeling ${r.core} and need more rest. Can we end by 9pm tonight?”).`,
+                          '',
+                          ATTR_LINE
+                        ].join('\\n');
+
+                        return (
+                          <div key={`${r.core}-${r.sub}-${r.specific}`} className="p-3 rounded-xl border hover:bg-gray-50 transition">
+                            <div className="flex items-center gap-2 text-sm">
+                              <Badge>{r.core}</Badge><span className="opacity-60">›</span><span className="font-medium">{r.sub}</span><span className="opacity-60">›</span><span className="italic">{r.specific}</span>
+                            </div>
+                            <div className="my-2 h-px bg-gray-200" />
+                            <div className="flex flex-wrap gap-2">{r.needs.map((n) => <Badge key={n}>{n}</Badge>)}</div>
+                            <div className="pt-2">
+                              <Button variant="ghost" onClick={() => { setCore(r.core); setSub(r.sub); setSpecific(r.specific); setTab('explore'); }}>View in Explorer</Button>
+                              <Button variant="outline" onClick={() => copyText(payload)} className="ml-2">Copy</Button>
+                            </div>
                           </div>
-                          <div className="my-2 h-px bg-gray-200" />
-                          <div className="flex flex-wrap gap-2">{r.needs.map((n) => <Badge key={n}>{n}</Badge>)}</div>
-                          <div className="pt-2">
-                            <Button variant="ghost" onClick={() => { setCore(r.core); setSub(r.sub); setSpecific(r.specific); setTab('explore'); }}>View in Explorer</Button>
-                            <Button variant="outline" onClick={() => copyText(`${r.specific}: ${r.needs.join(', ')}\\n\\n${ATTR_LINE}`)} className="ml-2">Copy</Button>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                       {!filtered.length && (<p className="text-sm muted">No matches yet. Try a simpler term (e.g., "lonely", "respect").</p>)}
                     </div>
                   </div>
