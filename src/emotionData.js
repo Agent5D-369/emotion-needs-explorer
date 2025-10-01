@@ -1,135 +1,544 @@
 export const EMOTION_DATA = {
-  Anger: {
-    Rage: {
-      Hateful: ["acceptance", "belonging", "unconditional regard"],
-      Hostile: ["safety", "trust", "respect"],
-      Agitated: ["rest", "calm", "regulation"],
+  "Anger": {
+    "Contempt": {
+      "Contemptuous": [
+        "dignity",
+        "equality",
+        "respect"
+      ],
+      "Disdainful": [
+        "acknowledgment",
+        "fairness",
+        "value"
+      ]
     },
-    Exasperated: {
-      Frustrated: ["progress", "effectiveness", "clarity"],
-      Aggravated: ["ease", "cooperation", "understanding"],
-      Irritable: ["space", "rest", "reduced stimulation"],
+    "Frustration": {
+      "Exasperated": [
+        "relief",
+        "recognition",
+        "fairness"
+      ],
+      "Frustrated": [
+        "progress",
+        "ease",
+        "support"
+      ]
     },
-    Envy: {
-      Jealous: ["assurance", "recognition", "exclusivity", "value"],
-      Resentful: ["fairness", "equality", "reciprocity"],
-      Envious: ["abundance", "opportunity", "self-worth"],
+    "Hostility": {
+      "Aggressive": [
+        "empowerment",
+        "autonomy",
+        "control"
+      ],
+      "Hateful": [
+        "acceptance",
+        "belonging",
+        "unconditional regard"
+      ],
+      "Hostile": [
+        "respect",
+        "fairness",
+        "safety"
+      ]
     },
-    Disgust: {
-      Disapproving: ["alignment", "integrity", "values honored"],
-      Contempt: ["respect", "dignity", "authenticity"],
+    "Irritation": {
+      "Agitated": [
+        "calm",
+        "reassurance",
+        "safety"
+      ],
+      "Annoyed": [
+        "patience",
+        "tolerance",
+        "understanding"
+      ],
+      "Irritated": [
+        "consideration",
+        "respect",
+        "acknowledgment"
+      ]
     },
+    "Jealousy": {
+      "Envious": [
+        "recognition",
+        "opportunity",
+        "inclusion"
+      ],
+      "Jealous": [
+        "assurance",
+        "trust",
+        "appreciation"
+      ]
+    },
+    "Rage": {
+      "Enraged": [
+        "safety",
+        "stability",
+        "grounding"
+      ],
+      "Vengeful": [
+        "fairness",
+        "balance",
+        "reparation"
+      ]
+    },
+    "Resentment": {
+      "Bitter": [
+        "justice",
+        "acknowledgment",
+        "healing"
+      ],
+      "Resentful": [
+        "fairness",
+        "recognition",
+        "equity"
+      ]
+    }
   },
-  Fear: {
-    Horror: {
-      Dread: ["safety", "predictability", "protection"],
-      Mortified: ["acceptance", "dignity", "belonging"],
-      Appalled: ["alignment with values", "order", "justice"],
+  "Disgust": {
+    "Aversion": {
+      "Averse": [
+        "choice",
+        "distance",
+        "boundaries"
+      ],
+      "Avoidant": [
+        "safety",
+        "separation",
+        "autonomy"
+      ]
     },
-    Nervous: {
-      Insecure: ["stability", "reassurance", "self-worth"],
-      Anxious: ["safety", "grounding", "clarity"],
-      Hysterical: ["soothing", "regulation", "containment"],
+    "Contempt": {
+      "Disdainful": [
+        "acknowledgment",
+        "fairness",
+        "dignity"
+      ],
+      "Dismissive": [
+        "respect",
+        "value",
+        "recognition"
+      ]
     },
-    Scared: {
-      Helpless: ["support", "empowerment", "agency"],
-      Frightened: ["safety", "reassurance", "protection"],
-      Panic: ["grounding", "breath", "support"],
+    "Disapproval": {
+      "Critical": [
+        "acknowledgment",
+        "fairness",
+        "equality"
+      ],
+      "Judgmental": [
+        "understanding",
+        "acceptance",
+        "respect"
+      ]
     },
-    Terror: {
-      Worried: ["certainty", "clarity", "solutions"],
-      Uneasy: ["comfort", "reassurance", "grounding"],
-      Apprehensive: ["preparation", "trust", "protection"],
+    "Distaste": {
+      "Distasteful": [
+        "choice",
+        "autonomy",
+        "safety"
+      ],
+      "Offended": [
+        "respect",
+        "acceptance",
+        "dignity"
+      ]
     },
+    "Loathing": {
+      "Revolted": [
+        "purity",
+        "alignment",
+        "safety"
+      ]
+    },
+    "Moral Outrage": {
+      "Indignant": [
+        "justice",
+        "fairness",
+        "integrity"
+      ],
+      "Self-righteous": [
+        "accountability",
+        "respect",
+        "dignity"
+      ]
+    },
+    "Nausea": {
+      "Queasy": [
+        "comfort",
+        "safety",
+        "ease"
+      ],
+      "Sickened": [
+        "purity",
+        "protection",
+        "safety"
+      ]
+    },
+    "Revulsion": {
+      "Loathing": [
+        "alignment",
+        "safety",
+        "integrity"
+      ],
+      "Repulsed": [
+        "comfort",
+        "safety",
+        "purity"
+      ]
+    }
   },
-  Sadness: {
-    Agony: {
-      Hurt: ["care", "compassion", "being seen"],
-      Depressed: ["purpose", "connection", "vitality"],
-      Sorrow: ["acknowledgment", "shared mourning", "love"],
+  "Fear": {
+    "Alarm": {
+      "Alarmed": [
+        "safety",
+        "stability",
+        "calm"
+      ]
     },
-    Disappointed: {
-      Dismayed: ["hope", "stability", "restoration"],
-      Displeased: ["preference honored", "harmony", "choice"],
-      Regretful: ["forgiveness", "repair", "acceptance"],
+    "Anxiety": {
+      "Anxious": [
+        "safety",
+        "reassurance",
+        "calm"
+      ],
+      "Nervous": [
+        "confidence",
+        "preparation",
+        "safety"
+      ],
+      "Worried": [
+        "clarity",
+        "reassurance",
+        "stability"
+      ]
     },
-    Guilt: {
-      Isolated: ["connection", "inclusion", "belonging"],
-      Lonely: ["companionship", "love", "shared presence"],
-      Grief: ["mourning", "remembrance", "support"],
+    "Apprehension": {
+      "Apprehensive": [
+        "certainty",
+        "comfort",
+        "trust"
+      ],
+      "Uneasy": [
+        "support",
+        "reassurance",
+        "guidance"
+      ]
     },
-    Despair: {
-      Neglected: ["attention", "nurturing", "recognition"],
-      Hopeless: ["hope", "meaning", "encouragement"],
-      Suffering: ["relief", "healing", "compassion"],
+    "Doubt": {
+      "Doubtful": [
+        "clarity",
+        "evidence",
+        "understanding"
+      ],
+      "Suspicious": [
+        "trust",
+        "transparency",
+        "honesty"
+      ]
     },
+    "Insecurity": {
+      "Helpless": [
+        "support",
+        "empowerment",
+        "safety"
+      ],
+      "Insecure": [
+        "acceptance",
+        "assurance",
+        "belonging"
+      ],
+      "Vulnerable": [
+        "care",
+        "protection",
+        "trust"
+      ]
+    },
+    "Panic": {
+      "Panicked": [
+        "grounding",
+        "reassurance",
+        "stability"
+      ],
+      "Terrified": [
+        "protection",
+        "safety",
+        "reassurance"
+      ]
+    },
+    "Terror": {
+      "Horrified": [
+        "comfort",
+        "support",
+        "safety"
+      ],
+      "Overwhelmed": [
+        "containment",
+        "grounding",
+        "safety"
+      ]
+    }
   },
-  Surprise: {
-    Stunned: {
-      Confused: ["clarity", "orientation", "understanding"],
-      Amazed: ["wonder", "meaning", "integration"],
-      Overcome: ["containment", "grounding", "support"],
+  "Happiness": {
+    "Contentment": {
+      "Content": [
+        "ease",
+        "peace",
+        "simplicity"
+      ],
+      "Relieved": [
+        "safety",
+        "resolution",
+        "comfort"
+      ],
+      "Serene": [
+        "calm",
+        "stability",
+        "harmony"
+      ]
     },
-    Shock: {
-      Dismayed: ["reassurance", "stability", "recovery"],
-      Perplexed: ["answers", "understanding", "guidance"],
-      Awestruck: ["awe", "connection", "spiritual meaning"],
+    "Gratitude": {
+      "Grateful": [
+        "acknowledgment",
+        "connection",
+        "abundance"
+      ],
+      "Hopeful": [
+        "faith",
+        "optimism",
+        "vision"
+      ],
+      "Optimistic": [
+        "progress",
+        "opportunity",
+        "growth"
+      ]
     },
-    Astounded: {
-      Speechless: ["expression", "integration", "sharing"],
-      Touched: ["connection", "recognition", "intimacy"],
-      Moved: ["meaning", "resonance", "belonging"],
+    "Joy": {
+      "Amused": [
+        "fun",
+        "lightness",
+        "play"
+      ],
+      "Excited": [
+        "expression",
+        "play",
+        "engagement"
+      ],
+      "Joyful": [
+        "connection",
+        "celebration",
+        "freedom"
+      ]
     },
-    Astonished: {
-      Amazed: ["wonder", "meaning", "integration"],
-      Dumbfounded: ["sense-making", "orientation", "clarity"],
-      Flabbergasted: ["processing", "grounding", "explanation"],
+    "Love": {
+      "Affectionate": [
+        "connection",
+        "tenderness",
+        "warmth"
+      ],
+      "Compassionate": [
+        "understanding",
+        "empathy",
+        "belonging"
+      ],
+      "Loving": [
+        "closeness",
+        "intimacy",
+        "care"
+      ]
     },
+    "Pride": {
+      "Confident": [
+        "competence",
+        "trust",
+        "empowerment"
+      ],
+      "Proud": [
+        "recognition",
+        "accomplishment",
+        "value"
+      ]
+    }
   },
-  Joy: {
-    Optimistic: {
-      Hopeful: ["vision", "possibility", "encouragement"],
-      Eager: ["engagement", "opportunity", "momentum"],
-      Enthusiastic: ["expression", "outlet", "contribution"],
+  "Sadness": {
+    "Disappointment": {
+      "Disappointed": [
+        "understanding",
+        "encouragement",
+        "support"
+      ],
+      "Hurt": [
+        "healing",
+        "compassion",
+        "care"
+      ],
+      "Regretful": [
+        "forgiveness",
+        "acceptance",
+        "restoration"
+      ]
     },
-    Proud: {
-      Triumphant: ["recognition", "accomplishment", "celebration"],
-      Illustrious: ["respect", "legacy", "honor"],
-      Accomplished: ["acknowledgment", "pride", "closure"],
+    "Grief": {
+      "Grieving": [
+        "comfort",
+        "support",
+        "acknowledgment"
+      ],
+      "Heartbroken": [
+        "care",
+        "empathy",
+        "presence"
+      ],
+      "Mourning": [
+        "companionship",
+        "ritual",
+        "support"
+      ]
     },
-    Cheerful: {
-      Joyful: ["play", "freedom", "aliveness"],
-      Excited: ["adventure", "novelty", "creativity"],
-      Enthralled: ["immersion", "stimulation", "connection"],
+    "Hopelessness": {
+      "Defeated": [
+        "encouragement",
+        "empowerment",
+        "renewal"
+      ],
+      "Despairing": [
+        "hope",
+        "strength",
+        "grounding"
+      ],
+      "Hopeless": [
+        "faith",
+        "inspiration",
+        "possibility"
+      ]
     },
-    Content: {
-      Happy: ["connection", "enjoyment", "fulfillment"],
-      Delighted: ["surprise", "joy", "gratitude"],
-      Blissful: ["union", "transcendence", "peace"],
+    "Loneliness": {
+      "Abandoned": [
+        "care",
+        "security",
+        "inclusion"
+      ],
+      "Isolated": [
+        "community",
+        "acceptance",
+        "companionship"
+      ],
+      "Lonely": [
+        "belonging",
+        "connection",
+        "intimacy"
+      ]
     },
+    "Melancholy": {
+      "Heartache": [
+        "connection",
+        "care",
+        "comfort"
+      ],
+      "Melancholic": [
+        "expression",
+        "reflection",
+        "empathy"
+      ]
+    },
+    "Shame": {
+      "Ashamed": [
+        "forgiveness",
+        "acceptance",
+        "compassion"
+      ],
+      "Guilty": [
+        "understanding",
+        "restoration",
+        "reconciliation"
+      ],
+      "Remorseful": [
+        "redemption",
+        "compassion",
+        "renewal"
+      ]
+    }
   },
-  Love: {
-    Peaceful: {
-      Satisfied: ["contentment", "completion", "enoughness"],
-      Relieved: ["ease", "release", "resolution"],
-      Compassionate: ["connection", "empathy", "contribution"],
+  "Surprise": {
+    "Amazement": {
+      "Amazed": [
+        "wonder",
+        "inspiration",
+        "awe"
+      ],
+      "Astonished": [
+        "discovery",
+        "openness",
+        "curiosity"
+      ],
+      "Impressed": [
+        "acknowledgment",
+        "recognition",
+        "respect"
+      ]
     },
-    Tenderness: {
-      Caring: ["purpose", "affection", "giving/receiving"],
-      Compassion: ["understanding", "resonance", "healing"],
-      Affection: ["touch", "closeness", "warmth"],
+    "Awe": {
+      "Awed": [
+        "transcendence",
+        "inspiration",
+        "connection"
+      ]
     },
-    Desire: {
-      Infatuated: ["connection", "novelty", "passion"],
-      Passionate: ["expression", "creativity", "purpose"],
-      Romantic: ["intimacy", "bonding", "shared meaning"],
+    "Confusion": {
+      "Confused": [
+        "clarity",
+        "guidance",
+        "orientation"
+      ],
+      "Disoriented": [
+        "stability",
+        "reassurance",
+        "clarity"
+      ]
     },
-    Affectionate: {
-      Fondness: ["closeness", "appreciation", "affection"],
-      Attachment: ["stability", "continuity", "bonding"],
-      Admiration: ["recognition", "inspiration", "aspiration"],
+    "Shock": {
+      "Disbelief": [
+        "understanding",
+        "explanation",
+        "guidance"
+      ],
+      "Shocked": [
+        "stability",
+        "clarity",
+        "comfort"
+      ],
+      "Stunned": [
+        "orientation",
+        "grounding",
+        "clarity"
+      ]
     },
-  },
+    "Startle": {
+      "Startled": [
+        "safety",
+        "calm",
+        "reassurance"
+      ]
+    },
+    "Wonder": {
+      "Curious": [
+        "engagement",
+        "clarity",
+        "knowledge"
+      ],
+      "Intrigued": [
+        "learning",
+        "exploration",
+        "stimulation"
+      ],
+      "Wondering": [
+        "exploration",
+        "discovery",
+        "learning"
+      ]
+    }
+  }
 };
 
 export function toRows() {
