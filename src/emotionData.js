@@ -1,5 +1,26 @@
 export const EMOTION_DATA = {
   "Anger": {
+    "Agitation": {
+      "Agitated": [
+        "calm",
+        "reassurance",
+        "safety"
+      ]
+    },
+    "Annoyance": {
+      "Annoyed": [
+        "patience",
+        "tolerance",
+        "understanding"
+      ]
+    },
+    "Bitterness": {
+      "Bitter": [
+        "justice",
+        "acknowledgment",
+        "healing"
+      ]
+    },
     "Contempt": {
       "Contemptuous": [
         "dignity",
@@ -12,6 +33,13 @@ export const EMOTION_DATA = {
         "value"
       ]
     },
+    "Exasperation": {
+      "Exasperated": [
+        "relief",
+        "recognition",
+        "fairness"
+      ]
+    },
     "Frustration": {
       "Exasperated": [
         "relief",
@@ -22,6 +50,13 @@ export const EMOTION_DATA = {
         "progress",
         "ease",
         "support"
+      ]
+    },
+    "Hatred": {
+      "Hateful": [
+        "acceptance",
+        "belonging",
+        "unconditional regard"
       ]
     },
     "Hostility": {
