@@ -152,7 +152,7 @@ export default function App() {
             <button className={`btn ${tab==='search' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('search')}>Search</button>
           </div>
 
-          {tab === 'explore' and (
+          {tab === 'explore' && (
             <>
               {/* Mobile selectors */}
               <div className="block md:hidden space-y-3">
