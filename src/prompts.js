@@ -99,7 +99,7 @@ export const GUIDED_PROMPTS = {
       Revolted:
         "Remove the exposure; restore purity/integrity. Request: “I need to disengage from this material—please send a summary instead.”",
     },
-    Moral Outrage: {
+    "Moral Outrage": {
       Indignant:
         "Channel heat into constructive action. Request: “This violates our values—can we form a small group to propose a fix by Friday?”",
       "Self-righteous":
@@ -298,7 +298,7 @@ export const GUIDED_PROMPTS = {
   },
 };
 
-// Optional fallbacks (trigger only if you later add new emotions without guidance)
+// Optional fallbacks (only used if you add new emotions without guidance later)
 export const CORE_FALLBACK = {
   Anger:
     "Center the boundary you need. Request: “I’m activated and need a clearer boundary. Can we define limits and consequences?”",
