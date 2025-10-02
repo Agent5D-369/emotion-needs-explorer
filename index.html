@@ -9,12 +9,7 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23111827'/%3E%3Ctext x='50' y='58' font-size='42' text-anchor='middle' fill='white' font-family='Arial'%3EEN%3C/text%3E%3C/svg%3E"
     />
-
-    <!-- Tailwind (CDN for utility classes used directly in JSX).
-         Note: we converted any @apply usage to plain CSS below. -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Plain CSS equivalents for your former @apply classes -->
     <style>
       :root {
         --gray-50: #f9fafb;
@@ -23,82 +18,25 @@
         --gray-300: #d1d5db;
         --gray-500: #6b7280;
         --gray-900: #111827;
+        --brand-orange: #f97316;
+        --brand-orange-600: #ea580c;
       }
-
-      /* Cards */
-      .card {
-        background-color: #fff;
-        border: 1px solid var(--gray-200);
-        border-radius: 1rem; /* rounded-2xl */
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05); /* shadow-sm */
-      }
-      .card-header {
-        padding: 1rem 1rem 0.5rem 1rem; /* px-4 pt-4 pb-2 */
-      }
-      .card-title {
-        font-size: 1.125rem; /* text-lg */
-        line-height: 1.75rem;
-        font-weight: 600; /* font-semibold */
-      }
-      .card-content {
-        padding: 0 1rem 1rem 1rem; /* px-4 pb-4 */
-      }
-
-      /* Buttons */
-      .btn {
-        display: inline-flex; 
-        align-items: center; 
-        justify-content: center;
-        gap: 0.5rem; 
-        border-radius: 0.75rem; /* rounded-xl */
-        padding: 0.75rem 1rem; /* px-4 py-3 */
-        font-size: 1rem; 
-        font-weight: 500; 
-        transition: background-color .15s ease, color .15s ease, border-color .15s ease;
-      }
-      .btn-ghost {
-        background: transparent;
-      }
-      .btn-ghost:hover {
-        background: var(--gray-100); /* hover:bg-gray-100 */
-      }
-      .btn-outline {
-        background: #fff; 
-        border: 1px solid var(--gray-300);
-      }
-      .btn-outline:hover {
-        background: var(--gray-50); /* hover:bg-gray-50 */
-      }
-      .btn-primary {
-        background: var(--gray-900);
-        color: #fff;
-      }
-      .btn-primary:hover {
-        background: #000;
-      }
-
-      /* Badge */
-      .badge {
-        display: inline-flex; 
-        align-items: center;
-        border: 1px solid var(--gray-300);
-        background: var(--gray-100);
-        border-radius: 9999px; /* rounded-full */
-        padding: 0.25rem 0.75rem; /* py-1 px-3 */
-        font-size: 0.875rem; /* text-sm */
-        font-weight: 500; /* font-medium */
-      }
-
-      /* Muted text */
-      .muted {
-        color: var(--gray-500);
-      }
+      .card { background-color:#fff; border:1px solid var(--gray-200); border-radius:1rem; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+      .card-header { padding:1rem 1rem .5rem 1rem; }
+      .card-title { font-size:1.125rem; line-height:1.75rem; font-weight:600; }
+      .card-content { padding:0 1rem 1rem 1rem; }
+      .btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border-radius:.75rem; padding:.75rem 1rem; font-size:1rem; font-weight:500; transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+      .btn-ghost { background: transparent; } .btn-ghost:hover { background: var(--gray-100); }
+      .btn-outline { background:#fff; border:1px solid var(--gray-300); } .btn-outline:hover { background: var(--gray-50); }
+      .btn-primary { background: var(--gray-900); color:#fff; } .btn-primary:hover { background:#000; }
+      .btn-copy { background: var(--brand-orange); color:#fff; } .btn-copy:hover { background: var(--brand-orange-600); }
+      .badge { display:inline-flex; align-items:center; border:1px solid var(--gray-300); background: var(--gray-100); border-radius:9999px; padding:.25rem .75rem; font-size:.875rem; font-weight:500; }
+      .muted { color: var(--gray-500); }
+      mark.hl { background:#fde68a; padding:0 .1rem; border-radius:.2rem; }
     </style>
   </head>
   <body class="bg-gray-50">
     <div id="root"></div>
-
-    <!-- Vite entrypoint: loads your React app from src/main.jsx -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
