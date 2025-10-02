@@ -59,31 +59,38 @@ function Column({ title, items, selected, onSelect }) {
 }
 
 function NeedsPanel({ core, sub, specific, needs, onAddToSnapshot }) {
-  const [copied, setCopied] = useState(false);
-  const [copiedGuide, setCopiedGuide] = useState(false);
+  const [copiedShort, setCopiedShort] = useState(false);
+  const [copiedLong, setCopiedLong] = useState(false);
 
   const path = [core, sub, specific].filter(Boolean).join(" / ");
-  const shortPayload = `Feeling ${core} → ${sub} → ${specific}. Needs: ${needs.join(", ")}.`;
-  const longPayload = [
-    `I am currently feeling ${core}, ${sub}, and ${specific}.`,
-    `My current related emotional needs are ${needs.join(", ")}.`,
-    "",
-    "Tip: Translate these feelings and unmet needs into a doable request:",
-    `Example: “I'm feeling ${core} and need more rest. Can we end by 9pm tonight?”).`,
+  const guidance = guidanceFor({ core, sub, specific, needs });
+
+  // Short: feelings + needs + CC (no next steps)
+  const shortPayload = [
+    `Feeling ${core} → ${sub} → ${specific}. Needs: ${needs.join(", ")}.`,
     "",
     ATTR_LINE,
   ].join("\n");
 
-  const guidance = guidanceFor({ core, sub, specific, needs });
+  // Long: include Guided Next Step
+  const longPayload = [
+    `I am currently feeling ${core}, ${sub}, and ${specific}.`,
+    `My current related emotional needs are ${needs.join(", ")}.`,
+    "",
+    "Guided Next Step:",
+    guidance,
+    "",
+    ATTR_LINE,
+  ].join("\n");
 
-  const doCopy = async (payload, which = "main") => {
+  const doCopy = async (payload, which) => {
     const ok = await copyText(payload);
-    if (which === "guide") {
-      setCopiedGuide(!!ok);
-      window.setTimeout(() => setCopiedGuide(false), 1500);
+    if (which === "short") {
+      setCopiedShort(!!ok);
+      window.setTimeout(() => setCopiedShort(false), 1500);
     } else {
-      setCopied(!!ok);
-      window.setTimeout(() => setCopied(false), 1500);
+      setCopiedLong(!!ok);
+      window.setTimeout(() => setCopiedLong(false), 1500);
     }
   };
 
@@ -98,17 +105,21 @@ function NeedsPanel({ core, sub, specific, needs, onAddToSnapshot }) {
           <>
             <div className="flex flex-wrap gap-2">{needs.map((n) => <span key={n} className="badge">{n}</span>)}</div>
             <div className="flex gap-2 pt-2 items-center flex-wrap">
-              <Button variant="copy" onClick={() => doCopy(shortPayload)}>{copied ? "✓ Copied" : "Copy (Short)"}</Button>
-              <Button variant="outline" onClick={() => doCopy(longPayload)}>Copy for Chat/Email</Button>
-              <Button variant="ghost" onClick={onAddToSnapshot}>Add to Snapshot</Button>
+              <Button variant="copy" onClick={() => doCopy(shortPayload, "short")}>
+                {copiedShort ? "✓ Copied" : "Copy (Short)"}
+              </Button>
+              <Button variant="outline" onClick={() => doCopy(longPayload, "long")}>
+                {copiedLong ? "✓ Copied" : "Copy for Chat/Email"}
+              </Button>
+              {/* Outline style per request */}
+              <Button variant="outline" onClick={onAddToSnapshot}>
+                Add to Snapshot
+              </Button>
             </div>
 
             <div className="mt-2 p-3 rounded-xl border bg-white/60">
               <div className="text-sm font-semibold mb-1">Guided Next Step</div>
               <p className="text-sm">{guidance}</p>
-              <div className="pt-2">
-                <Button variant="outline" onClick={() => doCopy(guidance, "guide")}>{copiedGuide ? "✓ Copied" : "Copy Next Step"}</Button>
-              </div>
             </div>
           </>
         ) : <p className="muted">No needs selected yet.</p>}
@@ -120,7 +131,7 @@ function NeedsPanel({ core, sub, specific, needs, onAddToSnapshot }) {
 // highlight helper for Search results
 function highlight(text, q) {
   if (!q) return text;
-  const parts = String(text).split(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "ig"));
+  const parts = String(text).split(new RegExp(`(${q.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&")})`, "ig"));
   return parts.map((part, i) => part.toLowerCase() === q.toLowerCase() ? <mark key={i} className="hl">{part}</mark> : <React.Fragment key={i}>{part}</React.Fragment>);
 }
 
@@ -128,7 +139,7 @@ export default function App() {
   const rows = useMemo(() => toRows(), []);
   const cores = useMemo(() => Object.keys(EMOTION_DATA), []);
 
-  const [tab, setTab] = useState("explore"); // explore | search | snapshot | saved | visual
+  const [tab, setTab] = useState("explore"); // explore | search | snapshot | saved
   const [search, setSearch] = useState("");
   const [core, setCore] = useState("Anger");
   const [sub, setSub] = useState(Object.keys(EMOTION_DATA["Anger"] || {})[0]);
@@ -173,20 +184,29 @@ export default function App() {
     return Array.from(all);
   }, [snapshot]);
 
+  // Short snapshot: summary + CC
   const snapshotShort = useMemo(() => {
     const items = snapshot.map(s => `${s.core} → ${s.sub} → ${s.specific}`).join("; ");
-    return `Emotional snapshot: ${items}. Needs: ${snapshotNeeds.join(", ")}.`;
+    return [
+      `Emotional snapshot: ${items}. Needs: ${snapshotNeeds.join(", ")}.`,
+      "",
+      ATTR_LINE
+    ].join("\n");
   }, [snapshot, snapshotNeeds]);
 
+  // Reflection snapshot: include per-item Guided Next Steps (replaces generic tip)
   const snapshotLong = useMemo(() => {
     const lines = snapshot.map(s => `• ${s.core} / ${s.sub} / ${s.specific}: needs ${s.needs.join(", ")}`);
+    const steps = snapshot.map(s => `• ${s.core} / ${s.sub} / ${s.specific}: ${guidanceFor(s)}`);
     return [
       "Emotional snapshot",
       ...lines,
       "",
       `Converging unmet needs: ${snapshotNeeds.join(", ")}`,
       "",
-      "Next Step: Translate one need into a specific request you can make today.",
+      "Next Steps:",
+      ...steps,
+      "",
       ATTR_LINE
     ].join("\n");
   }, [snapshot, snapshotNeeds]);
@@ -224,11 +244,12 @@ export default function App() {
             <button className={`btn ${tab==='search' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('search')}>Search</button>
             <button className={`btn ${tab==='snapshot' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('snapshot')}>Snapshot</button>
             <button className={`btn ${tab==='saved' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('saved')}>Saved</button>
-            <button className={`btn ${tab==='visual' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('visual')}>Visual</button>
+            {/* Visual tab removed */}
           </div>
 
           {tab === 'explore' && (
             <>
+              {/* Mobile pickers */}
               <div className="block md:hidden space-y-3">
                 <div>
                   <label className="text-xs uppercase tracking-wide muted">Core Emotion</label>
@@ -253,6 +274,7 @@ export default function App() {
                 </div>
               </div>
 
+              {/* Desktop columns */}
               <div className="hidden md:grid grid-cols-4 gap-4">
                 <Column title="Core Emotions" items={cores} selected={core} onSelect={setCore} />
                 <Column title="Sub-Emotions" items={subs} selected={sub} onSelect={setSub} />
@@ -272,14 +294,24 @@ export default function App() {
               <div className="max-h-[60vh] overflow-auto pr-2 space-y-2">
                 {filtered.map((r) => {
                   const path = `${r.core} › ${r.sub} › ${r.specific}`;
-                  const short = `Feeling ${r.core} → ${r.sub} → ${r.specific}. Needs: ${r.needs.join(", ")}.`;
-                  const long = [
-                    `I am currently feeling ${r.core}, ${r.sub}, and ${r.specific}.`,
-                    `My related emotional needs are ${r.needs.join(", ")}.`,
+                  const guidance = guidanceFor({ core: r.core, sub: r.sub, specific: r.specific, needs: r.needs });
+
+                  const short = [
+                    `Feeling ${r.core} → ${r.sub} → ${r.specific}. Needs: ${r.needs.join(", ")}.`,
                     "",
-                    "Next Step: Translate one need into a specific request.",
                     ATTR_LINE
                   ].join("\n");
+
+                  const long = [
+                    `I am currently feeling ${r.core}, ${r.sub}, and ${r.specific}.`,
+                    `My current related emotional needs are ${r.needs.join(", ")}.`,
+                    "",
+                    "Guided Next Step:",
+                    guidance,
+                    "",
+                    ATTR_LINE
+                  ].join("\n");
+
                   return (
                     <div key={path} className="p-3 rounded-xl border hover:bg-gray-50 transition">
                       <div className="flex items-center gap-2 text-sm">
@@ -297,7 +329,8 @@ export default function App() {
                         <button className="btn btn-primary" onClick={() => { setCore(r.core); setSub(r.sub); setSpecific(r.specific); setTab('explore'); }}>View in Explorer</button>
                         <button className="btn btn-copy" onClick={() => copyText(short)}>Copy (Short)</button>
                         <button className="btn btn-outline" onClick={() => copyText(long)}>Copy for Chat/Email</button>
-                        <button className="btn btn-ghost" onClick={() => setSnapshot((prev) => prev.some(p => p.core===r.core && p.sub===r.sub && p.specific===r.specific) ? prev : [...prev, r])}>Add to Snapshot</button>
+                        {/* Outline style for snapshot add */}
+                        <button className="btn btn-outline" onClick={() => setSnapshot((prev) => prev.some(p => p.core===r.core && p.sub===r.sub && p.specific===r.specific) ? prev : [...prev, r])}>Add to Snapshot</button>
                       </div>
                     </div>
                   );
@@ -357,19 +390,6 @@ export default function App() {
                       ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {tab === 'visual' && (
-            <div className="space-y-3">
-              <p className="muted">Tap a core emotion to focus; this simple visual can be replaced with a radial wheel later.</p>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {cores.map(c => (
-                  <button key={c} className={`p-6 rounded-2xl border text-lg font-semibold transition ${c===core ? 'bg-blue-100 border-blue-300' : 'hover:bg-gray-50'}`} onClick={() => { setCore(c); setTab('explore'); }}>
-                    {c}
-                  </button>
                 ))}
               </div>
             </div>
