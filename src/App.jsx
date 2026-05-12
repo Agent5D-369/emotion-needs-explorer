@@ -221,20 +221,79 @@ const CORRECTIVE_ACTIONS = [
   },
 ];
 
+const SHADOW_PATTERNS = [
+  {
+    id: "control",
+    label: "Control",
+    triggers: ["Anger", "Fear", "autonomy", "safety", "clarity"],
+    signal: "The energy may try to force certainty, compliance, or a quick answer.",
+    move: "Slow the demand down. Ask for one clear agreement instead of trying to control the whole person or outcome.",
+  },
+  {
+    id: "withdrawal",
+    label: "Withdrawal",
+    triggers: ["Sadness", "Fear", "rest", "safety", "care", "space"],
+    signal: "The energy may pull you into silence, distance, or disappearance.",
+    move: "Name that you need space and give a return time. Space works best when it has a responsible re-entry.",
+  },
+  {
+    id: "attack",
+    label: "Attack",
+    triggers: ["Anger", "Disgust", "respect", "fairness", "dignity"],
+    signal: "The energy may push you to win, shame, interrupt, or make the other person pay.",
+    move: "Protect the need without attacking. Use a boundary or request that names behavior, not character.",
+  },
+  {
+    id: "approval",
+    label: "Approval seeking",
+    triggers: ["Sadness", "Happiness", "belonging", "connection", "reassurance"],
+    signal: "The energy may make you abandon your own truth to keep closeness.",
+    move: "Stay connected without self-erasing. Say what is true and ask for reassurance directly.",
+  },
+  {
+    id: "numbing",
+    label: "Numbing",
+    triggers: ["Sadness", "Fear", "rest", "support", "overwhelmed"],
+    signal: "The energy may try to shut off through scrolling, food, substances, sleep, or avoidance.",
+    move: "Choose one low-friction care action first: water, movement, shower, daylight, or a direct check-in with someone safe.",
+  },
+  {
+    id: "story",
+    label: "Story spiral",
+    triggers: ["Fear", "Surprise", "clarity", "reassurance", "trust"],
+    signal: "The mind may start filling gaps with worst-case stories.",
+    move: "Separate fact from interpretation. Ask for the missing information before acting on the story.",
+  },
+];
+
+function getRelevantShadows({ core, needs, bodyLabels, situationLabel }) {
+  const signals = [core, situationLabel, ...needs, ...bodyLabels].filter(Boolean).map((item) => item.toLowerCase());
+  return SHADOW_PATTERNS.map((shadow) => ({
+    ...shadow,
+    score: shadow.triggers.reduce((total, trigger) => {
+      const q = trigger.toLowerCase();
+      return total + (signals.some((signal) => signal.includes(q) || q.includes(signal)) ? 1 : 0);
+    }, 0),
+  }))
+    .filter((shadow) => shadow.score > 0)
+    .sort((a, b) => b.score - a.score || a.label.localeCompare(b.label))
+    .slice(0, 3);
+}
+
 const SCRIPT_TYPES = [
   {
     id: "request",
     label: "Clean request",
     icon: MessageSquareText,
-    build: ({ emotion, needs }) =>
-      `I am feeling ${emotion || "activated"} and I need ${needs.join(", ") || "clarity"}. Could we choose one concrete next step and a time to follow up?`,
+    build: ({ emotion, needs, situation }) =>
+      `I am feeling ${emotion || "activated"} around ${situation || "this situation"} and I need ${needs.join(", ") || "clarity"}. Could we choose one concrete next step and a time to follow up?`,
   },
   {
     id: "boundary",
     label: "Boundary",
     icon: Shield,
     build: ({ emotion, needs }) =>
-      `I want to handle this well. I am feeling ${emotion || "heated"} and need ${needs[0] || "respect"}. If the tone stays sharp, I am going to pause and come back when we can speak clearly.`,
+      `I want to handle this well. I am feeling ${emotion || "heated"} and need ${needs[0] || "respect"}. If this keeps moving in a way that blocks that need, I am going to pause and come back with a clear request.`,
   },
   {
     id: "repair",
@@ -247,14 +306,14 @@ const SCRIPT_TYPES = [
     id: "coach",
     label: "Coach prompt",
     icon: UserRound,
-    build: ({ needs }) =>
-      `Try asking: "What happened, what did your body do, and what did you need in that moment: ${needs.slice(0, 3).join(", ") || "respect, safety, or support"}?"`,
+    build: ({ needs, emotion }) =>
+      `Try asking: "When ${emotion || "that feeling"} showed up, what did your body do, and which need was asking for attention: ${needs.slice(0, 3).join(", ") || "respect, safety, or support"}?"`,
   },
 ];
 
 const navItems = [
   { id: "checkin", label: "Check In", icon: Home },
-  { id: "explore", label: "Explore", icon: Compass },
+  { id: "explore", label: "Feelings", icon: Compass },
   { id: "scripts", label: "Scripts", icon: Clipboard },
   { id: "snapshot", label: "Snapshot", icon: Sparkles },
   { id: "saved", label: "Saved", icon: BookOpen },
@@ -510,6 +569,7 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
   const [situationId, setSituationId] = useState(SITUATIONS[0].id);
   const [bodyIds, setBodyIds] = useState([]);
   const [selectedPath, setSelectedPath] = useState(null);
+  const [selectedShadowId, setSelectedShadowId] = useState(null);
 
   const situation = SITUATIONS.find((item) => item.id === situationId) || SITUATIONS[0];
   const selectedBody = BODY_SIGNALS.filter((item) => bodyIds.includes(item.id));
@@ -547,8 +607,13 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
   const scriptContext = {
     emotion: activePath?.specific || activePath?.sub || activePath?.core,
     needs: inferredNeeds,
+    situation: situation.label,
   };
-  const primaryScript = SCRIPT_TYPES[0].build(scriptContext);
+  const resultScripts = SCRIPT_TYPES.map((script) => ({
+    ...script,
+    text: script.build(scriptContext),
+  }));
+  const primaryScript = resultScripts[0].text;
   const guidedPrompt = guidanceFor({ ...activePath, needs: inferredNeeds });
   const audienceCopy = {
     adult: "This is not about being soft. It is about reading the signal before it drives your next move.",
@@ -559,6 +624,17 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
     `You are not just ${activePath?.specific?.toLowerCase() || "activated"}. Your system is signaling a need for ${inferredNeeds.slice(0, 3).join(", ")}.`,
     "Move the energy by regulating first, naming the need cleanly, and making one request that can be answered today.",
   ].join(" ");
+  const relevantShadows = useMemo(
+    () =>
+      getRelevantShadows({
+        core: activePath?.core,
+        needs: inferredNeeds,
+        bodyLabels: selectedBody.map((item) => item.label),
+        situationLabel: situation.label,
+      }),
+    [activePath?.core, inferredNeeds, selectedBody, situation.label]
+  );
+  const selectedShadow = relevantShadows.find((shadow) => shadow.id === selectedShadowId) || relevantShadows[0];
 
   const toggleBody = (id) => {
     setBodyIds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
@@ -590,6 +666,9 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
     "",
     "Frame:",
     actionFrame,
+    "",
+    "Likely shadow patterns:",
+    ...relevantShadows.map((shadow) => `- ${shadow.label}: ${shadow.move}`),
     "",
     "Corrective action plan:",
     ...CORRECTIVE_ACTIONS.map((item) => `- ${item.title}: ${item.copy}`),
@@ -740,6 +819,39 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
               </div>
               <p className="mt-3 text-lg font-semibold leading-8 text-emerald-950">{actionFrame}</p>
             </div>
+            {relevantShadows.length ? (
+              <div className="rounded-lg border border-stone-200 bg-white p-4">
+                <div className="text-sm font-black text-stone-950">Common shadows to watch</div>
+                <p className="mt-1 text-sm leading-6 text-stone-600">
+                  These are not labels. They are common ways emotional energy can move off target.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {relevantShadows.map((shadow) => (
+                    <button
+                      key={shadow.id}
+                      onClick={() => setSelectedShadowId(shadow.id)}
+                      className={cls(
+                        "rounded-full border px-3 py-2 text-sm font-semibold transition",
+                        selectedShadow?.id === shadow.id
+                          ? "border-emerald-800 bg-emerald-800 text-white"
+                          : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-400"
+                      )}
+                    >
+                      {shadow.label}
+                    </button>
+                  ))}
+                </div>
+                {selectedShadow ? (
+                  <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-3">
+                    <div className="text-sm font-black text-stone-950">{selectedShadow.label}</div>
+                    <p className="mt-2 text-sm leading-6 text-stone-700">{selectedShadow.signal}</p>
+                    <p className="mt-2 text-sm leading-6 text-stone-700">
+                      <strong>Best move:</strong> {selectedShadow.move}
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
             <div className="grid gap-3 md:grid-cols-2">
               <div className="rounded-lg border border-stone-200 bg-white p-4">
                 <div className="text-sm font-black text-stone-950">Do this now</div>
@@ -759,8 +871,25 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
               </div>
             </div>
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-              <div className="text-sm font-black text-stone-950">Words to use</div>
-              <p className="mt-2 text-base leading-7 text-stone-800">{primaryScript}</p>
+              <div className="text-sm font-black text-stone-950">Context-sensitive scripts</div>
+              <p className="mt-1 text-sm leading-6 text-stone-700">
+                Pick the words that match the move you need: request, boundary, repair, or coaching conversation.
+              </p>
+              <div className="mt-3 grid gap-3">
+                {resultScripts.map(({ id, label, icon: Icon, text }) => (
+                  <div key={id} className="rounded-lg border border-amber-200 bg-white p-3">
+                    <div className="flex items-center gap-2 text-sm font-black text-stone-950">
+                      <Icon size={16} />
+                      {label}
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-stone-800">{text}</p>
+                    <Button variant="secondary" className="mt-3 w-full" onClick={() => copyText(`${text}\n\n${ATTR_LINE}`)}>
+                      <Clipboard size={16} />
+                      Copy this script
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
             <details className="rounded-lg border border-stone-200 bg-white p-4">
               <summary className="cursor-pointer text-sm font-black text-stone-950">Optional deeper guidance</summary>
@@ -776,7 +905,7 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
                 Save
               </Button>
               <Button variant="secondary" onClick={() => setTab("scripts")}>
-                More scripts
+                Script library
                 <ArrowRight size={16} />
               </Button>
             </div>
@@ -894,7 +1023,7 @@ function Explore({ rows, setSnapshot }) {
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
       <section className="space-y-4">
-        <SectionTitle title="Explore the map" copy="Browse emotions directly or search by word, need, or situation." />
+        <SectionTitle title="Feelings Library" copy="Browse feelings directly or search by emotion, need, or situation." />
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-3 text-stone-400" size={18} />
@@ -980,8 +1109,8 @@ function Scripts({ latest }) {
   return (
     <div className="space-y-4">
       <SectionTitle
-        title="Scripts that turn insight into action"
-        copy="Use these when you need words for a request, a boundary, a repair, or a coaching conversation."
+        title="Script Library"
+        copy="Use this as a backup library. The strongest scripts are now generated inside the Check In result based on the selected feeling, need, body signal, and situation."
       />
       <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
         <div className="text-sm font-black text-stone-950">Before you send the script</div>
@@ -1124,7 +1253,7 @@ function Snapshot({ snapshot, setSnapshot, setSaved }) {
             <div className="mt-3"><NeedBadges needs={item.needs} /></div>
           </div>
         ))}
-        {!snapshot.length ? <p className="rounded-lg border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">No snapshot items yet. Run Check In or save from Explore.</p> : null}
+        {!snapshot.length ? <p className="rounded-lg border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">No snapshot items yet. Run Check In or save from Feelings Library.</p> : null}
       </div>
     </div>
   );
