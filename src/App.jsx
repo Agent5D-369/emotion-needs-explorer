@@ -16,6 +16,8 @@ import {
   Search,
   Shield,
   Sparkles,
+  Palette,
+  Trophy,
   UserRound,
 } from "lucide-react";
 import { EMOTION_DATA, toRows } from "./emotionData.js";
@@ -24,6 +26,99 @@ import { guidanceFor } from "./prompts.js";
 const ATTR_LINE =
   "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) · Rick Broider · Agent5D.com · HolisticLifeTribe.com";
 const CALENDAR_URL = "https://calendar.app.google/NQvsMN7X5evMK9Q1A";
+
+const THEMES = [
+  {
+    id: "sage",
+    label: "Light: Sage Ground",
+    mode: "light",
+    bg: "bg-[#f7faf7]",
+    surface: "bg-white",
+    panel: "bg-[#eef6ef]",
+    accent: "bg-[#6f9b78]",
+    accentText: "text-white",
+    text: "text-[#17231b]",
+    muted: "text-[#5f6f64]",
+    border: "border-[#dce8dd]",
+    selected: "bg-[#315c3b] text-white border-[#315c3b]",
+    soft: "bg-[#edf6ee] border-[#cfe1d1]",
+  },
+  {
+    id: "sky",
+    label: "Light: Clear Sky",
+    mode: "light",
+    bg: "bg-[#f5f8fb]",
+    surface: "bg-white",
+    panel: "bg-[#eef5fb]",
+    accent: "bg-[#4f83a5]",
+    accentText: "text-white",
+    text: "text-[#172330]",
+    muted: "text-[#607080]",
+    border: "border-[#d9e5ef]",
+    selected: "bg-[#285a78] text-white border-[#285a78]",
+    soft: "bg-[#eef6fb] border-[#cfe0ec]",
+  },
+  {
+    id: "clay",
+    label: "Light: Warm Clay",
+    mode: "light",
+    bg: "bg-[#fbf7f2]",
+    surface: "bg-white",
+    panel: "bg-[#f7efe5]",
+    accent: "bg-[#c57b57]",
+    accentText: "text-white",
+    text: "text-[#2b211b]",
+    muted: "text-[#746457]",
+    border: "border-[#eaded1]",
+    selected: "bg-[#8c4f35] text-white border-[#8c4f35]",
+    soft: "bg-[#fff3e8] border-[#ead5c2]",
+  },
+  {
+    id: "forest",
+    label: "Dark: Forest Night",
+    mode: "dark",
+    bg: "bg-[#111a15]",
+    surface: "bg-[#17231b]",
+    panel: "bg-[#203427]",
+    accent: "bg-[#93c59b]",
+    accentText: "text-[#101a13]",
+    text: "text-[#eef7ef]",
+    muted: "text-[#b8c8bb]",
+    border: "border-[#314739]",
+    selected: "bg-[#93c59b] text-[#101a13] border-[#93c59b]",
+    soft: "bg-[#1c2d22] border-[#3a5642]",
+  },
+  {
+    id: "navy",
+    label: "Dark: Harbor Blue",
+    mode: "dark",
+    bg: "bg-[#101720]",
+    surface: "bg-[#172231]",
+    panel: "bg-[#1f3347]",
+    accent: "bg-[#8ec5dd]",
+    accentText: "text-[#0f1720]",
+    text: "text-[#eef6fb]",
+    muted: "text-[#b8cad8]",
+    border: "border-[#31485d]",
+    selected: "bg-[#8ec5dd] text-[#0f1720] border-[#8ec5dd]",
+    soft: "bg-[#1a2b3d] border-[#38546b]",
+  },
+  {
+    id: "ember",
+    label: "Dark: Ember Calm",
+    mode: "dark",
+    bg: "bg-[#1c1512]",
+    surface: "bg-[#271d18]",
+    panel: "bg-[#36261f]",
+    accent: "bg-[#e2a46f]",
+    accentText: "text-[#1d140f]",
+    text: "text-[#fff7ef]",
+    muted: "text-[#d6c2b2]",
+    border: "border-[#4b362b]",
+    selected: "bg-[#e2a46f] text-[#1d140f] border-[#e2a46f]",
+    soft: "bg-[#33231c] border-[#573c2f]",
+  },
+];
 
 const SITUATIONS = [
   {
@@ -219,10 +314,10 @@ function cls(...parts) {
 
 function Button({ children, onClick, variant = "primary", className = "", disabled = false, type = "button" }) {
   const variants = {
-    primary: "bg-stone-950 text-white hover:bg-stone-800",
+    primary: "bg-emerald-800 text-white hover:bg-emerald-700",
     secondary: "border border-stone-200 bg-white text-stone-950 hover:bg-stone-50",
     ghost: "text-stone-700 hover:bg-stone-100",
-    amber: "bg-amber-500 text-stone-950 hover:bg-amber-400",
+    amber: "bg-teal-700 text-white hover:bg-teal-600",
   };
   return (
     <button
@@ -248,7 +343,7 @@ function Chip({ children, active, onClick, className = "" }) {
       className={cls(
         "min-h-11 min-w-0 max-w-full rounded-lg border px-3 py-2 text-left text-sm font-semibold transition",
         active
-          ? "border-stone-950 bg-stone-950 text-white shadow-sm"
+          ? "border-emerald-800 bg-emerald-800 text-white shadow-sm"
           : "border-stone-200 bg-white text-stone-800 hover:border-stone-400",
         className
       )}
@@ -267,18 +362,39 @@ function SectionTitle({ title, copy }) {
   );
 }
 
-function AppShell({ tab, setTab, children }) {
+function ThemePicker({ themeId, setThemeId, compact = false }) {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white text-stone-950">
+    <div className={cls("grid gap-2", compact ? "grid-cols-2" : "grid-cols-1")}>
+      {THEMES.map((theme) => (
+        <button
+          key={theme.id}
+          onClick={() => setThemeId(theme.id)}
+          className={cls(
+            "flex min-h-10 items-center gap-2 rounded-lg border px-3 text-left text-xs font-bold transition",
+            themeId === theme.id ? "border-emerald-700 bg-emerald-50 text-emerald-950" : "border-stone-200 bg-white text-stone-700 hover:bg-stone-50"
+          )}
+        >
+          <span className={cls("h-4 w-4 rounded-full", theme.accent)} />
+          <span>{theme.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) {
+  const theme = THEMES.find((item) => item.id === themeId) || THEMES[0];
+  return (
+    <div className={cls("min-h-screen overflow-x-hidden", theme.bg, theme.text)}>
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col md:flex-row">
-        <aside className="hidden w-64 shrink-0 border-r border-stone-200 px-5 py-6 md:block">
+        <aside className={cls("hidden w-64 shrink-0 border-r px-5 py-6 md:block", theme.surface, theme.border)}>
           <div className="mb-8 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-stone-950 text-white">
+            <div className={cls("flex h-10 w-10 items-center justify-center rounded-lg", theme.accent, theme.accentText)}>
               <Activity size={20} />
             </div>
             <div>
               <div className="text-sm font-black uppercase tracking-wide">NeedCompass</div>
-              <div className="text-xs text-stone-500">Name it. Decode it. Move well.</div>
+              <div className={cls("text-xs", theme.muted)}>Name it. Decode it. Move well.</div>
             </div>
           </div>
           <nav className="space-y-1">
@@ -288,7 +404,7 @@ function AppShell({ tab, setTab, children }) {
                 onClick={() => setTab(id)}
                 className={cls(
                   "flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold transition",
-                  tab === id ? "bg-stone-950 text-white" : "text-stone-700 hover:bg-stone-100"
+                  tab === id ? theme.selected : cls(theme.muted, "hover:bg-white/60")
                 )}
               >
                 <Icon size={18} />
@@ -296,20 +412,27 @@ function AppShell({ tab, setTab, children }) {
               </button>
             ))}
           </nav>
+          <div className="mt-8 border-t border-stone-200 pt-4">
+            <div className="mb-2 flex items-center gap-2 text-xs font-black uppercase tracking-wide">
+              <Palette size={14} />
+              Themes
+            </div>
+            <ThemePicker themeId={themeId} setThemeId={setThemeId} />
+          </div>
         </aside>
 
         <main className="min-w-0 flex-1 overflow-x-hidden pb-24 md:pb-0">
-          <header className="sticky top-0 z-20 border-b border-stone-200 bg-white/95 px-4 py-3 backdrop-blur md:px-8">
+          <header className={cls("sticky top-0 z-20 border-b px-4 py-3 backdrop-blur md:px-8", theme.surface, theme.border)}>
             <div className="flex items-center justify-between gap-3">
               <div>
                 <h1 className="max-w-[19rem] text-base font-black tracking-normal sm:max-w-none sm:text-lg md:text-2xl">
                   Emotion → Unmet Needs Explorer
                 </h1>
-                <p className="hidden text-sm text-stone-600 md:block">
+                <p className={cls("hidden text-sm md:block", theme.muted)}>
                   A practical emotional intelligence tool for men, boys, fathers, coaches, and mentors.
                 </p>
               </div>
-              <Button variant="secondary" className="hidden md:inline-flex" onClick={() => setTab("checkin")}>
+              <Button variant="secondary" className="hidden md:inline-flex" onClick={onNewCheckIn}>
                 <RefreshCw size={16} />
                 New check-in
               </Button>
@@ -319,7 +442,7 @@ function AppShell({ tab, setTab, children }) {
         </main>
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-stone-200 bg-white md:hidden">
+      <nav className={cls("fixed inset-x-0 bottom-0 z-30 border-t md:hidden", theme.surface, theme.border)}>
         <div className="grid w-full max-w-full" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
           {navItems.map(({ id, label, icon: Icon }) => (
             <button
@@ -327,7 +450,7 @@ function AppShell({ tab, setTab, children }) {
               onClick={() => setTab(id)}
               className={cls(
                 "flex min-h-16 min-w-0 flex-col items-center justify-center gap-1 text-[10px] font-bold min-[360px]:text-[11px]",
-                tab === id ? "text-stone-950" : "text-stone-500"
+                tab === id ? "text-emerald-800" : theme.muted
               )}
             >
               <Icon size={20} strokeWidth={tab === id ? 2.6 : 2} />
@@ -341,7 +464,7 @@ function AppShell({ tab, setTab, children }) {
 }
 
 function ProgressRail({ step }) {
-  const steps = ["Context", "Body", "Emotion", "Need", "Move"];
+  const steps = ["Context", "Body", "Emotion", "Need", "Frame"];
   return (
     <div className="overflow-hidden rounded-lg border border-stone-200 bg-stone-50 p-3 md:p-4">
       <div className="grid grid-cols-5 gap-1 md:block md:space-y-2">
@@ -353,7 +476,7 @@ function ProgressRail({ step }) {
                 idx < step
                   ? "bg-emerald-600 text-white"
                   : idx === step
-                  ? "bg-stone-950 text-white"
+                  ? "bg-emerald-800 text-white"
                   : "bg-white text-stone-500 ring-1 ring-stone-200"
               )}
             >
@@ -373,7 +496,7 @@ function NeedBadges({ needs }) {
   return (
     <div className="flex flex-wrap gap-2">
       {needs.map((need) => (
-        <span key={need} className="rounded-full border border-stone-200 bg-stone-100 px-3 py-1 text-sm font-semibold text-stone-800">
+        <span key={need} className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-950">
           {need}
         </span>
       ))}
@@ -397,7 +520,7 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
     selectedBody.forEach((signal) =>
       signal.emotions.forEach((emotion) => emotionScores.set(emotion, (emotionScores.get(emotion) || 0) + 3))
     );
-    return rows
+    const scored = rows
       .map((row) => ({
         ...row,
         score:
@@ -405,8 +528,13 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
           row.needs.reduce((score, need) => score + (situation.needs.includes(need) ? 2 : 0), 0),
       }))
       .filter((row) => row.score > 0)
-      .sort((a, b) => b.score - a.score || a.specific.localeCompare(b.specific))
-      .slice(0, 8);
+      .sort((a, b) => b.score - a.score || a.specific.localeCompare(b.specific));
+    const unique = new Map();
+    scored.forEach((row) => {
+      const key = row.specific.toLowerCase();
+      if (!unique.has(key)) unique.set(key, row);
+    });
+    return Array.from(unique.values()).slice(0, 8);
   }, [rows, selectedBody, situation]);
 
   const activePath = selectedPath || suggestions[0] || rows[0];
@@ -427,6 +555,10 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
     teen: "You do not have to explain it perfectly. Pick the closest answer and keep going.",
     coach: "Guide with curiosity. The goal is to help him name the signal without cornering him.",
   }[audience];
+  const actionFrame = [
+    `You are not just ${activePath?.specific?.toLowerCase() || "activated"}. Your system is signaling a need for ${inferredNeeds.slice(0, 3).join(", ")}.`,
+    "Move the energy by regulating first, naming the need cleanly, and making one request that can be answered today.",
+  ].join(" ");
 
   const toggleBody = (id) => {
     setBodyIds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
@@ -455,6 +587,9 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
     `Body signals: ${selectedBody.map((item) => item.label).join(", ") || "not selected"}`,
     `Likely emotion: ${activePath.core} / ${activePath.sub} / ${activePath.specific}`,
     `Unmet needs: ${inferredNeeds.join(", ")}`,
+    "",
+    "Frame:",
+    actionFrame,
     "",
     "Corrective action plan:",
     ...CORRECTIVE_ACTIONS.map((item) => `- ${item.title}: ${item.copy}`),
@@ -553,7 +688,7 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
                     onClick={() => setSelectedPath(row)}
                     className={cls(
                       "rounded-lg border p-3 text-left transition",
-                      active ? "border-stone-950 bg-stone-950 text-white" : "border-stone-200 bg-white hover:border-stone-400"
+                      active ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-white hover:border-stone-400"
                     )}
                   >
                     <div className="flex items-center justify-between gap-3">
@@ -595,30 +730,42 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
         {step === 4 && (
           <div className="space-y-5">
             <SectionTitle
-              title="Choose the next strong move"
-              copy="The goal is to get the need met through action you can actually take. Start with regulation, then make one clean move."
+              title="Frame and act"
+              copy="This is the point of the check-in. Turn the emotional energy into one clear, practical move."
             />
-            <div className="grid gap-2">
-              {CORRECTIVE_ACTIONS.map((item, index) => (
-                <div key={item.title} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
-                  <div className="flex items-center gap-2 text-sm font-black text-stone-950">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-stone-950 text-xs text-white">
-                      {index + 1}
-                    </span>
-                    {item.title}
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-stone-700">{item.copy}</p>
-                </div>
-              ))}
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+              <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide text-emerald-950">
+                <Trophy size={16} />
+                The frame
+              </div>
+              <p className="mt-3 text-lg font-semibold leading-8 text-emerald-950">{actionFrame}</p>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              <div className="rounded-lg border border-stone-200 bg-white p-4">
+                <div className="text-sm font-black text-stone-950">Do this now</div>
+                <ol className="mt-3 space-y-3 text-sm leading-6 text-stone-700">
+                  <li><strong>1. Settle:</strong> take 90 seconds and reduce heat in the body.</li>
+                  <li><strong>2. Name:</strong> choose the top need, usually {inferredNeeds[0] || "clarity"}.</li>
+                  <li><strong>3. Ask:</strong> make one request that can happen today.</li>
+                </ol>
+              </div>
+              <div className="rounded-lg border border-stone-200 bg-white p-4">
+                <div className="text-sm font-black text-stone-950">Avoid this now</div>
+                <ul className="mt-3 space-y-3 text-sm leading-6 text-stone-700">
+                  <li>Do not argue for your whole history.</li>
+                  <li>Do not punish with silence.</li>
+                  <li>Do not demand mind-reading. Make the need visible.</li>
+                </ul>
+              </div>
             </div>
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-              <div className="text-sm font-black text-stone-950">Recommended script</div>
+              <div className="text-sm font-black text-stone-950">Words to use</div>
               <p className="mt-2 text-base leading-7 text-stone-800">{primaryScript}</p>
             </div>
-            <div className="rounded-lg border border-stone-200 bg-white p-4">
-              <div className="text-sm font-black text-stone-950">Guided next step</div>
+            <details className="rounded-lg border border-stone-200 bg-white p-4">
+              <summary className="cursor-pointer text-sm font-black text-stone-950">Optional deeper guidance</summary>
               <p className="mt-2 text-sm leading-6 text-stone-700">{guidedPrompt}</p>
-            </div>
+            </details>
             <div className="grid gap-2 sm:grid-cols-3">
               <Button variant="amber" onClick={() => copyText(summary)}>
                 <Clipboard size={16} />
@@ -658,10 +805,17 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
       </section>
 
       <aside className="min-w-0 max-w-full space-y-4">
-        <div className="rounded-lg border border-stone-200 bg-stone-950 p-4 text-white">
+        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-950">
+          <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide">
+            <Trophy size={16} />
+            Frame
+          </div>
+          <p className="mt-3 text-base font-semibold leading-7">{actionFrame}</p>
+        </div>
+        <div className="rounded-lg border border-stone-200 bg-white p-4">
           <div className="text-sm font-black">Current read</div>
           <div className="mt-3 text-2xl font-black">{activePath?.specific}</div>
-          <div className="text-sm text-stone-300">
+          <div className="text-sm text-stone-600">
             {activePath?.core} / {activePath?.sub}
           </div>
           <div className="mt-4">
@@ -669,7 +823,7 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
           </div>
         </div>
         <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
-          <div className="text-sm font-black text-stone-950">Frame</div>
+          <div className="text-sm font-black text-stone-950">Mindset</div>
           <p className="mt-2 text-sm leading-6 text-stone-700">{audienceCopy}</p>
         </div>
         <div className="rounded-lg border border-stone-200 bg-white p-4">
@@ -703,9 +857,17 @@ function Explore({ rows, setSnapshot }) {
   const subs = Object.keys(EMOTION_DATA[core] || {});
   const specifics = Object.keys(EMOTION_DATA[core]?.[sub] || {});
   const needs = EMOTION_DATA[core]?.[sub]?.[specific] || [];
-  const filtered = rows.filter((row) =>
-    [row.core, row.sub, row.specific, row.needs.join(" ")].join(" ").toLowerCase().includes(query.toLowerCase())
-  );
+  const filtered = useMemo(() => {
+    const matches = rows.filter((row) =>
+      [row.core, row.sub, row.specific, row.needs.join(" ")].join(" ").toLowerCase().includes(query.toLowerCase())
+    );
+    const unique = new Map();
+    matches.forEach((row) => {
+      const key = `${row.specific.toLowerCase()}|${row.needs.join(",").toLowerCase()}`;
+      if (!unique.has(key)) unique.set(key, row);
+    });
+    return Array.from(unique.values());
+  }, [query, rows]);
 
   const chooseCore = (nextCore) => {
     const nextSub = Object.keys(EMOTION_DATA[nextCore] || {})[0] || "";
@@ -838,7 +1000,7 @@ function Scripts({ latest }) {
           return (
             <div key={id} className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-stone-950 text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-800 text-white">
                   <Icon size={18} />
                 </div>
                 <div className="font-black">{label}</div>
@@ -1000,6 +1162,8 @@ function Saved({ saved, setSaved }) {
 export default function App() {
   const rows = useMemo(() => toRows(), []);
   const [tab, setTab] = useState("checkin");
+  const [checkInKey, setCheckInKey] = useState(0);
+  const [themeId, setThemeId] = useState("sage");
   const [snapshot, setSnapshot] = useState([]);
   const [saved, setSavedState] = useState(() => {
     try {
@@ -1017,9 +1181,14 @@ export default function App() {
     });
   };
 
+  const startNewCheckIn = () => {
+    setTab("checkin");
+    setCheckInKey((value) => value + 1);
+  };
+
   return (
-    <AppShell tab={tab} setTab={setTab}>
-      {tab === "checkin" && <GuidedCheckIn rows={rows} snapshot={snapshot} setSnapshot={setSnapshot} setTab={setTab} />}
+    <AppShell tab={tab} setTab={setTab} onNewCheckIn={startNewCheckIn} themeId={themeId} setThemeId={setThemeId}>
+      {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} snapshot={snapshot} setSnapshot={setSnapshot} setTab={setTab} />}
       {tab === "explore" && <Explore rows={rows} setSnapshot={setSnapshot} />}
       {tab === "scripts" && <Scripts latest={snapshot[0]} />}
       {tab === "snapshot" && <Snapshot snapshot={snapshot} setSnapshot={setSnapshot} setSaved={setSaved} />}
