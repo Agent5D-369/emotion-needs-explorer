@@ -385,7 +385,7 @@ function ThemePicker({ themeId, setThemeId, compact = false }) {
 function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) {
   const theme = THEMES.find((item) => item.id === themeId) || THEMES[0];
   return (
-    <div className={cls("min-h-screen overflow-x-hidden", theme.bg, theme.text)}>
+    <div className={cls("min-h-screen overflow-x-hidden", `theme-${theme.mode}`, theme.bg, theme.text)}>
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col md:flex-row">
         <aside className={cls("hidden w-64 shrink-0 border-r px-5 py-6 md:block", theme.surface, theme.border)}>
           <div className="mb-8 flex items-center gap-3">
