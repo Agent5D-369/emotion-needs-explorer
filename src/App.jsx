@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   ArrowRight,
   BookOpen,
+  CalendarDays,
   Check,
   Clipboard,
   Compass,
@@ -22,6 +23,7 @@ import { guidanceFor } from "./prompts.js";
 
 const ATTR_LINE =
   "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) · Rick Broider · Agent5D.com · HolisticLifeTribe.com";
+const CALENDAR_URL = "https://calendar.app.google/NQvsMN7X5evMK9Q1A";
 
 const SITUATIONS = [
   {
@@ -98,6 +100,31 @@ const NEED_EXPLAINERS = {
   acknowledgment: "To have your effort, pain, or truth named accurately.",
   reassurance: "To hear enough truth and steadiness to stop guessing.",
 };
+
+const CHECKIN_GUIDANCE = [
+  "You do not need the perfect word yet. Start with the event, then let the body signals narrow the map.",
+  "A feeling points to a need. A need points to a clean request, repair, boundary, or pause.",
+  "If the moment is intense, use the final script after your body settles enough to speak clearly.",
+];
+
+const CORRECTIVE_ACTIONS = [
+  {
+    title: "Regulate first",
+    copy: "Take 90 seconds before the conversation if your body is hot, tight, numb, or ready to attack. Breathe lower, unclench your jaw, relax your hands, and reduce stimulation.",
+  },
+  {
+    title: "Name the need without blaming",
+    copy: "Use one need word as the center of the conversation. Try respect, clarity, reassurance, support, safety, rest, connection, or fairness.",
+  },
+  {
+    title: "Make one doable request",
+    copy: "Ask for a behavior that can happen today. Good requests are specific, time-bound, and observable.",
+  },
+  {
+    title: "Set a follow-up",
+    copy: "Needs get met through repeated action. Choose when you will check whether the request, boundary, or repair actually worked.",
+  },
+];
 
 const SCRIPT_TYPES = [
   {
@@ -429,6 +456,9 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
     `Likely emotion: ${activePath.core} / ${activePath.sub} / ${activePath.specific}`,
     `Unmet needs: ${inferredNeeds.join(", ")}`,
     "",
+    "Corrective action plan:",
+    ...CORRECTIVE_ACTIONS.map((item) => `- ${item.title}: ${item.copy}`),
+    "",
     "Next move:",
     primaryScript,
     "",
@@ -446,8 +476,25 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
         {step === 0 && (
           <div className="space-y-5">
             <SectionTitle
+              title="Start the check-in"
+              copy="This takes you from a charged moment to a clear next move. Move one screen at a time and choose the closest fit."
+            />
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+              <div className="text-sm font-black text-stone-950">How to use this</div>
+              <div className="mt-3 grid gap-2">
+                {CHECKIN_GUIDANCE.map((item, index) => (
+                  <div key={item} className="flex gap-3 text-sm leading-6 text-stone-800">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-xs font-black text-stone-950">
+                      {index + 1}
+                    </span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <SectionTitle
               title="What happened?"
-              copy="Start with the situation, not the perfect emotion word. The app will help translate the signal."
+              copy="Start with the situation, not the perfect emotion word. The next steps will translate the signal into needs and action."
             />
             <div className="grid min-w-0 gap-2 sm:grid-cols-2">
               {SITUATIONS.map((item) => (
@@ -549,8 +596,21 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
           <div className="space-y-5">
             <SectionTitle
               title="Choose the next strong move"
-              copy="The goal is not to suppress the emotion. The goal is to act with enough clarity that you respect yourself afterward."
+              copy="The goal is to get the need met through action you can actually take. Start with regulation, then make one clean move."
             />
+            <div className="grid gap-2">
+              {CORRECTIVE_ACTIONS.map((item, index) => (
+                <div key={item.title} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
+                  <div className="flex items-center gap-2 text-sm font-black text-stone-950">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-stone-950 text-xs text-white">
+                      {index + 1}
+                    </span>
+                    {item.title}
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-stone-700">{item.copy}</p>
+                </div>
+              ))}
+            </div>
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
               <div className="text-sm font-black text-stone-950">Recommended script</div>
               <p className="mt-2 text-base leading-7 text-stone-800">{primaryScript}</p>
@@ -573,6 +633,15 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
                 <ArrowRight size={16} />
               </Button>
             </div>
+            <a
+              href={CALENDAR_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-stone-200 bg-white px-4 text-sm font-semibold text-stone-950 transition hover:bg-stone-50"
+            >
+              <CalendarDays size={16} />
+              Book coaching support
+            </a>
           </div>
         )}
 
@@ -606,8 +675,19 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
         <div className="rounded-lg border border-stone-200 bg-white p-4">
           <div className="text-sm font-black text-stone-950">Snapshot count</div>
           <div className="mt-1 text-3xl font-black text-stone-950">{snapshot.length}</div>
-          <p className="text-sm text-stone-600">Saved signals from this session.</p>
+          <p className="text-sm text-stone-600">
+            Snapshots help you see repeated emotions, repeated needs, and the patterns that need action instead of more guessing.
+          </p>
         </div>
+        <a
+          href={CALENDAR_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-stone-950 transition hover:bg-amber-400"
+        >
+          <CalendarDays size={16} />
+          Book a session
+        </a>
       </aside>
     </div>
   );
@@ -741,6 +821,17 @@ function Scripts({ latest }) {
         title="Scripts that turn insight into action"
         copy="Use these when you need words for a request, a boundary, a repair, or a coaching conversation."
       />
+      <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
+        <div className="text-sm font-black text-stone-950">Before you send the script</div>
+        <div className="mt-3 grid gap-2 md:grid-cols-4">
+          {CORRECTIVE_ACTIONS.map((item) => (
+            <div key={item.title} className="rounded-lg border border-stone-200 bg-white p-3">
+              <div className="text-sm font-black text-stone-950">{item.title}</div>
+              <p className="mt-1 text-sm leading-6 text-stone-600">{item.copy}</p>
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="grid gap-3 md:grid-cols-2">
         {SCRIPT_TYPES.map(({ id, label, icon: Icon, build }) => {
           const script = build(context);
@@ -761,24 +852,66 @@ function Scripts({ latest }) {
           );
         })}
       </div>
+      <a
+        href={CALENDAR_URL}
+        target="_blank"
+        rel="noreferrer"
+        className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-stone-950 transition hover:bg-amber-400"
+      >
+        <CalendarDays size={16} />
+        Book coaching support
+      </a>
     </div>
   );
 }
 
 function Snapshot({ snapshot, setSnapshot, setSaved }) {
   const needs = Array.from(new Set(snapshot.flatMap((item) => item.needs || [])));
+  const topNeed = needs[0] || "clarity";
   const payload = [
     "Emotional snapshot",
     ...snapshot.map((item) => `- ${item.core} / ${item.sub} / ${item.specific}: ${item.needs.join(", ")}`),
     "",
     `Converging needs: ${needs.join(", ")}`,
     "",
+    "How to use this:",
+    "1. Look for repeated needs across different emotions.",
+    "2. Pick one need to act on today.",
+    "3. Turn that need into one clear request, boundary, repair, or recovery plan.",
+    "4. Set a follow-up so the need is not forgotten after the emotion cools down.",
+    "",
     ATTR_LINE,
   ].join("\n");
 
   return (
     <div className="space-y-4">
-      <SectionTitle title="Snapshot" copy="A saved view of what keeps showing up in this session." />
+      <SectionTitle
+        title="Snapshot"
+        copy="A snapshot is a pattern reader. It gathers the emotions and needs from this session so you can see what is underneath the surface and decide what needs action."
+      />
+      <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
+        <div className="text-sm font-black text-stone-950">What snapshots are for</div>
+        <div className="mt-3 grid gap-3 md:grid-cols-3">
+          <div className="rounded-lg border border-stone-200 bg-white p-3">
+            <div className="text-sm font-black text-stone-950">Pattern</div>
+            <p className="mt-1 text-sm leading-6 text-stone-600">
+              Notice repeated emotions, repeated situations, and repeated unmet needs.
+            </p>
+          </div>
+          <div className="rounded-lg border border-stone-200 bg-white p-3">
+            <div className="text-sm font-black text-stone-950">Priority</div>
+            <p className="mt-1 text-sm leading-6 text-stone-600">
+              Choose the need that would create the most relief or repair if it was addressed first.
+            </p>
+          </div>
+          <div className="rounded-lg border border-stone-200 bg-white p-3">
+            <div className="text-sm font-black text-stone-950">Action</div>
+            <p className="mt-1 text-sm leading-6 text-stone-600">
+              Convert the need into a request, boundary, apology, rest plan, or coaching conversation.
+            </p>
+          </div>
+        </div>
+      </div>
       <div className="grid gap-2 sm:grid-cols-3">
         <Button variant="amber" disabled={!snapshot.length} onClick={() => copyText(payload)}><Clipboard size={16} />Copy</Button>
         <Button
@@ -795,9 +928,29 @@ function Snapshot({ snapshot, setSnapshot, setSaved }) {
         <Button variant="ghost" disabled={!snapshot.length} onClick={() => setSnapshot([])}>Clear</Button>
       </div>
       {needs.length ? (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-          <div className="text-sm font-black">Converging unmet needs</div>
-          <div className="mt-3"><NeedBadges needs={needs} /></div>
+        <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+            <div className="text-sm font-black">Converging unmet needs</div>
+            <div className="mt-3"><NeedBadges needs={needs} /></div>
+            <p className="mt-3 text-sm leading-6 text-stone-700">
+              Start with {topNeed}. Ask: what would it look like to protect or meet this need in the next 24 hours?
+            </p>
+          </div>
+          <div className="rounded-lg border border-stone-200 bg-white p-4">
+            <div className="text-sm font-black text-stone-950">Corrective action</div>
+            <p className="mt-2 text-sm leading-6 text-stone-700">
+              Pick one next step: make a request, set a boundary, repair your part, take recovery time, or book support if the pattern keeps repeating.
+            </p>
+            <a
+              href={CALENDAR_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 flex min-h-11 items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-stone-950 transition hover:bg-amber-400"
+            >
+              <CalendarDays size={16} />
+              Book support
+            </a>
+          </div>
         </div>
       ) : null}
       <div className="grid gap-3">
