@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
 export default defineConfig({
-  base: '/emotion-needs-explorer/',
+  base: '/',
   server: { port: 5173 },
 })
