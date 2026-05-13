@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Activity,
   ArrowLeft,
@@ -33,6 +33,8 @@ const APP_SUBTITLE =
 const ATTR_LINE =
   "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) | ExploringNeeds.com | Rick Broider | Agent5D.com | HolisticLifeTribe.com";
 const CALENDAR_URL = "https://calendar.app.google/NQvsMN7X5evMK9Q1A";
+const PAYPAL_URL = "https://www.paypal.com/ncp/payment/PEDRQJN9PAREL";
+const REPORTS_STORAGE_KEY = "exploring_needs_reports_v1";
 
 const THEMES = [
   {
@@ -302,7 +304,7 @@ const AUDIENCES = [
   { id: "teen-girl", label: "Teen girl", description: "clear language, safety, confidence, support" },
   { id: "father", label: "Father", description: "leadership without control or shutdown" },
   { id: "mother", label: "Mother", description: "care without over-functioning or self-erasing" },
-  { id: "coach", label: "Coach / mentor", description: "questions that guide without cornering" },
+  { id: "coach", label: "Coach / Teacher / Mentor", description: "questions that guide without cornering" },
   { id: "partner", label: "Partner", description: "repair, accountability, and connection" },
 ];
 
@@ -646,10 +648,10 @@ const SCRIPT_TYPES = [
 const navItems = [
   { id: "intro", label: "Start", icon: PlayCircle },
   { id: "checkin", label: "Check In", icon: Home },
-  { id: "report", label: "Report", icon: Sparkles },
   { id: "explore", label: "Feelings", icon: Compass },
   { id: "shadows", label: "Shadows", icon: BookOpen },
   { id: "scripts", label: "Scripts", icon: Clipboard },
+  { id: "reports", label: "Reports", icon: Sparkles },
   { id: "help", label: "Help", icon: HelpCircle },
 ];
 
@@ -701,6 +703,22 @@ function copyText(text) {
   showToast("Copied");
 }
 
+function makeReportId() {
+  return `report-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function formatReportDate(value) {
+  if (!value) return "No date saved";
+  try {
+    return new Intl.DateTimeFormat(undefined, {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date(value));
+  } catch {
+    return value;
+  }
+}
+
 function cls(...parts) {
   return parts.filter(Boolean).join(" ");
 }
@@ -711,6 +729,8 @@ function Button({ children, onClick, variant = "primary", className = "", disabl
     secondary: "border border-stone-200 bg-white text-stone-950 hover:bg-stone-50",
     ghost: "text-stone-700 hover:bg-stone-100",
     amber: "bg-teal-700 text-white hover:bg-teal-600",
+    donate: "bg-[#f6c344] text-[#1f1600] hover:bg-[#ffd86a] ring-1 ring-[#5f4500]",
+    coach: "bg-[#1d4ed8] text-white hover:bg-[#1e40af] ring-1 ring-[#bfdbfe]",
   };
   return (
     <button
@@ -725,6 +745,31 @@ function Button({ children, onClick, variant = "primary", className = "", disabl
     >
       {children}
     </button>
+  );
+}
+
+function SupportActions({ className = "" }) {
+  return (
+    <div className={cls("grid gap-2 sm:grid-cols-2", className)}>
+      <a
+        href={PAYPAL_URL}
+        target="_blank"
+        rel="noreferrer"
+        className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#f6c344] px-4 text-sm font-black text-[#1f1600] ring-1 ring-[#5f4500] transition hover:bg-[#ffd86a]"
+      >
+        <HeartHandshake size={16} />
+        Support with a donation
+      </a>
+      <a
+        href={CALENDAR_URL}
+        target="_blank"
+        rel="noreferrer"
+        className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#1d4ed8] px-4 text-sm font-black text-white ring-1 ring-[#bfdbfe] transition hover:bg-[#1e40af]"
+      >
+        <CalendarDays size={16} />
+        Book coaching support
+      </a>
+    </div>
   );
 }
 
@@ -743,6 +788,14 @@ function Chip({ children, active, onClick, className = "" }) {
     >
       {children}
     </button>
+  );
+}
+
+function NeedPillHelp({ compact = false }) {
+  return (
+    <div className={cls("rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm leading-6 text-emerald-950", compact && "p-2 text-xs")}>
+      <strong>Need pills:</strong> these are the unmet needs that may be underneath the emotion. They are not excuses. They point toward the request, repair, boundary, or care action that could help.
+    </div>
   );
 }
 
@@ -897,6 +950,32 @@ function NeedBadges({ needs }) {
   );
 }
 
+function CheckInBreadcrumb({ audience, mode, situation, bodySignals, activePath, needs }) {
+  const items = [
+    ["Who", audience?.label],
+    ["Mode", mode?.label],
+    ["Event", situation?.label],
+    ["Body", bodySignals?.map((item) => item.label).join(", ")],
+    ["Feeling", activePath?.specific ? `${activePath.core} / ${activePath.sub} / ${activePath.specific}` : ""],
+    ["Needs", needs?.length ? needs.slice(0, 4).join(", ") : ""],
+  ].filter(([, value]) => value);
+
+  if (!items.length) return null;
+
+  return (
+    <div className="rounded-lg border border-stone-200 bg-white p-3">
+      <div className="text-xs font-black uppercase tracking-wide text-stone-500">Current path</div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {items.map(([label, value]) => (
+          <span key={label} className="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-semibold text-stone-800">
+            <strong>{label}:</strong> {value}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Intro({ setTab }) {
   const steps = [
     {
@@ -940,6 +1019,7 @@ function Intro({ setTab }) {
             Read help wiki
           </Button>
         </div>
+        <SupportActions className="mt-4" />
       </section>
 
       <section className="grid gap-3 md:grid-cols-3">
@@ -980,7 +1060,7 @@ function Intro({ setTab }) {
   );
 }
 
-function GuidedCheckIn({ rows, setLatestReport, setTab }) {
+function GuidedCheckIn({ rows, saveReport, setTab }) {
   const [step, setStep] = useState(0);
   const [audience, setAudience] = useState("man");
   const [modeId, setModeId] = useState("quick");
@@ -1070,6 +1150,8 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
   };
 
   const report = {
+    id: makeReportId(),
+    source: "Guided Check In",
     core: activePath.core,
     sub: activePath.sub,
     specific: activePath.specific,
@@ -1086,25 +1168,9 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
     createdAt: new Date().toISOString(),
   };
 
-  const saveReport = () => {
-    setLatestReport(report);
-    showToast("Report saved");
-  };
-
   const saveCurrentReport = () => {
-    const entry = {
-      core: activePath.core,
-      sub: activePath.sub,
-      specific: activePath.specific,
-      needs: inferredNeeds,
-      situation: situation.label,
-      audience: audienceData.label,
-      mode: mode.label,
-      script: primaryScript,
-      createdAt: new Date().toISOString(),
-    };
-    setLatestReport({ ...report, ...entry });
-    showToast("Report saved");
+    saveReport(report);
+    showToast("Report saved to this browser");
   };
 
   const summary = [
@@ -1139,6 +1205,14 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
   return (
     <div className="mx-auto grid min-w-0 max-w-3xl gap-4 overflow-hidden">
       <ProgressRail step={step} />
+      <CheckInBreadcrumb
+        audience={audienceData}
+        mode={mode}
+        situation={step >= 2 ? situation : null}
+        bodySignals={step >= 3 ? selectedBody : []}
+        activePath={step >= 4 ? activePath : null}
+        needs={step >= 5 ? inferredNeeds : []}
+      />
 
       <section className="min-w-0 max-w-full overflow-hidden rounded-lg border border-stone-200 bg-white p-4 shadow-sm md:p-6">
         {step === 0 && (
@@ -1243,6 +1317,7 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
               title="What word is closest?"
               copy="Do not force certainty. Choose the closest match, then adjust if another word lands better."
             />
+            <NeedPillHelp />
             <div className="grid gap-2">
               {suggestions.map((row) => {
                 const active = activePath && row.core === activePath.core && row.sub === activePath.sub && row.specific === activePath.specific;
@@ -1277,6 +1352,7 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
               title="What need is underneath?"
               copy="A need is not an excuse. It is the signal that tells you what kind of repair, request, or boundary matters."
             />
+            <NeedPillHelp />
             <NeedBadges needs={inferredNeeds} />
             <div className="grid gap-2">
               {inferredNeeds.slice(0, 6).map((need) => (
@@ -1415,20 +1491,12 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
                 <Save size={16} />
                 Save report
               </Button>
-              <Button variant="secondary" onClick={() => { saveReport(); setTab("report"); }}>
-                View report
+              <Button variant="secondary" onClick={() => { saveCurrentReport(); setTab("reports"); }}>
+                View reports
                 <ArrowRight size={16} />
               </Button>
             </div>
-            <a
-              href={CALENDAR_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-stone-200 bg-white px-4 text-sm font-semibold text-stone-950 transition hover:bg-stone-50"
-            >
-              <CalendarDays size={16} />
-              Book coaching support
-            </a>
+            <SupportActions />
           </div>
         )}
 
@@ -1447,7 +1515,7 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
   );
 }
 
-function Explore({ rows, setLatestReport }) {
+function Explore({ rows, saveReport, setTab }) {
   const [query, setQuery] = useState("");
   const [core, setCore] = useState("Anger");
   const [sub, setSub] = useState(Object.keys(EMOTION_DATA.Anger || {})[0]);
@@ -1490,7 +1558,14 @@ function Explore({ rows, setLatestReport }) {
     "",
     ATTR_LINE,
   ].join("\n");
+  const signalGuidance = guidanceFor({ core, sub, specific, needs });
+  const signalShadows = getRelevantShadows({ core, needs, bodyLabels: [], situationLabel: "Feelings Library" });
+  const signalScripts = SCRIPT_TYPES.map((script) =>
+    script.build({ emotion: specific, needs, situation: "Feelings Library", audience: "person", mode: "Feelings Library" })
+  );
   const libraryReport = {
+    id: makeReportId(),
+    source: "Feelings Library",
     core,
     sub,
     specific,
@@ -1498,16 +1573,16 @@ function Explore({ rows, setLatestReport }) {
     situation: "Feelings Library",
     bodySignals: [],
     frame: `You are noticing ${specific.toLowerCase()}. The needs underneath may include ${needs.join(", ")}. Use that signal to make one clean request or choose one recovery action.`,
-    scripts: SCRIPT_TYPES.map((script) => script.build({ emotion: specific, needs, situation: "Feelings Library", audience: "person", mode: "Feelings Library" })),
-    shadows: getRelevantShadows({ core, needs, bodyLabels: [], situationLabel: "Feelings Library" }),
-    guidance: guidanceFor({ core, sub, specific, needs }),
+    scripts: signalScripts,
+    shadows: signalShadows,
+    guidance: signalGuidance,
     createdAt: new Date().toISOString(),
   };
 
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
       <section className="space-y-4">
-        <SectionTitle title="Feelings Library" copy="Browse feelings directly or search by emotion, need, or situation." />
+        <SectionTitle title="Feelings Library" copy="Browse feelings directly or search by emotion, need, or situation. Use the right panel to understand what a selected signal may be asking for." />
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-3 text-stone-400" size={18} />
@@ -1537,6 +1612,7 @@ function Explore({ rows, setLatestReport }) {
                 <div className="font-black text-stone-950">{row.specific}</div>
                 <div className="text-sm text-stone-500">{row.core} / {row.sub}</div>
                 <div className="mt-2"><NeedBadges needs={row.needs} /></div>
+                <div className="mt-2 text-xs font-semibold text-stone-500">Pills show likely unmet needs.</div>
               </button>
             ))}
           </div>
@@ -1559,24 +1635,57 @@ function Explore({ rows, setLatestReport }) {
       </section>
 
       <aside className="rounded-lg border border-stone-200 bg-stone-50 p-4">
-        <div className="text-sm font-black">Selected signal</div>
+        <div className="text-sm font-black">Signal guide</div>
         <div className="mt-2 text-2xl font-black">{specific}</div>
         <div className="text-sm text-stone-500">{core} / {sub}</div>
         <div className="mt-4"><NeedBadges needs={needs} /></div>
+        <div className="mt-3"><NeedPillHelp compact /></div>
+        <div className="mt-4 rounded-lg border border-stone-200 bg-white p-3">
+          <div className="text-sm font-black">What this may mean</div>
+          <p className="mt-1 text-sm leading-6 text-stone-700">
+            This signal may be pointing toward {needs.slice(0, 3).join(", ") || "clarity"}. Treat the word as a working hypothesis, then test it against your body and the situation.
+          </p>
+        </div>
+        <div className="mt-4 rounded-lg border border-stone-200 bg-white p-3">
+          <div className="text-sm font-black">Needs to explore</div>
+          <div className="mt-2 grid gap-2">
+            {needs.slice(0, 4).map((need) => (
+              <div key={need} className="text-sm leading-6 text-stone-700">
+                <strong className="capitalize text-stone-950">{need}:</strong>{" "}
+                {NEED_EXPLAINERS[need] || "Something important may need to be named, protected, requested, or repaired."}
+              </div>
+            ))}
+          </div>
+        </div>
         <div className="mt-4 rounded-lg border border-stone-200 bg-white p-3">
           <div className="text-sm font-black">Next step</div>
-          <p className="mt-1 text-sm leading-6 text-stone-700">{guidanceFor({ core, sub, specific, needs })}</p>
+          <p className="mt-1 text-sm leading-6 text-stone-700">{signalGuidance}</p>
+        </div>
+        {signalShadows.length ? (
+          <div className="mt-4 rounded-lg border border-stone-200 bg-white p-3">
+            <div className="text-sm font-black">Shadow to watch</div>
+            <p className="mt-1 text-sm leading-6 text-stone-700">
+              <strong>{signalShadows[0].label}:</strong> {signalShadows[0].move}
+            </p>
+          </div>
+        ) : null}
+        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3">
+          <div className="text-sm font-black text-stone-950">Try these words</div>
+          <p className="mt-1 text-sm leading-6 text-stone-800">{signalScripts[0]}</p>
         </div>
         <div className="mt-4 grid gap-2">
           <Button variant="amber" onClick={() => copyText(payload)}><Clipboard size={16} />Copy</Button>
           <Button
             variant="secondary"
             onClick={() => {
-              setLatestReport(libraryReport);
-              showToast("Report created");
+              saveReport(libraryReport);
+              showToast("Learning note saved to this browser");
             }}
           >
-            <Save size={16} />Create report
+            <Save size={16} />Save learning note
+          </Button>
+          <Button variant="secondary" onClick={() => setTab("checkin")}>
+            <ArrowRight size={16} />Use in check-in
           </Button>
         </div>
       </aside>
@@ -1630,24 +1739,25 @@ function Scripts({ latest }) {
           );
         })}
       </div>
-      <a
-        href={CALENDAR_URL}
-        target="_blank"
-        rel="noreferrer"
-        className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-stone-950 transition hover:bg-amber-400"
-      >
-        <CalendarDays size={16} />
-        Book coaching support
-      </a>
+      <SupportActions />
     </div>
   );
 }
 
-function Report({ report }) {
+function Reports({ reports }) {
+  const [selectedId, setSelectedId] = useState(reports[0]?.id || "");
+  const report = reports.find((item) => item.id === selectedId) || reports[0];
+  useEffect(() => {
+    if (reports[0]?.id && !reports.some((item) => item.id === selectedId)) {
+      setSelectedId(reports[0].id);
+    }
+  }, [reports, selectedId]);
   const payload = report
     ? [
         `${APP_TITLE} check-in report`,
         "",
+        `Saved: ${formatReportDate(report.createdAt)}`,
+        `Source: ${report.source || "Guided Check In"}`,
         `Who: ${report.audience || "Not selected"}`,
         `Mode: ${report.mode || "Check In"}`,
         `Situation: ${report.situation}`,
@@ -1681,13 +1791,13 @@ function Report({ report }) {
     return (
       <div className="mx-auto max-w-3xl rounded-lg border border-stone-200 bg-white p-6">
         <SectionTitle
-          title="Report"
-          copy="Complete a Check In to generate a focused Exploring Needs report with the frame, needs, shadow patterns, and scripts."
+          title="Reports"
+          copy="Reports are saved in this browser only. Without a login or account, they can persist on this device through local storage, but they will not follow you to another browser or device."
         />
-        <Button className="mt-4" variant="primary" onClick={() => copyText("Run a Check In to create your Exploring Needs report.")}>
-          <Clipboard size={16} />
-          Copy placeholder
-        </Button>
+        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-stone-700">
+          Run a Check In or save a Feelings Library learning note to create your first report.
+        </div>
+        <SupportActions className="mt-4" />
       </div>
     );
   }
@@ -1695,13 +1805,38 @@ function Report({ report }) {
   return (
     <div className="mx-auto max-w-3xl space-y-4">
       <SectionTitle
-        title="Report"
-        copy="A focused result from the check-in. Use this to copy, share, reflect, or prepare for a conversation."
+        title="Reports"
+        copy="Saved history for this browser. Use reports to track patterns over time, return to useful scripts, and prepare for repair conversations."
       />
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-stone-700">
+        Reports persist only in this browser using local storage. No account means no cross-device sync, no cloud backup, and no recovery if browser data is cleared.
+      </div>
+      {reports.length > 1 ? (
+        <div className="grid gap-2">
+          {reports.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setSelectedId(item.id)}
+              className={cls(
+                "rounded-lg border p-3 text-left text-sm transition",
+                report.id === item.id ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-white text-stone-800 hover:border-stone-400"
+              )}
+            >
+              <div className="font-black">{item.specific || "Saved report"}</div>
+              <div className={cls("mt-1 text-xs font-semibold", report.id === item.id ? "text-stone-200" : "text-stone-500")}>
+                {formatReportDate(item.createdAt)} | {item.source || "Guided Check In"} | {item.situation}
+              </div>
+            </button>
+          ))}
+        </div>
+      ) : null}
       <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
         <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide text-emerald-950">
           <Trophy size={16} />
           Frame
+        </div>
+        <div className="mt-2 text-xs font-black uppercase tracking-wide text-emerald-950">
+          Saved {formatReportDate(report.createdAt)} | {report.source || "Guided Check In"}
         </div>
         <p className="mt-3 text-lg font-semibold leading-8 text-emerald-950">{report.frame}</p>
       </div>
@@ -1765,10 +1900,11 @@ function Report({ report }) {
         <Button variant="secondary" onClick={() => navigator.share ? navigator.share({ title: "Exploring Needs Report", text: payload }).catch(() => copyText(payload)) : copyText(payload)}>
           <ArrowRight size={16} />Share report
         </Button>
-        <a href={CALENDAR_URL} target="_blank" rel="noreferrer" className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-stone-950 transition hover:bg-amber-400">
-          <CalendarDays size={16} />Book support
-        </a>
+        <Button variant="secondary" onClick={() => copyText(`${report.frame}\n\n${ATTR_LINE}`)}>
+          <Clipboard size={16} />Copy frame
+        </Button>
       </div>
+      <SupportActions />
     </div>
   );
 }
@@ -1862,7 +1998,7 @@ function HelpWiki({ setTab }) {
 
   const quickLinks = [
     { label: "Run a check-in", tab: "checkin" },
-    { label: "Read latest report", tab: "report" },
+    { label: "Read reports", tab: "reports" },
     { label: "Browse feelings", tab: "explore" },
     { label: "Study shadows", tab: "shadows" },
   ];
@@ -1897,6 +2033,7 @@ function HelpWiki({ setTab }) {
           Name what happened, notice the body, identify the feeling, find the need, watch the shadow, choose one clean move.
         </p>
       </div>
+      <SupportActions />
     </div>
   );
 }
@@ -1906,7 +2043,32 @@ export default function App() {
   const [tab, setTab] = useState("intro");
   const [checkInKey, setCheckInKey] = useState(0);
   const [themeId, setThemeId] = useState("sage");
-  const [latestReport, setLatestReport] = useState(null);
+  const [reports, setReports] = useState(() => {
+    try {
+      const stored = window.localStorage.getItem(REPORTS_STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+  const latestReport = reports[0] || null;
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(REPORTS_STORAGE_KEY, JSON.stringify(reports));
+    } catch {
+      // Local storage can be unavailable in private or restricted browser modes.
+    }
+  }, [reports]);
+
+  const saveReport = (report) => {
+    const entry = {
+      ...report,
+      id: report.id || makeReportId(),
+      createdAt: report.createdAt || new Date().toISOString(),
+    };
+    setReports((prev) => [entry, ...prev].slice(0, 25));
+  };
 
   const startNewCheckIn = () => {
     setTab("checkin");
@@ -1916,11 +2078,11 @@ export default function App() {
   return (
     <AppShell tab={tab} setTab={setTab} onNewCheckIn={startNewCheckIn} themeId={themeId} setThemeId={setThemeId}>
       {tab === "intro" && <Intro setTab={setTab} />}
-      {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} setLatestReport={setLatestReport} setTab={setTab} />}
-      {tab === "explore" && <Explore rows={rows} setLatestReport={setLatestReport} />}
-      {tab === "report" && <Report report={latestReport} />}
+      {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} saveReport={saveReport} setTab={setTab} />}
+      {tab === "explore" && <Explore rows={rows} saveReport={saveReport} setTab={setTab} />}
       {tab === "shadows" && <ShadowLibrary />}
       {tab === "scripts" && <Scripts latest={latestReport} />}
+      {tab === "reports" && <Reports reports={reports} />}
       {tab === "help" && <HelpWiki setTab={setTab} />}
     </AppShell>
   );
