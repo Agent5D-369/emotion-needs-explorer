@@ -123,10 +123,24 @@ const THEMES = [
 const SITUATIONS = [
   {
     id: "disrespected",
-    label: "Felt disrespected",
+    label: "Felt disrespected or talked down to",
     hint: "tone, dismissal, insult, interruption",
     emotions: ["Anger", "Disgust", "Sadness"],
     needs: ["respect", "dignity", "acknowledgment"],
+  },
+  {
+    id: "criticized",
+    label: "Felt criticized or corrected",
+    hint: "feedback, blame, being called out",
+    emotions: ["Anger", "Fear", "Sadness"],
+    needs: ["respect", "fairness", "clarity", "repair"],
+  },
+  {
+    id: "unseen",
+    label: "Felt unseen or unappreciated",
+    hint: "effort missed, invisible labor, no thanks",
+    emotions: ["Sadness", "Anger"],
+    needs: ["acknowledgment", "connection", "support"],
   },
   {
     id: "rejected",
@@ -136,11 +150,109 @@ const SITUATIONS = [
     needs: ["belonging", "connection", "reassurance"],
   },
   {
+    id: "sexual-rejection",
+    label: "Sexually rejected or unwanted",
+    hint: "desire, touch, intimacy, shame",
+    emotions: ["Sadness", "Fear", "Anger"],
+    needs: ["connection", "reassurance", "dignity", "safety"],
+  },
+  {
+    id: "abandoned",
+    label: "Emotionally abandoned",
+    hint: "alone in the moment, not responded to",
+    emotions: ["Sadness", "Fear", "Anger"],
+    needs: ["connection", "support", "reassurance"],
+  },
+  {
+    id: "controlled",
+    label: "Controlled, trapped, or cornered",
+    hint: "rules, pressure, no room to choose",
+    emotions: ["Anger", "Fear", "Disgust"],
+    needs: ["autonomy", "respect", "safety"],
+  },
+  {
+    id: "exposed",
+    label: "Exposed, ashamed, or found out",
+    hint: "mistake, vulnerability, embarrassment",
+    emotions: ["Fear", "Sadness", "Anger"],
+    needs: ["dignity", "safety", "forgiveness", "repair"],
+  },
+  {
     id: "pressure",
     label: "Too much pressure",
     hint: "school, work, money, performance",
     emotions: ["Fear", "Anger", "Sadness"],
     needs: ["support", "clarity", "rest"],
+  },
+  {
+    id: "accountability",
+    label: "Asked to take accountability",
+    hint: "impact named, apology needed, defensiveness rising",
+    emotions: ["Fear", "Anger", "Sadness"],
+    needs: ["dignity", "honesty", "repair", "clarity"],
+  },
+  {
+    id: "partner-upset",
+    label: "Partner is upset and I feel blamed",
+    hint: "relationship tension, conflict, defensiveness",
+    emotions: ["Fear", "Anger", "Sadness"],
+    needs: ["understanding", "respect", "repair", "safety"],
+  },
+  {
+    id: "shutdown",
+    label: "I want to shut down",
+    hint: "silent, numb, overloaded, gone inside",
+    emotions: ["Fear", "Sadness"],
+    needs: ["space", "rest", "safety", "support"],
+  },
+  {
+    id: "prove-right",
+    label: "I want to prove I am right",
+    hint: "debate, facts, winning, court-room energy",
+    emotions: ["Anger", "Fear"],
+    needs: ["respect", "clarity", "acknowledgment"],
+  },
+  {
+    id: "victim-loop",
+    label: "I feel like the victim",
+    hint: "unfairness, resentment, helplessness",
+    emotions: ["Sadness", "Anger", "Fear"],
+    needs: ["fairness", "support", "agency", "acknowledgment"],
+  },
+  {
+    id: "overgiving",
+    label: "Used, drained, or over-giving",
+    hint: "codependent pull, resentment, rescuing",
+    emotions: ["Sadness", "Anger"],
+    needs: ["reciprocity", "support", "autonomy", "rest"],
+  },
+  {
+    id: "jealous",
+    label: "Jealous, replaced, or compared",
+    hint: "competition, fear of losing place",
+    emotions: ["Fear", "Anger", "Sadness"],
+    needs: ["reassurance", "belonging", "security"],
+  },
+  {
+    id: "woman-disrespect",
+    label: "Disrespected by a woman",
+    hint: "mother wound, partner conflict, feminine mirror",
+    emotions: ["Anger", "Disgust", "Sadness"],
+    needs: ["respect", "dignity", "understanding", "repair"],
+  },
+  {
+    id: "purpose-power",
+    label: "Powerless with money, work, or purpose",
+    hint: "provider pressure, direction, status, stress",
+    emotions: ["Fear", "Sadness", "Anger"],
+    needs: ["competence", "support", "clarity", "stability"],
+  },
+  {
+    id: "crossed-line",
+    label: "I crossed a line and need repair",
+    hint: "hurt someone, broke trust, need clean ownership",
+    emotions: ["Sadness", "Fear"],
+    needs: ["honesty", "repair", "forgiveness", "accountability"],
   },
   {
     id: "betrayal",
@@ -177,9 +289,52 @@ const BODY_SIGNALS = [
 ];
 
 const AUDIENCES = [
-  { id: "adult", label: "Man", description: "direct, accountable, relationship-ready" },
-  { id: "teen", label: "Teen boy", description: "plain language, less pressure, more examples" },
-  { id: "coach", label: "Father / coach", description: "questions that guide without cornering" },
+  { id: "man", label: "Man", description: "direct, accountable, relationship-ready" },
+  { id: "woman", label: "Woman", description: "clear needs, clean boundaries, grounded repair" },
+  { id: "teen-boy", label: "Teen boy", description: "plain language, less pressure, more examples" },
+  { id: "teen-girl", label: "Teen girl", description: "clear language, safety, confidence, support" },
+  { id: "father", label: "Father", description: "leadership without control or shutdown" },
+  { id: "mother", label: "Mother", description: "care without over-functioning or self-erasing" },
+  { id: "coach", label: "Coach / mentor", description: "questions that guide without cornering" },
+  { id: "partner", label: "Partner", description: "repair, accountability, and connection" },
+];
+
+const CHECKIN_MODES = [
+  {
+    id: "quick",
+    label: "Quick Check In",
+    description: "Name the signal and get one clean next move.",
+    situationIds: ["disrespected", "rejected", "pressure", "conflict", "shutdown", "prove-right"],
+    lens: "Move from activation to one clear action.",
+  },
+  {
+    id: "repair",
+    label: "Relationship Repair",
+    description: "Use when closeness, trust, or communication is strained.",
+    situationIds: ["partner-upset", "betrayal", "criticized", "abandoned", "sexual-rejection", "crossed-line"],
+    lens: "Protect dignity, reduce the Four Horsemen, and choose a repair move.",
+  },
+  {
+    id: "shadow",
+    label: "Shadow Work",
+    description: "Find the protective pattern underneath the reaction.",
+    situationIds: ["controlled", "exposed", "victim-loop", "prove-right", "overgiving", "jealous", "woman-disrespect"],
+    lens: "Study the pattern without shame and choose the cleaner expression of the need.",
+  },
+  {
+    id: "accountability",
+    label: "Accountability",
+    description: "Own impact without collapsing into shame or flipping blame.",
+    situationIds: ["accountability", "crossed-line", "criticized", "betrayal", "conflict"],
+    lens: "Separate dignity from defensiveness, then make repair observable.",
+  },
+  {
+    id: "support",
+    label: "Support Someone",
+    description: "Use this when you are helping a son, partner, client, or friend.",
+    situationIds: ["abandoned", "pressure", "unseen", "shutdown", "conflict", "purpose-power"],
+    lens: "Guide with curiosity, not control. Help them name the signal and choose one next step.",
+  },
 ];
 
 const NEED_EXPLAINERS = {
@@ -194,6 +349,18 @@ const NEED_EXPLAINERS = {
   rest: "To recover before you keep pushing.",
   acknowledgment: "To have your effort, pain, or truth named accurately.",
   reassurance: "To hear enough truth and steadiness to stop guessing.",
+  dignity: "To stay human and worthy even when something hard is being named.",
+  repair: "To make the harm specific and restore trust through action.",
+  honesty: "To work with what is real instead of managing image or avoiding impact.",
+  forgiveness: "To be allowed to learn, repair, and return to integrity.",
+  space: "To have enough room to regulate before responding.",
+  care: "To receive tenderness, attention, and protection where you are hurting.",
+  competence: "To feel capable and supported in meeting the challenge.",
+  agency: "To remember you still have a next move even when the situation is unfair.",
+  reciprocity: "To have effort, care, and responsibility move both ways.",
+  security: "To feel chosen, steady, and not easily replaced.",
+  stability: "To have enough predictability to settle and act clearly.",
+  accountability: "To own impact without losing dignity or flipping blame.",
 };
 
 const CHECKIN_GUIDANCE = [
@@ -332,6 +499,97 @@ const SHADOW_PATTERNS = [
   },
 ];
 
+const SHADOW_HEALING = {
+  control: {
+    wound: "Fear that uncertainty means danger, disrespect, abandonment, or loss of power.",
+    need: "Safety, clarity, autonomy, and trust that does not require domination.",
+    practice: "Pause before pressing. Name the exact fear, then ask for one agreement instead of demanding total certainty.",
+    repair: "Own the pressure directly: I tried to control the outcome instead of making a clean request. The repair is that I will ask once and respect your answer.",
+    doNot: "Do not interrogate, monitor, threaten, test loyalty, or move the standard after the other person answers.",
+  },
+  withdrawal: {
+    wound: "Fear that staying present will lead to shame, attack, failure, or emotional flooding.",
+    need: "Space, safety, rest, and a responsible way back into connection.",
+    practice: "Use a timed pause. Regulate your body, then return with one sentence about what you can handle now.",
+    repair: "Name the disappearance: I shut down and left you alone with the tension. I need space, and I will come back at a specific time.",
+    doNot: "Do not use silence as punishment, disappear without a return time, or call avoidance peace.",
+  },
+  attack: {
+    wound: "Fear that dignity will only be protected if someone else is defeated first.",
+    need: "Respect, fairness, dignity, and a boundary that does not require contempt.",
+    practice: "Drop character attacks. Describe the behavior, the impact, and the request in plain language.",
+    repair: "Own the sharpness: I attacked your character instead of naming my need. The repair is to restart with the behavior and my request.",
+    doNot: "Do not insult, mock, threaten, humiliate, diagnose, or use contempt to feel powerful.",
+  },
+  approval: {
+    wound: "Fear that truth will cost belonging, affection, approval, or protection.",
+    need: "Connection that can survive honesty, difference, and clear boundaries.",
+    practice: "Tell the smallest complete truth. Let someone respond before you rescue them from discomfort.",
+    repair: "Name the self-abandonment: I said yes when I meant no. I am correcting that now so resentment does not build.",
+    doNot: "Do not fawn, over-apologize, over-explain, rescue, or trade your truth for temporary closeness.",
+  },
+  numbing: {
+    wound: "Fear that feeling the truth will be too much to survive or too hard to change.",
+    need: "Care, rest, support, and one small embodied action.",
+    practice: "Choose one recovery behavior for five minutes: water, walk, shower, breath, sunlight, or a direct check-in.",
+    repair: "Own the avoidance: I checked out instead of staying connected to what matters. I am taking one care action and one honest next step.",
+    doNot: "Do not use screens, food, sex, substances, sleep, or work to avoid every honest signal.",
+  },
+  story: {
+    wound: "Fear that missing information means betrayal, rejection, danger, or humiliation is coming.",
+    need: "Clarity, reassurance, truth, and grounded reality testing.",
+    practice: "Write two columns: facts I know and story I am adding. Ask one clean question before acting.",
+    repair: "Name the assumption: I filled in the gap with a story and reacted to it as fact. I want to check what is true.",
+    doNot: "Do not mind-read, collect evidence for a verdict, catastrophize, or punish someone for a story you have not verified.",
+  },
+  darvo: {
+    wound: "Shame becomes so threatening that accountability feels like annihilation.",
+    need: "Dignity, repair, honesty, and the ability to own impact without becoming worthless.",
+    practice: "Use the ownership sequence: behavior, impact, apology, repair, changed action.",
+    repair: "Say: I shifted the focus away from my impact. I am returning to what I did, how it landed, and what repair requires.",
+    doNot: "Do not deny, attack, reverse roles, call the harmed person abusive for naming harm, or make your shame the main emergency.",
+  },
+  jade: {
+    wound: "Fear that your boundary is not valid unless the other person agrees with every reason.",
+    need: "Safety, autonomy, clarity, and permission to stop auditioning for basic respect.",
+    practice: "State the boundary in one sentence. Repeat it once if needed. Then act on it without a debate.",
+    repair: "Say: I got pulled into proving my boundary. I am returning to the decision and the behavior I will take.",
+    doNot: "Do not justify, argue, defend, or explain past the point where the boundary is already clear.",
+  },
+  victim: {
+    wound: "Pain has been ignored so long that being injured can feel like the only available identity.",
+    need: "Acknowledgment, fairness, support, and agency that does not deny the wound.",
+    practice: "Validate the hurt, then choose one action that protects dignity today.",
+    repair: "Say: My pain is real, and I also have a next move. I am choosing the action that helps me heal instead of only proving I was hurt.",
+    doNot: "Do not use helplessness, martyrdom, passive punishment, or covert blame to avoid agency.",
+  },
+  grandiosity: {
+    wound: "Fear that being ordinary, wrong, or accountable means losing worth.",
+    need: "Respect, recognition, humility, and secure worth that can receive feedback.",
+    practice: "Ask what part of the feedback is true enough to act on, even if the delivery was imperfect.",
+    repair: "Say: I acted above feedback. I am willing to name the part that is mine and change that behavior.",
+    doNot: "Do not use superiority, contempt, credentials, charm, or spiritual language to dodge impact.",
+  },
+  gaslight: {
+    wound: "Fear that reality will expose harm, loss of control, or an identity you do not want to face.",
+    need: "Honesty, clarity, safety, and reality sturdy enough for repair.",
+    practice: "Anchor to observable facts: date, words, behavior, impact, and needed repair.",
+    repair: "Say: I minimized or distorted what happened. I am willing to work from the observable facts and your impact.",
+    doNot: "Do not rewrite events, minimize, mock sensitivity, demand impossible proof, or make someone doubt their perception.",
+  },
+  rescue: {
+    wound: "Fear that love must be earned by carrying what belongs to someone else.",
+    need: "Reciprocity, boundaries, connection, and worth that is not dependent on fixing.",
+    practice: "Ask what is mine, what is theirs, and what support I can offer without taking ownership.",
+    repair: "Say: I stepped into fixing instead of respecting your agency and mine. I can support without taking over.",
+    doNot: "Do not over-function, tolerate harm, give unsolicited solutions, or call control care.",
+  },
+};
+
+function enrichShadow(shadow) {
+  return { ...shadow, ...(SHADOW_HEALING[shadow.id] || {}) };
+}
+
 function getRelevantShadows({ core, needs, bodyLabels, situationLabel }) {
   const signals = [core, situationLabel, ...needs, ...bodyLabels].filter(Boolean).map((item) => item.toLowerCase());
   return SHADOW_PATTERNS.map((shadow) => ({
@@ -343,7 +601,8 @@ function getRelevantShadows({ core, needs, bodyLabels, situationLabel }) {
   }))
     .filter((shadow) => shadow.score > 0)
     .sort((a, b) => b.score - a.score || a.label.localeCompare(b.label))
-    .slice(0, 3);
+    .slice(0, 3)
+    .map(enrichShadow);
 }
 
 const SCRIPT_TYPES = [
@@ -351,29 +610,29 @@ const SCRIPT_TYPES = [
     id: "request",
     label: "Clean request",
     icon: MessageSquareText,
-    build: ({ emotion, needs, situation }) =>
-      `I am feeling ${emotion || "activated"} around ${situation || "this situation"} and I need ${needs.join(", ") || "clarity"}. Could we choose one concrete next step and a time to follow up?`,
+    build: ({ emotion, needs, situation, mode }) =>
+      `I am feeling ${emotion || "activated"} around ${situation || "this situation"} and I need ${needs.join(", ") || "clarity"}. In ${mode || "this conversation"}, could we choose one concrete next step and a time to follow up?`,
   },
   {
     id: "boundary",
     label: "Boundary",
     icon: Shield,
     build: ({ emotion, needs }) =>
-      `I want to handle this well. I am feeling ${emotion || "heated"} and need ${needs[0] || "respect"}. If this keeps moving in a way that blocks that need, I am going to pause and come back with a clear request.`,
+      `I want to handle this well. I am feeling ${emotion || "heated"} and need ${needs[0] || "respect"}. If this keeps moving in a way that blocks that need, I am going to pause and come back with a clear request and a return time.`,
   },
   {
     id: "repair",
     label: "Repair",
     icon: HeartHandshake,
     build: ({ emotion, needs }) =>
-      `I did not handle that the way I want to. Underneath it I was feeling ${emotion || "overwhelmed"} and needing ${needs.join(", ") || "support"}. I am sorry for my part. The repair I can offer now is to slow down and listen.`,
+      `I did not handle that the way I want to. Underneath it I was feeling ${emotion || "overwhelmed"} and needing ${needs.join(", ") || "support"}. I am sorry for my part. The repair I can offer now is to name my impact, slow down, and listen before asking to be understood.`,
   },
   {
     id: "coach",
     label: "Coach prompt",
     icon: UserRound,
-    build: ({ needs, emotion }) =>
-      `Try asking: "When ${emotion || "that feeling"} showed up, what did your body do, and which need was asking for attention: ${needs.slice(0, 3).join(", ") || "respect, safety, or support"}?"`,
+    build: ({ needs, emotion, audience }) =>
+      `Try asking the ${audience || "person"}: "When ${emotion || "that feeling"} showed up, what did your body do, and which need was asking for attention: ${needs.slice(0, 3).join(", ") || "respect, safety, or support"}?"`,
   },
 ];
 
@@ -589,10 +848,10 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) 
 }
 
 function ProgressRail({ step }) {
-  const steps = ["Context", "Body", "Feeling", "Need", "Report"];
+  const steps = ["Who", "Mode", "Event", "Body", "Feeling", "Need", "Report"];
   return (
     <div className="overflow-hidden rounded-lg border border-stone-200 bg-stone-50 p-3 md:p-4">
-      <div className="grid grid-cols-5 gap-1">
+      <div className="grid grid-cols-7 gap-1">
         {steps.map((label, idx) => (
           <div key={label} className="flex flex-col items-center gap-2 sm:flex-row sm:justify-center">
             <div
@@ -631,12 +890,17 @@ function NeedBadges({ needs }) {
 
 function GuidedCheckIn({ rows, setLatestReport, setTab }) {
   const [step, setStep] = useState(0);
-  const [audience, setAudience] = useState("adult");
+  const [audience, setAudience] = useState("man");
+  const [modeId, setModeId] = useState("quick");
   const [situationId, setSituationId] = useState(SITUATIONS[0].id);
   const [bodyIds, setBodyIds] = useState([]);
   const [selectedPath, setSelectedPath] = useState(null);
   const [selectedShadowId, setSelectedShadowId] = useState(null);
 
+  const maxStep = 6;
+  const mode = CHECKIN_MODES.find((item) => item.id === modeId) || CHECKIN_MODES[0];
+  const audienceData = AUDIENCES.find((item) => item.id === audience) || AUDIENCES[0];
+  const situationOptions = SITUATIONS.filter((item) => mode.situationIds.includes(item.id));
   const situation = SITUATIONS.find((item) => item.id === situationId) || SITUATIONS[0];
   const selectedBody = BODY_SIGNALS.filter((item) => bodyIds.includes(item.id));
 
@@ -674,6 +938,8 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
     emotion: activePath?.specific || activePath?.sub || activePath?.core,
     needs: inferredNeeds,
     situation: situation.label,
+    audience: audienceData.label,
+    mode: mode.label,
   };
   const resultScripts = SCRIPT_TYPES.map((script) => ({
     ...script,
@@ -682,13 +948,18 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
   const primaryScript = resultScripts[0].text;
   const guidedPrompt = guidanceFor({ ...activePath, needs: inferredNeeds });
   const audienceCopy = {
-    adult: "This is not about being soft. It is about reading the signal before it drives your next move.",
-    teen: "You do not have to explain it perfectly. Pick the closest answer and keep going.",
-    coach: "Guide with curiosity. The goal is to help him name the signal without cornering him.",
+    man: "This is not about being soft. It is about reading the signal before it drives your next move.",
+    woman: "This is about naming the signal, honoring your body, and choosing clear action without self-abandonment.",
+    "teen-boy": "You do not have to explain it perfectly. Pick the closest answer and keep going.",
+    "teen-girl": "You do not need the perfect words. Pick what fits and let the tool help you name the need.",
+    father: "Lead without control. Your calm clarity teaches more than pressure does.",
+    mother: "Care without carrying everything. The goal is truth, boundaries, and repair.",
+    coach: "Guide with curiosity. The goal is to help them name the signal without cornering them.",
+    partner: "Stay close to impact, need, and repair. Do not turn the conversation into a trial.",
   }[audience];
   const actionFrame = [
-    `You are not just ${activePath?.specific?.toLowerCase() || "activated"}. Your system is signaling a need for ${inferredNeeds.slice(0, 3).join(", ")}.`,
-    "Move the energy by regulating first, naming the need cleanly, and making one request that can be answered today.",
+    `You are not just ${activePath?.specific?.toLowerCase() || "activated"}. As a ${audienceData.label.toLowerCase()}, your system is signaling a need for ${inferredNeeds.slice(0, 3).join(", ")}.`,
+    `${mode.lens} Regulate first, name the need cleanly, and make one request or repair action that can happen today.`,
   ].join(" ");
   const relevantShadows = useMemo(
     () =>
@@ -713,6 +984,9 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
     needs: inferredNeeds,
     situation: situation.label,
     bodySignals: selectedBody.map((item) => item.label),
+    audience: audienceData.label,
+    mode: mode.label,
+    mindset: audienceCopy,
     frame: actionFrame,
     scripts: resultScripts,
     shadows: relevantShadows,
@@ -732,6 +1006,8 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
       specific: activePath.specific,
       needs: inferredNeeds,
       situation: situation.label,
+      audience: audienceData.label,
+      mode: mode.label,
       script: primaryScript,
       createdAt: new Date().toISOString(),
     };
@@ -741,6 +1017,8 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
 
   const summary = [
     `Situation: ${situation.label}`,
+    `Who: ${audienceData.label}`,
+    `Mode: ${mode.label}`,
     `Body signals: ${selectedBody.map((item) => item.label).join(", ") || "not selected"}`,
     `Likely emotion: ${activePath.core} / ${activePath.sub} / ${activePath.specific}`,
     `Unmet needs: ${inferredNeeds.join(", ")}`,
@@ -748,8 +1026,11 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
     "Frame:",
     actionFrame,
     "",
+    "Mindset:",
+    audienceCopy,
+    "",
     "Likely shadow patterns:",
-    ...relevantShadows.map((shadow) => `- ${shadow.label}: ${shadow.move}`),
+    ...relevantShadows.map((shadow) => `- ${shadow.label}: ${shadow.move} Practice: ${shadow.practice}`),
     "",
     "Corrective action plan:",
     ...CORRECTIVE_ACTIONS.map((item) => `- ${item.title}: ${item.copy}`),
@@ -771,8 +1052,8 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
         {step === 0 && (
           <div className="space-y-5">
             <SectionTitle
-              title="Start the check-in"
-              copy="This takes you from a charged moment to a clear next move. Move one screen at a time and choose the closest fit."
+              title="Who is using this?"
+              copy="Choose the lens first so the check-in can shape the language, report, and repair guidance around the person using it."
             />
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
               <div className="text-sm font-black text-stone-950">How to use this</div>
@@ -787,13 +1068,57 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
                 ))}
               </div>
             </div>
+            <div className="grid min-w-0 gap-2 sm:grid-cols-2">
+              {AUDIENCES.map((item) => (
+                <Chip key={item.id} active={audience === item.id} onClick={() => setAudience(item.id)}>
+                  <span className="block">{item.label}</span>
+                  <span className={cls("mt-1 block text-xs font-medium", audience === item.id ? "text-stone-300" : "text-stone-500")}>
+                    {item.description}
+                  </span>
+                </Chip>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="space-y-5">
+            <SectionTitle
+              title="Choose the work"
+              copy="This keeps the flow focused. A quick check-in, a repair conversation, shadow work, accountability, and support all need different guidance."
+            />
+            <div className="grid min-w-0 gap-2">
+              {CHECKIN_MODES.map((item) => (
+                <Chip
+                  key={item.id}
+                  active={modeId === item.id}
+                  onClick={() => {
+                    setModeId(item.id);
+                    const nextSituation = SITUATIONS.find((situationItem) => item.situationIds.includes(situationItem.id));
+                    if (nextSituation) setSituationId(nextSituation.id);
+                    setSelectedPath(null);
+                    setSelectedShadowId(null);
+                  }}
+                >
+                  <span className="block">{item.label}</span>
+                  <span className={cls("mt-1 block text-xs font-medium", modeId === item.id ? "text-stone-300" : "text-stone-500")}>
+                    {item.description}
+                  </span>
+                </Chip>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div className="space-y-5">
             <SectionTitle
               title="What happened?"
-              copy="Start with the situation, not the perfect emotion word. The next steps will translate the signal into needs and action."
+              copy="Start with the situation, not the perfect emotion word. The next steps translate the signal into needs, shadow patterns, and action."
             />
             <div className="grid min-w-0 gap-2 sm:grid-cols-2">
-              {SITUATIONS.map((item) => (
-                <Chip key={item.id} active={situationId === item.id} onClick={() => setSituationId(item.id)}>
+              {situationOptions.map((item) => (
+                <Chip key={item.id} active={situationId === item.id} onClick={() => { setSituationId(item.id); setSelectedPath(null); setSelectedShadowId(null); }}>
                   <span className="block">{item.label}</span>
                   <span className={cls("mt-1 block text-xs font-medium", situationId === item.id ? "text-stone-300" : "text-stone-500")}>
                     {item.hint}
@@ -801,23 +1126,10 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
                 </Chip>
               ))}
             </div>
-            <div className="border-t border-stone-200 pt-4">
-              <div className="mb-2 text-sm font-bold text-stone-950">Who is using this?</div>
-              <div className="grid min-w-0 gap-2 sm:grid-cols-3">
-                {AUDIENCES.map((item) => (
-                  <Chip key={item.id} active={audience === item.id} onClick={() => setAudience(item.id)}>
-                    <span className="block">{item.label}</span>
-                    <span className={cls("mt-1 block text-xs font-medium", audience === item.id ? "text-stone-300" : "text-stone-500")}>
-                      {item.description}
-                    </span>
-                  </Chip>
-                ))}
-              </div>
-            </div>
           </div>
         )}
 
-        {step === 1 && (
+        {step === 3 && (
           <div className="space-y-5">
             <SectionTitle
               title="What did your body do?"
@@ -833,7 +1145,7 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
           </div>
         )}
 
-        {step === 2 && (
+        {step === 4 && (
           <div className="space-y-5">
             <SectionTitle
               title="What word is closest?"
@@ -867,7 +1179,7 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
           </div>
         )}
 
-        {step === 3 && (
+        {step === 5 && (
           <div className="space-y-5">
             <SectionTitle
               title="What need is underneath?"
@@ -887,7 +1199,7 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
           </div>
         )}
 
-        {step === 4 && (
+        {step === 6 && (
           <div className="space-y-5">
             <SectionTitle
               title="Your report"
@@ -932,6 +1244,26 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
                     <p className="mt-2 text-sm leading-6 text-stone-700">
                       <strong>Four Horsemen link:</strong> {selectedShadow.horseman}
                     </p>
+                    {selectedShadow.wound ? (
+                      <p className="mt-2 text-sm leading-6 text-stone-700">
+                        <strong>Core wound:</strong> {selectedShadow.wound}
+                      </p>
+                    ) : null}
+                    {selectedShadow.need ? (
+                      <p className="mt-2 text-sm leading-6 text-stone-700">
+                        <strong>Healing need:</strong> {selectedShadow.need}
+                      </p>
+                    ) : null}
+                    {selectedShadow.practice ? (
+                      <p className="mt-2 text-sm leading-6 text-stone-700">
+                        <strong>Practice:</strong> {selectedShadow.practice}
+                      </p>
+                    ) : null}
+                    {selectedShadow.repair ? (
+                      <p className="mt-2 text-sm leading-6 text-stone-700">
+                        <strong>Repair:</strong> {selectedShadow.repair}
+                      </p>
+                    ) : null}
                     <p className="mt-2 text-sm leading-6 text-stone-700">
                       <strong>Best move:</strong> {selectedShadow.move}
                     </p>
@@ -1013,7 +1345,7 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
             <ArrowLeft size={16} />
             Back
           </Button>
-          <Button variant="primary" disabled={step === 4} onClick={() => setStep((value) => Math.min(4, value + 1))}>
+          <Button variant="primary" disabled={step === maxStep} onClick={() => setStep((value) => Math.min(maxStep, value + 1))}>
             Next
             <ArrowRight size={16} />
           </Button>
@@ -1074,7 +1406,7 @@ function Explore({ rows, setLatestReport }) {
     situation: "Feelings Library",
     bodySignals: [],
     frame: `You are noticing ${specific.toLowerCase()}. The needs underneath may include ${needs.join(", ")}. Use that signal to make one clean request or choose one recovery action.`,
-    scripts: SCRIPT_TYPES.map((script) => script.build({ emotion: specific, needs, situation: "Feelings Library" })),
+    scripts: SCRIPT_TYPES.map((script) => script.build({ emotion: specific, needs, situation: "Feelings Library", audience: "person", mode: "Feelings Library" })),
     shadows: getRelevantShadows({ core, needs, bodyLabels: [], situationLabel: "Feelings Library" }),
     guidance: guidanceFor({ core, sub, specific, needs }),
     createdAt: new Date().toISOString(),
@@ -1164,6 +1496,9 @@ function Scripts({ latest }) {
   const context = {
     emotion: latest?.specific || "activated",
     needs: latest?.needs || ["respect", "clarity", "support"],
+    situation: latest?.situation || "this situation",
+    audience: latest?.audience || "person",
+    mode: latest?.mode || "this conversation",
   };
 
   return (
@@ -1221,6 +1556,8 @@ function Report({ report }) {
     ? [
         "NeedCompass check-in report",
         "",
+        `Who: ${report.audience || "Not selected"}`,
+        `Mode: ${report.mode || "Check In"}`,
         `Situation: ${report.situation}`,
         `Body signals: ${report.bodySignals?.join(", ") || "not selected"}`,
         `Feeling: ${report.core} / ${report.sub} / ${report.specific}`,
@@ -1229,8 +1566,11 @@ function Report({ report }) {
         "Frame:",
         report.frame,
         "",
+        "Mindset:",
+        report.mindset || "",
+        "",
         "Shadow patterns:",
-        ...(report.shadows || []).map((shadow) => `- ${shadow.label}: ${shadow.signal} Pattern: ${shadow.tactic} Four Horsemen link: ${shadow.horseman} Move: ${shadow.move}`),
+        ...(report.shadows || []).map((shadow) => `- ${shadow.label}: ${shadow.signal} Pattern: ${shadow.tactic} Four Horsemen link: ${shadow.horseman} Practice: ${shadow.practice || ""} Repair: ${shadow.repair || ""} Move: ${shadow.move}`),
         "",
         "Scripts:",
         ...(report.scripts || []).map((script) => {
@@ -1273,6 +1613,12 @@ function Report({ report }) {
         </div>
         <p className="mt-3 text-lg font-semibold leading-8 text-emerald-950">{report.frame}</p>
       </div>
+      {report.mindset ? (
+        <div className="rounded-lg border border-stone-200 bg-white p-4">
+          <div className="text-sm font-black text-stone-950">Mindset</div>
+          <p className="mt-2 text-sm leading-6 text-stone-700">{report.mindset}</p>
+        </div>
+      ) : null}
       <div className="grid gap-3 md:grid-cols-2">
         <div className="rounded-lg border border-stone-200 bg-white p-4">
           <div className="text-sm font-black text-stone-950">Feeling and needs</div>
@@ -1281,7 +1627,11 @@ function Report({ report }) {
           <div className="mt-3"><NeedBadges needs={report.needs || []} /></div>
         </div>
         <div className="rounded-lg border border-stone-200 bg-white p-4">
-          <div className="text-sm font-black text-stone-950">Situation</div>
+          <div className="text-sm font-black text-stone-950">Context</div>
+          <p className="mt-2 text-sm leading-6 text-stone-700">
+            {report.audience || "Person"} using {report.mode || "Check In"}
+          </p>
+          <div className="mt-3 text-sm font-black text-stone-950">Situation</div>
           <p className="mt-2 text-sm leading-6 text-stone-700">{report.situation}</p>
           <div className="mt-3 text-sm font-black text-stone-950">Body signals</div>
           <p className="mt-1 text-sm leading-6 text-stone-700">{report.bodySignals?.join(", ") || "Not selected"}</p>
@@ -1296,6 +1646,8 @@ function Report({ report }) {
               <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.signal}</p>
               <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Pattern:</strong> {shadow.tactic}</p>
               <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Four Horsemen link:</strong> {shadow.horseman}</p>
+              {shadow.practice ? <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Practice:</strong> {shadow.practice}</p> : null}
+              {shadow.repair ? <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Repair:</strong> {shadow.repair}</p> : null}
               <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Move:</strong> {shadow.move}</p>
             </div>
           ))}
@@ -1337,10 +1689,14 @@ function ShadowLibrary() {
         copy="Shadow patterns are common ways emotional energy moves off target. Use this library to recognize the pattern and choose a cleaner move."
       />
       <div className="grid gap-3 md:grid-cols-2">
-        {SHADOW_PATTERNS.map((shadow) => (
+        {SHADOW_PATTERNS.map(enrichShadow).map((shadow) => (
           <div key={shadow.id} className="rounded-lg border border-stone-200 bg-white p-4">
             <div className="text-lg font-black text-stone-950">{shadow.label}</div>
             <p className="mt-2 text-sm leading-6 text-stone-700">{shadow.signal}</p>
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+              <div className="text-sm font-black text-stone-950">Core wound</div>
+              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.wound}</p>
+            </div>
             <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
               <div className="text-sm font-black text-stone-950">Common pattern</div>
               <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.tactic}</p>
@@ -1350,8 +1706,16 @@ function ShadowLibrary() {
               <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.horseman}</p>
             </div>
             <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
-              <div className="text-sm font-black text-emerald-950">Cleaner move</div>
-              <p className="mt-1 text-sm leading-6 text-emerald-950">{shadow.move}</p>
+              <div className="text-sm font-black text-emerald-950">Self-healing practice</div>
+              <p className="mt-1 text-sm leading-6 text-emerald-950">{shadow.practice}</p>
+            </div>
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+              <div className="text-sm font-black text-stone-950">Repair sentence</div>
+              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.repair}</p>
+            </div>
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+              <div className="text-sm font-black text-stone-950">Do not</div>
+              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.doNot}</p>
             </div>
           </div>
         ))}
