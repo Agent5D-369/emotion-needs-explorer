@@ -224,45 +224,111 @@ const CORRECTIVE_ACTIONS = [
 const SHADOW_PATTERNS = [
   {
     id: "control",
-    label: "Control",
+    label: "Shadow of Control",
     triggers: ["Anger", "Fear", "autonomy", "safety", "clarity"],
     signal: "The energy may try to force certainty, compliance, or a quick answer.",
+    tactic: "Can look like pressure, interrogation, monitoring, moving the goal posts, or making someone prove loyalty.",
+    horseman: "Often pairs with criticism or defensiveness.",
     move: "Slow the demand down. Ask for one clear agreement instead of trying to control the whole person or outcome.",
   },
   {
     id: "withdrawal",
-    label: "Withdrawal",
+    label: "Shadow of Withdrawal",
     triggers: ["Sadness", "Fear", "rest", "safety", "care", "space"],
     signal: "The energy may pull you into silence, distance, or disappearance.",
+    tactic: "Can look like stonewalling, disappearing, acting busy, emotional shutdown, or the silent treatment.",
+    horseman: "Connects directly to stonewalling.",
     move: "Name that you need space and give a return time. Space works best when it has a responsible re-entry.",
   },
   {
     id: "attack",
-    label: "Attack",
+    label: "Shadow of Attack",
     triggers: ["Anger", "Disgust", "respect", "fairness", "dignity"],
     signal: "The energy may push you to win, shame, interrupt, or make the other person pay.",
+    tactic: "Can look like insults, character attacks, contempt, sarcasm, threats, or public humiliation.",
+    horseman: "Often shows up as criticism or contempt.",
     move: "Protect the need without attacking. Use a boundary or request that names behavior, not character.",
   },
   {
     id: "approval",
-    label: "Approval seeking",
+    label: "Shadow of Approval Seeking",
     triggers: ["Sadness", "Happiness", "belonging", "connection", "reassurance"],
     signal: "The energy may make you abandon your own truth to keep closeness.",
+    tactic: "Can look like fawning, over-apologizing, people pleasing, rescuing, or agreeing while resentment grows.",
+    horseman: "Often leads to later criticism or stonewalling when hidden resentment builds.",
     move: "Stay connected without self-erasing. Say what is true and ask for reassurance directly.",
   },
   {
     id: "numbing",
-    label: "Numbing",
+    label: "Shadow of Numbing",
     triggers: ["Sadness", "Fear", "rest", "support", "overwhelmed"],
     signal: "The energy may try to shut off through scrolling, food, substances, sleep, or avoidance.",
+    tactic: "Can look like avoidance, dissociation, delay, disappearing into screens, or refusing to feel anything.",
+    horseman: "Can become stonewalling when another person needs engagement.",
     move: "Choose one low-friction care action first: water, movement, shower, daylight, or a direct check-in with someone safe.",
   },
   {
     id: "story",
-    label: "Story spiral",
+    label: "Shadow of Story Spiral",
     triggers: ["Fear", "Surprise", "clarity", "reassurance", "trust"],
     signal: "The mind may start filling gaps with worst-case stories.",
+    tactic: "Can look like mind reading, catastrophizing, suspicion loops, collecting evidence, or assuming motives.",
+    horseman: "Can feed defensiveness, criticism, and contempt.",
     move: "Separate fact from interpretation. Ask for the missing information before acting on the story.",
+  },
+  {
+    id: "darvo",
+    label: "Shadow of DARVO",
+    triggers: ["Anger", "Fear", "shame", "accountability", "repair", "honesty", "respect"],
+    signal: "Accountability feels threatening, so the energy denies, attacks, and flips the roles of harmed person and harmful actor.",
+    tactic: "Deny, attack, reverse victim and offender. This can confuse the conversation and pressure the harmed person to defend their reality.",
+    horseman: "Combines defensiveness, criticism, and often contempt.",
+    move: "Return to the specific behavior and impact. Say: I am not debating my character or yours. I am naming what happened, how it landed, and what repair requires.",
+  },
+  {
+    id: "jade",
+    label: "Shadow of JADE",
+    triggers: ["Fear", "Sadness", "belonging", "reassurance", "approval", "connection", "safety"],
+    signal: "The body tries to earn safety by over-explaining, defending, and proving that your needs are allowed.",
+    tactic: "Justify, argue, defend, explain. This can keep codependent loops alive when a simple boundary is needed.",
+    horseman: "Can invite more defensiveness and criticism because the conversation becomes a trial.",
+    move: "State the boundary once, briefly. Say: I understand you disagree. My decision is still the same.",
+  },
+  {
+    id: "victim",
+    label: "Shadow of Victim Identity",
+    triggers: ["Sadness", "Fear", "helpless", "support", "care", "fairness", "acknowledgment"],
+    signal: "Pain becomes identity, and the next move becomes proving injury instead of choosing agency.",
+    tactic: "Can look like helplessness, martyrdom, covert blame, passive punishment, or refusing workable repair.",
+    horseman: "Often feeds criticism and stonewalling.",
+    move: "Validate the pain without surrendering agency. Ask: what is one action I can take that protects my dignity today?",
+  },
+  {
+    id: "grandiosity",
+    label: "Shadow of Grandiosity",
+    triggers: ["Happiness", "Anger", "pride", "recognition", "respect", "control", "value"],
+    signal: "The ego tries to escape vulnerability by becoming superior, special, above feedback, or entitled to exceptions.",
+    tactic: "Can look like superiority, entitlement, name-dropping, rule-breaking, contempt, or refusing accountability.",
+    horseman: "Strongly linked to contempt.",
+    move: "Trade superiority for specificity. Ask: what part of the feedback is true enough to act on?",
+  },
+  {
+    id: "gaslight",
+    label: "Shadow of Reality Distortion",
+    triggers: ["Fear", "Anger", "trust", "honesty", "clarity", "safety"],
+    signal: "The conversation shifts away from what happened and toward whether the other person can trust their own perception.",
+    tactic: "Can look like minimizing, rewriting events, selective memory, moving the standard of proof, or calling the other person too sensitive.",
+    horseman: "Often uses defensiveness and contempt.",
+    move: "Anchor to observable facts. Use dates, words, actions, and impact. If reality keeps getting distorted, stop debating and seek outside support.",
+  },
+  {
+    id: "rescue",
+    label: "Shadow of Rescue",
+    triggers: ["Sadness", "Happiness", "connection", "support", "belonging", "care"],
+    signal: "Care becomes control because helping is used to earn worth, avoid abandonment, or manage another adult's consequences.",
+    tactic: "Can look like over-functioning, fixing, unsolicited advice, tolerating harm, or confusing responsibility with love.",
+    horseman: "Can lead to criticism when the rescue is not appreciated.",
+    move: "Offer support without taking ownership. Ask: what is mine to carry, and what belongs to them?",
   },
 ];
 
@@ -861,6 +927,12 @@ function GuidedCheckIn({ rows, setLatestReport, setTab }) {
                     <div className="text-sm font-black text-stone-950">{selectedShadow.label}</div>
                     <p className="mt-2 text-sm leading-6 text-stone-700">{selectedShadow.signal}</p>
                     <p className="mt-2 text-sm leading-6 text-stone-700">
+                      <strong>Pattern:</strong> {selectedShadow.tactic}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-stone-700">
+                      <strong>Four Horsemen link:</strong> {selectedShadow.horseman}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-stone-700">
                       <strong>Best move:</strong> {selectedShadow.move}
                     </p>
                   </div>
@@ -1158,7 +1230,7 @@ function Report({ report }) {
         report.frame,
         "",
         "Shadow patterns:",
-        ...(report.shadows || []).map((shadow) => `- ${shadow.label}: ${shadow.move}`),
+        ...(report.shadows || []).map((shadow) => `- ${shadow.label}: ${shadow.signal} Pattern: ${shadow.tactic} Four Horsemen link: ${shadow.horseman} Move: ${shadow.move}`),
         "",
         "Scripts:",
         ...(report.scripts || []).map((script) => {
@@ -1222,6 +1294,8 @@ function Report({ report }) {
             <div key={shadow.id} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
               <div className="text-sm font-black text-stone-950">{shadow.label}</div>
               <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.signal}</p>
+              <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Pattern:</strong> {shadow.tactic}</p>
+              <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Four Horsemen link:</strong> {shadow.horseman}</p>
               <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Move:</strong> {shadow.move}</p>
             </div>
           ))}
@@ -1267,6 +1341,14 @@ function ShadowLibrary() {
           <div key={shadow.id} className="rounded-lg border border-stone-200 bg-white p-4">
             <div className="text-lg font-black text-stone-950">{shadow.label}</div>
             <p className="mt-2 text-sm leading-6 text-stone-700">{shadow.signal}</p>
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+              <div className="text-sm font-black text-stone-950">Common pattern</div>
+              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.tactic}</p>
+            </div>
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+              <div className="text-sm font-black text-stone-950">Four Horsemen link</div>
+              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.horseman}</p>
+            </div>
             <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
               <div className="text-sm font-black text-emerald-950">Cleaner move</div>
               <p className="mt-1 text-sm leading-6 text-emerald-950">{shadow.move}</p>
