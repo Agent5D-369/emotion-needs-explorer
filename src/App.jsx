@@ -36,6 +36,70 @@ const CALENDAR_URL = "https://calendar.app.google/NQvsMN7X5evMK9Q1A";
 const PAYPAL_URL = "https://www.paypal.com/ncp/payment/PEDRQJN9PAREL";
 const REPORTS_STORAGE_KEY = "exploring_needs_reports_v1";
 
+const TRANSFORMATION_PATHS = [
+  {
+    id: "shutdown",
+    title: "Stop shutting down",
+    audience: "Men, teen boys, partners, fathers, and anyone who goes silent under pressure.",
+    trigger: "Conflict, criticism, overwhelm, shame, or fear of getting it wrong.",
+    need: "Safety, space, dignity, and a clear return path.",
+    practice: "Use a timed pause, regulate your body, then return with one honest sentence and one request.",
+    metric: "Notice whether you return to the conversation within the time you named.",
+  },
+  {
+    id: "attack",
+    title: "Stop exploding or attacking",
+    audience: "Anyone who uses intensity, criticism, contempt, or pressure to regain control.",
+    trigger: "Disrespect, rejection, feeling cornered, or being asked to take accountability.",
+    need: "Respect, fairness, repair, and power that does not require harm.",
+    practice: "Drop character attacks. Name the behavior, impact, need, and request.",
+    metric: "Count how often you protect the need without insulting the person.",
+  },
+  {
+    id: "approval",
+    title: "Heal approval seeking",
+    audience: "Codependents, people pleasers, over-givers, and anyone stuck in JADE.",
+    trigger: "Fear of rejection, conflict, disappointment, or being misunderstood.",
+    need: "Belonging, reassurance, autonomy, and connection that can survive truth.",
+    practice: "Tell the smallest complete truth and stop explaining once the boundary is clear.",
+    metric: "Notice whether you say yes when your body means no.",
+  },
+  {
+    id: "accountability",
+    title: "Build clean accountability",
+    audience: "Anyone who gets defensive, collapses into shame, reverses blame, or avoids repair.",
+    trigger: "Being called out, hearing impact, receiving feedback, or facing broken trust.",
+    need: "Dignity, honesty, repair, and a way to own impact without becoming worthless.",
+    practice: "Use behavior, impact, apology, repair, changed action. Do not debate the other person's reality.",
+    metric: "Track whether your repair includes a changed behavior that can be observed.",
+  },
+  {
+    id: "victim",
+    title: "Break victim identity",
+    audience: "Anyone whose pain is real, but whose next move has become proving injury instead of choosing agency.",
+    trigger: "Unfairness, resentment, helplessness, betrayal, or old wounds being activated.",
+    need: "Acknowledgment, fairness, support, and agency.",
+    practice: "Validate the pain, then choose one action that protects dignity today.",
+    metric: "Ask whether the next move creates more agency or more evidence of helplessness.",
+  },
+  {
+    id: "repair",
+    title: "Repair after harm",
+    audience: "Partners, parents, leaders, coaches, and anyone who crossed a line.",
+    trigger: "Broken trust, harsh words, silence, betrayal, boundary violations, or missed accountability.",
+    need: "Honesty, repair, safety, dignity, and consistency over time.",
+    practice: "Name what happened, name the impact, apologize without defense, offer repair, and set follow-up.",
+    metric: "Track whether the repair is repeated long enough to rebuild trust.",
+  },
+];
+
+const EMERGENCY_RESET_STEPS = [
+  "Stop talking for 90 seconds if your body wants to attack, run, freeze, explain, or prove.",
+  "Unclench your jaw, lower your shoulders, relax your hands, and look at one stable object.",
+  "Name one body signal and one possible need. Use the closest fit, not the perfect word.",
+  "Choose one clean move: pause, request, boundary, repair, or ask for support.",
+];
+
 const THEMES = [
   {
     id: "sage",
@@ -648,10 +712,13 @@ const SCRIPT_TYPES = [
 const navItems = [
   { id: "intro", label: "Start", icon: PlayCircle },
   { id: "checkin", label: "Check In", icon: Home },
+  { id: "reset", label: "Reset", icon: Activity },
+  { id: "paths", label: "Paths", icon: Trophy },
   { id: "explore", label: "Feelings", icon: Compass },
   { id: "shadows", label: "Shadows", icon: BookOpen },
   { id: "scripts", label: "Scripts", icon: Clipboard },
   { id: "reports", label: "Reports", icon: Sparkles },
+  { id: "tracker", label: "Tracker", icon: Search },
   { id: "help", label: "Help", icon: HelpCircle },
 ];
 
@@ -717,6 +784,27 @@ function formatReportDate(value) {
   } catch {
     return value;
   }
+}
+
+function countValues(values) {
+  const counts = new Map();
+  values.filter(Boolean).forEach((value) => counts.set(value, (counts.get(value) || 0) + 1));
+  return Array.from(counts.entries())
+    .map(([label, count]) => ({ label, count }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+}
+
+function buildGrowthPlan(report) {
+  const topNeed = report?.needs?.[0] || "clarity";
+  const shadow = report?.shadows?.[0];
+  const script = report?.scripts?.[0];
+  const scriptText = typeof script === "string" ? script : script?.text;
+  return {
+    today: `Regulate first, then make one request or repair move centered on ${topNeed}.`,
+    next24: scriptText || `Say: I am noticing activation and I need ${topNeed}. Can we choose one clear next step?`,
+    week: shadow?.practice || "Repeat the clean move daily and track what changes in your body, behavior, and relationships.",
+    integration: shadow?.metric || `Track whether your next action creates more ${topNeed}, less reactivity, and cleaner repair.`,
+  };
 }
 
 function cls(...parts) {
@@ -1014,6 +1102,10 @@ function Intro({ setTab }) {
             <PlayCircle size={16} />
             Start guided check-in
           </Button>
+          <Button variant="amber" onClick={() => setTab("reset")}>
+            <Activity size={16} />
+            90-second reset
+          </Button>
           <Button variant="secondary" onClick={() => setTab("help")}>
             <HelpCircle size={16} />
             Read help wiki
@@ -1056,6 +1148,106 @@ function Intro({ setTab }) {
           Use it before a hard conversation, after a triggering moment, when you feel stuck in blame or shutdown, or when you want to support someone without controlling them.
         </p>
       </section>
+
+      <section className="rounded-lg border border-stone-200 bg-white p-4 md:p-5">
+        <SectionTitle
+          title="Built for high-intent emotional intelligence work"
+          copy="ExploringNeeds.com is designed as a feelings and needs app, emotional intelligence tool, shadow work library, relationship repair script builder, accountability guide, and pattern tracker."
+        />
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {[
+            "Unmet needs explorer",
+            "Relationship repair tool",
+            "Shadow work guide",
+            "DARVO and JADE pattern support",
+            "Four Horsemen relationship awareness",
+            "Emotional intelligence training for men and boys",
+          ].map((item) => (
+            <div key={item} className="rounded-lg border border-stone-200 bg-stone-50 p-3 text-sm font-semibold text-stone-800">
+              {item}
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function EmergencyReset({ setTab }) {
+  return (
+    <div className="mx-auto max-w-3xl space-y-4">
+      <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+        <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide text-emerald-950">
+          <Activity size={16} />
+          Emergency reset
+        </div>
+        <h2 className="mt-2 text-2xl font-black text-emerald-950 md:text-3xl">Before you speak, reset the signal.</h2>
+        <p className="mt-3 text-sm leading-6 text-emerald-950">
+          Use this when you are hot, numb, spiraling, defending, blaming, explaining, or about to say something that will create more repair work.
+        </p>
+      </section>
+      <div className="grid gap-3">
+        {EMERGENCY_RESET_STEPS.map((step, index) => (
+          <div key={step} className="rounded-lg border border-stone-200 bg-white p-4">
+            <div className="flex gap-3">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-800 text-sm font-black text-white">
+                {index + 1}
+              </span>
+              <p className="text-sm leading-6 text-stone-700">{step}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="grid gap-2 sm:grid-cols-2">
+        <Button variant="primary" onClick={() => setTab("checkin")}>
+          <ArrowRight size={16} />
+          Continue to check-in
+        </Button>
+        <Button variant="secondary" onClick={() => setTab("scripts")}>
+          <MessageSquareText size={16} />
+          Get words to say
+        </Button>
+      </div>
+      <SupportActions />
+    </div>
+  );
+}
+
+function TransformationPaths({ setTab }) {
+  return (
+    <div className="mx-auto max-w-5xl space-y-4">
+      <SectionTitle
+        title="Transformation Paths"
+        copy="Choose the growth pattern you want to work. Each path turns emotional intelligence into a practice, not just a label."
+      />
+      <div className="grid gap-3 md:grid-cols-2">
+        {TRANSFORMATION_PATHS.map((path) => (
+          <article key={path.id} className="rounded-lg border border-stone-200 bg-white p-4">
+            <h3 className="text-lg font-black text-stone-950">{path.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-stone-700"><strong>For:</strong> {path.audience}</p>
+            <p className="mt-2 text-sm leading-6 text-stone-700"><strong>Trigger:</strong> {path.trigger}</p>
+            <p className="mt-2 text-sm leading-6 text-stone-700"><strong>Need:</strong> {path.need}</p>
+            <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+              <div className="text-sm font-black text-emerald-950">Practice</div>
+              <p className="mt-1 text-sm leading-6 text-emerald-950">{path.practice}</p>
+            </div>
+            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+              <div className="text-sm font-black text-stone-950">Track this</div>
+              <p className="mt-1 text-sm leading-6 text-stone-700">{path.metric}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="grid gap-2 sm:grid-cols-2">
+        <Button variant="primary" onClick={() => setTab("checkin")}>
+          <PlayCircle size={16} />
+          Start with a check-in
+        </Button>
+        <Button variant="secondary" onClick={() => setTab("tracker")}>
+          <Search size={16} />
+          View pattern tracker
+        </Button>
+      </div>
     </div>
   );
 }
@@ -1752,6 +1944,7 @@ function Reports({ reports }) {
       setSelectedId(reports[0].id);
     }
   }, [reports, selectedId]);
+  const growthPlan = buildGrowthPlan(report);
   const payload = report
     ? [
         `${APP_TITLE} check-in report`,
@@ -1782,6 +1975,12 @@ function Reports({ reports }) {
         "",
         "Guidance:",
         report.guidance,
+        "",
+        "Growth plan:",
+        `Today: ${growthPlan.today}`,
+        `Next 24 hours: ${growthPlan.next24}`,
+        `7-day practice: ${growthPlan.week}`,
+        `Integration metric: ${growthPlan.integration}`,
         "",
         ATTR_LINE,
       ].join("\n")
@@ -1880,6 +2079,27 @@ function Reports({ reports }) {
           ))}
         </div>
       </div>
+      <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+        <div className="text-sm font-black text-emerald-950">Growth plan</div>
+        <div className="mt-3 grid gap-3">
+          <div className="rounded-lg border border-emerald-200 bg-white p-3">
+            <div className="text-sm font-black text-stone-950">Today</div>
+            <p className="mt-1 text-sm leading-6 text-stone-700">{growthPlan.today}</p>
+          </div>
+          <div className="rounded-lg border border-emerald-200 bg-white p-3">
+            <div className="text-sm font-black text-stone-950">Next 24 hours</div>
+            <p className="mt-1 text-sm leading-6 text-stone-700">{growthPlan.next24}</p>
+          </div>
+          <div className="rounded-lg border border-emerald-200 bg-white p-3">
+            <div className="text-sm font-black text-stone-950">7-day practice</div>
+            <p className="mt-1 text-sm leading-6 text-stone-700">{growthPlan.week}</p>
+          </div>
+          <div className="rounded-lg border border-emerald-200 bg-white p-3">
+            <div className="text-sm font-black text-stone-950">Integration metric</div>
+            <p className="mt-1 text-sm leading-6 text-stone-700">{growthPlan.integration}</p>
+          </div>
+        </div>
+      </div>
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
         <div className="text-sm font-black text-stone-950">Scripts</div>
         <div className="mt-3 grid gap-3">
@@ -1952,11 +2172,94 @@ function ShadowLibrary() {
   );
 }
 
+function PatternTracker({ reports, setTab }) {
+  const needCounts = countValues(reports.flatMap((report) => report.needs || []));
+  const shadowCounts = countValues(reports.flatMap((report) => (report.shadows || []).map((shadow) => shadow.label)));
+  const situationCounts = countValues(reports.map((report) => report.situation));
+  const feelingCounts = countValues(reports.map((report) => report.specific));
+  const latest = reports[0];
+
+  if (!reports.length) {
+    return (
+      <div className="mx-auto max-w-3xl rounded-lg border border-stone-200 bg-white p-6">
+        <SectionTitle
+          title="Pattern Tracker"
+          copy="Save reports from Check In or the Feelings Library to reveal recurring needs, emotions, situations, and shadow patterns."
+        />
+        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-stone-700">
+          No saved reports yet. Run two or three check-ins this week and the tracker will begin showing the patterns that need the most attention.
+        </div>
+        <Button className="mt-4" variant="primary" onClick={() => setTab("checkin")}>
+          <PlayCircle size={16} />
+          Start first check-in
+        </Button>
+      </div>
+    );
+  }
+
+  const sections = [
+    ["Recurring needs", needCounts],
+    ["Recurring shadows", shadowCounts],
+    ["Recurring situations", situationCounts],
+    ["Recurring feelings", feelingCounts],
+  ];
+
+  return (
+    <div className="mx-auto max-w-5xl space-y-4">
+      <SectionTitle
+        title="Pattern Tracker"
+        copy="This turns saved reports into a growth map. Look for repeated needs, repeated shadows, and repeated situations that are asking for practice."
+      />
+      <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+        <div className="text-sm font-black text-emerald-950">Current focus</div>
+        <p className="mt-2 text-sm leading-6 text-emerald-950">
+          Your strongest current signal is {needCounts[0]?.label || "clarity"} with {shadowCounts[0]?.label || "no repeated shadow yet"}. Use the next check-in to test whether this pattern repeats in your body and behavior.
+        </p>
+      </div>
+      <div className="grid gap-3 md:grid-cols-2">
+        {sections.map(([title, rows]) => (
+          <section key={title} className="rounded-lg border border-stone-200 bg-white p-4">
+            <h3 className="text-base font-black text-stone-950">{title}</h3>
+            <div className="mt-3 grid gap-2">
+              {rows.slice(0, 6).map((row) => (
+                <div key={row.label} className="flex items-center justify-between gap-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+                  <span className="text-sm font-semibold text-stone-800">{row.label}</span>
+                  <span className="rounded-full bg-emerald-800 px-3 py-1 text-xs font-black text-white">{row.count}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+      {latest ? (
+        <div className="rounded-lg border border-stone-200 bg-white p-4">
+          <div className="text-sm font-black text-stone-950">Latest practice plan</div>
+          <p className="mt-2 text-sm leading-6 text-stone-700">{buildGrowthPlan(latest).week}</p>
+        </div>
+      ) : null}
+      <div className="grid gap-2 sm:grid-cols-3">
+        <Button variant="primary" onClick={() => setTab("checkin")}>
+          <PlayCircle size={16} />
+          Add check-in
+        </Button>
+        <Button variant="secondary" onClick={() => setTab("reports")}>
+          <Sparkles size={16} />
+          Review reports
+        </Button>
+        <Button variant="secondary" onClick={() => setTab("paths")}>
+          <Trophy size={16} />
+          Choose path
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 function HelpWiki({ setTab }) {
   const topics = [
     {
       title: "What this is",
-      body: "ExploringNeeds.com is a guided emotional intelligence tool. It helps you move from a charged feeling into the unmet need, shadow pattern, repair language, and practical next action.",
+      body: "ExploringNeeds.com is a guided emotional intelligence tool, unmet needs explorer, shadow work app, relationship repair guide, and pattern tracker. It helps you move from a charged feeling into the unmet need, shadow pattern, repair language, and practical next action.",
     },
     {
       title: "What it is not",
@@ -1972,7 +2275,7 @@ function HelpWiki({ setTab }) {
     },
     {
       title: "How to use the report",
-      body: "Read the frame first. Then choose one corrective action, one script, and one shadow pattern to watch. Copy or share the report when it helps you stay clear in a conversation.",
+      body: "Read the frame first. Then choose one corrective action, one script, one shadow pattern to watch, and one growth plan practice. Copy or share the report when it helps you stay clear in a conversation.",
     },
     {
       title: "What shadow work means",
@@ -1994,13 +2297,17 @@ function HelpWiki({ setTab }) {
       title: "When to get support",
       body: "Book support when patterns repeat, conflict escalates, reality feels confusing, or you need help turning insight into consistent action.",
     },
+    {
+      title: "Why pattern tracking matters",
+      body: "One check-in gives clarity. Repeated reports show the transformation path: recurring needs, recurring shadows, repeated triggers, and the practices that actually change behavior.",
+    },
   ];
 
   const quickLinks = [
     { label: "Run a check-in", tab: "checkin" },
+    { label: "Emergency reset", tab: "reset" },
     { label: "Read reports", tab: "reports" },
-    { label: "Browse feelings", tab: "explore" },
-    { label: "Study shadows", tab: "shadows" },
+    { label: "Track patterns", tab: "tracker" },
   ];
 
   return (
@@ -2079,10 +2386,13 @@ export default function App() {
     <AppShell tab={tab} setTab={setTab} onNewCheckIn={startNewCheckIn} themeId={themeId} setThemeId={setThemeId}>
       {tab === "intro" && <Intro setTab={setTab} />}
       {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} saveReport={saveReport} setTab={setTab} />}
+      {tab === "reset" && <EmergencyReset setTab={setTab} />}
+      {tab === "paths" && <TransformationPaths setTab={setTab} />}
       {tab === "explore" && <Explore rows={rows} saveReport={saveReport} setTab={setTab} />}
       {tab === "shadows" && <ShadowLibrary />}
       {tab === "scripts" && <Scripts latest={latestReport} />}
       {tab === "reports" && <Reports reports={reports} />}
+      {tab === "tracker" && <PatternTracker reports={reports} setTab={setTab} />}
       {tab === "help" && <HelpWiki setTab={setTab} />}
     </AppShell>
   );
