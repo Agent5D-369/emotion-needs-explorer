@@ -1,0 +1,32 @@
+# ExploringNeeds.com
+
+ExploringNeeds.com is a practical emotional intelligence tool, unmet needs explorer, shadow work guide, relationship repair script builder, accountability support tool, and pattern tracker.
+
+Canonical URL: https://exploringneeds.com/
+
+Primary use cases:
+- Name a feeling and identify the unmet need underneath it.
+- Move from emotional activation to a clear next action.
+- Use relationship repair scripts after conflict, shutdown, criticism, contempt, defensiveness, or stonewalling.
+- Recognize shadow patterns such as control, withdrawal, attack, approval seeking, DARVO, JADE, victim identity, grandiosity, reality distortion, and rescue.
+- Track recurring emotional needs, recurring triggers, and recurring shadow patterns through local browser reports.
+- Support men, boys, fathers, mothers, women, teen girls, partners, coaches, teachers, and mentors.
+
+Important concepts:
+- Feelings point to needs.
+- Needs point to requests, boundaries, care actions, or repair.
+- Shadow patterns are protective strategies that can move emotional energy off target.
+- Reports are saved in browser local storage only unless the product later adds accounts.
+- This tool is educational and reflective. It is not a medical diagnosis, crisis service, or replacement for therapy.
+
+High relevance topics:
+- emotional intelligence tool
+- unmet needs explorer
+- feelings and needs app
+- shadow work tool
+- relationship repair scripts
+- DARVO and JADE support
+- Four Horsemen relationship tool
+- accountability tool
+- emotional intelligence for men and boys
+- practical self-awareness tool
