@@ -314,9 +314,9 @@ const SCRIPT_TYPES = [
 const navItems = [
   { id: "checkin", label: "Check In", icon: Home },
   { id: "explore", label: "Feelings", icon: Compass },
+  { id: "report", label: "Report", icon: Sparkles },
+  { id: "shadows", label: "Shadows", icon: BookOpen },
   { id: "scripts", label: "Scripts", icon: Clipboard },
-  { id: "snapshot", label: "Snapshot", icon: Sparkles },
-  { id: "saved", label: "Saved", icon: BookOpen },
 ];
 
 function showToast(msg) {
@@ -523,12 +523,12 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) 
 }
 
 function ProgressRail({ step }) {
-  const steps = ["Context", "Body", "Emotion", "Need", "Frame"];
+  const steps = ["Context", "Body", "Feeling", "Need", "Report"];
   return (
     <div className="overflow-hidden rounded-lg border border-stone-200 bg-stone-50 p-3 md:p-4">
-      <div className="grid grid-cols-5 gap-1 md:block md:space-y-2">
+      <div className="grid grid-cols-5 gap-1">
         {steps.map((label, idx) => (
-          <div key={label} className="flex items-center gap-2 md:gap-3">
+          <div key={label} className="flex flex-col items-center gap-2 sm:flex-row sm:justify-center">
             <div
               className={cls(
                 "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black",
@@ -541,7 +541,7 @@ function ProgressRail({ step }) {
             >
               {idx < step ? <Check size={14} /> : idx + 1}
             </div>
-            <span className={cls("hidden text-sm font-semibold md:inline", idx <= step ? "text-stone-950" : "text-stone-500")}>
+            <span className={cls("hidden text-xs font-semibold sm:inline", idx <= step ? "text-stone-950" : "text-stone-500")}>
               {label}
             </span>
           </div>
@@ -563,7 +563,7 @@ function NeedBadges({ needs }) {
   );
 }
 
-function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
+function GuidedCheckIn({ rows, setLatestReport, setTab }) {
   const [step, setStep] = useState(0);
   const [audience, setAudience] = useState("adult");
   const [situationId, setSituationId] = useState(SITUATIONS[0].id);
@@ -640,7 +640,26 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
     setBodyIds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
 
-  const addCurrentToSnapshot = () => {
+  const report = {
+    core: activePath.core,
+    sub: activePath.sub,
+    specific: activePath.specific,
+    needs: inferredNeeds,
+    situation: situation.label,
+    bodySignals: selectedBody.map((item) => item.label),
+    frame: actionFrame,
+    scripts: resultScripts,
+    shadows: relevantShadows,
+    guidance: guidedPrompt,
+    createdAt: new Date().toISOString(),
+  };
+
+  const saveReport = () => {
+    setLatestReport(report);
+    showToast("Report saved");
+  };
+
+  const saveCurrentReport = () => {
     const entry = {
       core: activePath.core,
       sub: activePath.sub,
@@ -650,12 +669,8 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
       script: primaryScript,
       createdAt: new Date().toISOString(),
     };
-    setSnapshot((prev) =>
-      prev.some((item) => item.core === entry.core && item.sub === entry.sub && item.specific === entry.specific)
-        ? prev
-        : [entry, ...prev]
-    );
-    showToast("Added to snapshot");
+    setLatestReport({ ...report, ...entry });
+    showToast("Report saved");
   };
 
   const summary = [
@@ -683,7 +698,7 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
   ].join("\n");
 
   return (
-    <div className="grid min-w-0 max-w-full gap-4 overflow-hidden lg:grid-cols-[220px_minmax(0,1fr)_340px] lg:overflow-visible">
+    <div className="mx-auto grid min-w-0 max-w-3xl gap-4 overflow-hidden">
       <ProgressRail step={step} />
 
       <section className="min-w-0 max-w-full overflow-hidden rounded-lg border border-stone-200 bg-white p-4 shadow-sm md:p-6">
@@ -809,8 +824,8 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
         {step === 4 && (
           <div className="space-y-5">
             <SectionTitle
-              title="Frame and act"
-              copy="This is the point of the check-in. Turn the emotional energy into one clear, practical move."
+              title="Your report"
+              copy="This is the output of the check-in. Copy it, share it, or use it as the next conversation script."
             />
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
               <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide text-emerald-950">
@@ -900,12 +915,12 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
                 <Clipboard size={16} />
                 Copy
               </Button>
-              <Button variant="secondary" onClick={addCurrentToSnapshot}>
+              <Button variant="secondary" onClick={saveCurrentReport}>
                 <Save size={16} />
-                Save
+                Save report
               </Button>
-              <Button variant="secondary" onClick={() => setTab("scripts")}>
-                Script library
+              <Button variant="secondary" onClick={() => { saveReport(); setTab("report"); }}>
+                View report
                 <ArrowRight size={16} />
               </Button>
             </div>
@@ -932,51 +947,11 @@ function GuidedCheckIn({ rows, snapshot, setSnapshot, setTab }) {
           </Button>
         </div>
       </section>
-
-      <aside className="min-w-0 max-w-full space-y-4">
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-emerald-950">
-          <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide">
-            <Trophy size={16} />
-            Frame
-          </div>
-          <p className="mt-3 text-base font-semibold leading-7">{actionFrame}</p>
-        </div>
-        <div className="rounded-lg border border-stone-200 bg-white p-4">
-          <div className="text-sm font-black">Current read</div>
-          <div className="mt-3 text-2xl font-black">{activePath?.specific}</div>
-          <div className="text-sm text-stone-600">
-            {activePath?.core} / {activePath?.sub}
-          </div>
-          <div className="mt-4">
-            <NeedBadges needs={inferredNeeds.slice(0, 5)} />
-          </div>
-        </div>
-        <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
-          <div className="text-sm font-black text-stone-950">Mindset</div>
-          <p className="mt-2 text-sm leading-6 text-stone-700">{audienceCopy}</p>
-        </div>
-        <div className="rounded-lg border border-stone-200 bg-white p-4">
-          <div className="text-sm font-black text-stone-950">Snapshot count</div>
-          <div className="mt-1 text-3xl font-black text-stone-950">{snapshot.length}</div>
-          <p className="text-sm text-stone-600">
-            Snapshots help you see repeated emotions, repeated needs, and the patterns that need action instead of more guessing.
-          </p>
-        </div>
-        <a
-          href={CALENDAR_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-stone-950 transition hover:bg-amber-400"
-        >
-          <CalendarDays size={16} />
-          Book a session
-        </a>
-      </aside>
     </div>
   );
 }
 
-function Explore({ rows, setSnapshot }) {
+function Explore({ rows, setLatestReport }) {
   const [query, setQuery] = useState("");
   const [core, setCore] = useState("Anger");
   const [sub, setSub] = useState(Object.keys(EMOTION_DATA.Anger || {})[0]);
@@ -1019,6 +994,19 @@ function Explore({ rows, setSnapshot }) {
     "",
     ATTR_LINE,
   ].join("\n");
+  const libraryReport = {
+    core,
+    sub,
+    specific,
+    needs,
+    situation: "Feelings Library",
+    bodySignals: [],
+    frame: `You are noticing ${specific.toLowerCase()}. The needs underneath may include ${needs.join(", ")}. Use that signal to make one clean request or choose one recovery action.`,
+    scripts: SCRIPT_TYPES.map((script) => script.build({ emotion: specific, needs, situation: "Feelings Library" })),
+    shadows: getRelevantShadows({ core, needs, bodyLabels: [], situationLabel: "Feelings Library" }),
+    guidance: guidanceFor({ core, sub, specific, needs }),
+    createdAt: new Date().toISOString(),
+  };
 
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
@@ -1088,11 +1076,11 @@ function Explore({ rows, setSnapshot }) {
           <Button
             variant="secondary"
             onClick={() => {
-              setSnapshot((prev) => [{ core, sub, specific, needs, createdAt: new Date().toISOString() }, ...prev]);
-              showToast("Added to snapshot");
+              setLatestReport(libraryReport);
+              showToast("Report created");
             }}
           >
-            <Save size={16} />Save to snapshot
+            <Save size={16} />Create report
           </Button>
         </div>
       </aside>
@@ -1156,133 +1144,135 @@ function Scripts({ latest }) {
   );
 }
 
-function Snapshot({ snapshot, setSnapshot, setSaved }) {
-  const needs = Array.from(new Set(snapshot.flatMap((item) => item.needs || [])));
-  const topNeed = needs[0] || "clarity";
-  const payload = [
-    "Emotional snapshot",
-    ...snapshot.map((item) => `- ${item.core} / ${item.sub} / ${item.specific}: ${item.needs.join(", ")}`),
-    "",
-    `Converging needs: ${needs.join(", ")}`,
-    "",
-    "How to use this:",
-    "1. Look for repeated needs across different emotions.",
-    "2. Pick one need to act on today.",
-    "3. Turn that need into one clear request, boundary, repair, or recovery plan.",
-    "4. Set a follow-up so the need is not forgotten after the emotion cools down.",
-    "",
-    ATTR_LINE,
-  ].join("\n");
+function Report({ report }) {
+  const payload = report
+    ? [
+        "NeedCompass check-in report",
+        "",
+        `Situation: ${report.situation}`,
+        `Body signals: ${report.bodySignals?.join(", ") || "not selected"}`,
+        `Feeling: ${report.core} / ${report.sub} / ${report.specific}`,
+        `Needs: ${report.needs?.join(", ")}`,
+        "",
+        "Frame:",
+        report.frame,
+        "",
+        "Shadow patterns:",
+        ...(report.shadows || []).map((shadow) => `- ${shadow.label}: ${shadow.move}`),
+        "",
+        "Scripts:",
+        ...(report.scripts || []).map((script) => {
+          if (typeof script === "string") return `- ${script}`;
+          return `- ${script.label}: ${script.text}`;
+        }),
+        "",
+        "Guidance:",
+        report.guidance,
+        "",
+        ATTR_LINE,
+      ].join("\n")
+    : "";
+
+  if (!report) {
+    return (
+      <div className="mx-auto max-w-3xl rounded-lg border border-stone-200 bg-white p-6">
+        <SectionTitle
+          title="Report"
+          copy="Complete a Check In to generate a focused report with the frame, needs, shadow patterns, and scripts."
+        />
+        <Button className="mt-4" variant="primary" onClick={() => copyText("Run a Check In to create your NeedCompass report.")}>
+          <Clipboard size={16} />
+          Copy placeholder
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-4">
+    <div className="mx-auto max-w-3xl space-y-4">
       <SectionTitle
-        title="Snapshot"
-        copy="A snapshot is a pattern reader. It gathers the emotions and needs from this session so you can see what is underneath the surface and decide what needs action."
+        title="Report"
+        copy="A focused result from the check-in. Use this to copy, share, reflect, or prepare for a conversation."
       />
-      <div className="rounded-lg border border-stone-200 bg-stone-50 p-4">
-        <div className="text-sm font-black text-stone-950">What snapshots are for</div>
-        <div className="mt-3 grid gap-3 md:grid-cols-3">
-          <div className="rounded-lg border border-stone-200 bg-white p-3">
-            <div className="text-sm font-black text-stone-950">Pattern</div>
-            <p className="mt-1 text-sm leading-6 text-stone-600">
-              Notice repeated emotions, repeated situations, and repeated unmet needs.
-            </p>
-          </div>
-          <div className="rounded-lg border border-stone-200 bg-white p-3">
-            <div className="text-sm font-black text-stone-950">Priority</div>
-            <p className="mt-1 text-sm leading-6 text-stone-600">
-              Choose the need that would create the most relief or repair if it was addressed first.
-            </p>
-          </div>
-          <div className="rounded-lg border border-stone-200 bg-white p-3">
-            <div className="text-sm font-black text-stone-950">Action</div>
-            <p className="mt-1 text-sm leading-6 text-stone-600">
-              Convert the need into a request, boundary, apology, rest plan, or coaching conversation.
-            </p>
-          </div>
+      <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+        <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide text-emerald-950">
+          <Trophy size={16} />
+          Frame
+        </div>
+        <p className="mt-3 text-lg font-semibold leading-8 text-emerald-950">{report.frame}</p>
+      </div>
+      <div className="grid gap-3 md:grid-cols-2">
+        <div className="rounded-lg border border-stone-200 bg-white p-4">
+          <div className="text-sm font-black text-stone-950">Feeling and needs</div>
+          <div className="mt-2 text-2xl font-black">{report.specific}</div>
+          <div className="text-sm text-stone-600">{report.core} / {report.sub}</div>
+          <div className="mt-3"><NeedBadges needs={report.needs || []} /></div>
+        </div>
+        <div className="rounded-lg border border-stone-200 bg-white p-4">
+          <div className="text-sm font-black text-stone-950">Situation</div>
+          <p className="mt-2 text-sm leading-6 text-stone-700">{report.situation}</p>
+          <div className="mt-3 text-sm font-black text-stone-950">Body signals</div>
+          <p className="mt-1 text-sm leading-6 text-stone-700">{report.bodySignals?.join(", ") || "Not selected"}</p>
+        </div>
+      </div>
+      <div className="rounded-lg border border-stone-200 bg-white p-4">
+        <div className="text-sm font-black text-stone-950">Shadow work</div>
+        <div className="mt-3 grid gap-3">
+          {(report.shadows || []).map((shadow) => (
+            <div key={shadow.id} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
+              <div className="text-sm font-black text-stone-950">{shadow.label}</div>
+              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.signal}</p>
+              <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Move:</strong> {shadow.move}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+        <div className="text-sm font-black text-stone-950">Scripts</div>
+        <div className="mt-3 grid gap-3">
+          {(report.scripts || []).map((script, index) => {
+            const label = typeof script === "string" ? `Script ${index + 1}` : script.label;
+            const text = typeof script === "string" ? script : script.text;
+            return (
+              <div key={`${label}-${index}`} className="rounded-lg border border-amber-200 bg-white p-3">
+                <div className="text-sm font-black text-stone-950">{label}</div>
+                <p className="mt-2 text-sm leading-6 text-stone-800">{text}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className="grid gap-2 sm:grid-cols-3">
-        <Button variant="amber" disabled={!snapshot.length} onClick={() => copyText(payload)}><Clipboard size={16} />Copy</Button>
-        <Button
-          variant="secondary"
-          disabled={!snapshot.length}
-          onClick={() => {
-            const entry = { id: Date.now(), createdAt: new Date().toISOString(), items: snapshot };
-            setSaved((prev) => [entry, ...prev]);
-            showToast("Saved");
-          }}
-        >
-          <Save size={16} />Save
+        <Button variant="amber" onClick={() => copyText(payload)}><Clipboard size={16} />Copy report</Button>
+        <Button variant="secondary" onClick={() => navigator.share ? navigator.share({ title: "NeedCompass Report", text: payload }).catch(() => copyText(payload)) : copyText(payload)}>
+          <ArrowRight size={16} />Share report
         </Button>
-        <Button variant="ghost" disabled={!snapshot.length} onClick={() => setSnapshot([])}>Clear</Button>
-      </div>
-      {needs.length ? (
-        <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-            <div className="text-sm font-black">Converging unmet needs</div>
-            <div className="mt-3"><NeedBadges needs={needs} /></div>
-            <p className="mt-3 text-sm leading-6 text-stone-700">
-              Start with {topNeed}. Ask: what would it look like to protect or meet this need in the next 24 hours?
-            </p>
-          </div>
-          <div className="rounded-lg border border-stone-200 bg-white p-4">
-            <div className="text-sm font-black text-stone-950">Corrective action</div>
-            <p className="mt-2 text-sm leading-6 text-stone-700">
-              Pick one next step: make a request, set a boundary, repair your part, take recovery time, or book support if the pattern keeps repeating.
-            </p>
-            <a
-              href={CALENDAR_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-3 flex min-h-11 items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-stone-950 transition hover:bg-amber-400"
-            >
-              <CalendarDays size={16} />
-              Book support
-            </a>
-          </div>
-        </div>
-      ) : null}
-      <div className="grid gap-3">
-        {snapshot.map((item, index) => (
-          <div key={`${item.core}-${item.sub}-${item.specific}-${index}`} className="rounded-lg border border-stone-200 bg-white p-4">
-            <div className="font-black">{item.specific}</div>
-            <div className="text-sm text-stone-500">{item.core} / {item.sub}</div>
-            {item.situation ? <div className="mt-1 text-sm text-stone-600">{item.situation}</div> : null}
-            <div className="mt-3"><NeedBadges needs={item.needs} /></div>
-          </div>
-        ))}
-        {!snapshot.length ? <p className="rounded-lg border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">No snapshot items yet. Run Check In or save from Feelings Library.</p> : null}
+        <a href={CALENDAR_URL} target="_blank" rel="noreferrer" className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-stone-950 transition hover:bg-amber-400">
+          <CalendarDays size={16} />Book support
+        </a>
       </div>
     </div>
   );
 }
 
-function Saved({ saved, setSaved }) {
+function ShadowLibrary() {
   return (
-    <div className="space-y-4">
-      <SectionTitle title="Saved history" copy="A private local timeline of sessions. This stays in this browser." />
-      <div className="grid gap-3">
-        {saved.map((entry) => (
-          <div key={entry.id} className="rounded-lg border border-stone-200 bg-white p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="font-black">{new Date(entry.createdAt).toLocaleString()}</div>
-                <div className="text-sm text-stone-500">{entry.items.length} saved signals</div>
-              </div>
-              <Button variant="ghost" onClick={() => setSaved((prev) => prev.filter((item) => item.id !== entry.id))}>Delete</Button>
-            </div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {entry.items.map((item, index) => (
-                <span key={`${item.specific}-${index}`} className="rounded-full bg-stone-100 px-3 py-1 text-sm font-semibold">
-                  {item.specific}
-                </span>
-              ))}
+    <div className="mx-auto max-w-4xl space-y-4">
+      <SectionTitle
+        title="Shadow Work Library"
+        copy="Shadow patterns are common ways emotional energy moves off target. Use this library to recognize the pattern and choose a cleaner move."
+      />
+      <div className="grid gap-3 md:grid-cols-2">
+        {SHADOW_PATTERNS.map((shadow) => (
+          <div key={shadow.id} className="rounded-lg border border-stone-200 bg-white p-4">
+            <div className="text-lg font-black text-stone-950">{shadow.label}</div>
+            <p className="mt-2 text-sm leading-6 text-stone-700">{shadow.signal}</p>
+            <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+              <div className="text-sm font-black text-emerald-950">Cleaner move</div>
+              <p className="mt-1 text-sm leading-6 text-emerald-950">{shadow.move}</p>
             </div>
           </div>
         ))}
-        {!saved.length ? <p className="rounded-lg border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">No saved sessions yet.</p> : null}
       </div>
     </div>
   );
@@ -1293,22 +1283,7 @@ export default function App() {
   const [tab, setTab] = useState("checkin");
   const [checkInKey, setCheckInKey] = useState(0);
   const [themeId, setThemeId] = useState("sage");
-  const [snapshot, setSnapshot] = useState([]);
-  const [saved, setSavedState] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("ene_saved_sessions_v2") || "[]");
-    } catch {
-      return [];
-    }
-  });
-
-  const setSaved = (nextOrFn) => {
-    setSavedState((prev) => {
-      const next = typeof nextOrFn === "function" ? nextOrFn(prev) : nextOrFn;
-      localStorage.setItem("ene_saved_sessions_v2", JSON.stringify(next));
-      return next;
-    });
-  };
+  const [latestReport, setLatestReport] = useState(null);
 
   const startNewCheckIn = () => {
     setTab("checkin");
@@ -1317,11 +1292,11 @@ export default function App() {
 
   return (
     <AppShell tab={tab} setTab={setTab} onNewCheckIn={startNewCheckIn} themeId={themeId} setThemeId={setThemeId}>
-      {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} snapshot={snapshot} setSnapshot={setSnapshot} setTab={setTab} />}
-      {tab === "explore" && <Explore rows={rows} setSnapshot={setSnapshot} />}
-      {tab === "scripts" && <Scripts latest={snapshot[0]} />}
-      {tab === "snapshot" && <Snapshot snapshot={snapshot} setSnapshot={setSnapshot} setSaved={setSaved} />}
-      {tab === "saved" && <Saved saved={saved} setSaved={setSaved} />}
+      {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} setLatestReport={setLatestReport} setTab={setTab} />}
+      {tab === "explore" && <Explore rows={rows} setLatestReport={setLatestReport} />}
+      {tab === "report" && <Report report={latestReport} />}
+      {tab === "shadows" && <ShadowLibrary />}
+      {tab === "scripts" && <Scripts latest={latestReport} />}
     </AppShell>
   );
 }
