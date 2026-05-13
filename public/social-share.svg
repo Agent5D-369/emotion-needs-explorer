@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">ExploringNeeds.com social share image</title>
+  <desc id="desc">A calming green and blue social card for an emotional intelligence tool.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faf7"/>
+      <stop offset="0.55" stop-color="#eef6ef"/>
+      <stop offset="1" stop-color="#eaf3fb"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#315c3b"/>
+      <stop offset="1" stop-color="#285a78"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#17231b" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1010" cy="110" r="180" fill="#cfe1d1" opacity="0.55"/>
+  <circle cx="115" cy="555" r="180" fill="#cfe0ec" opacity="0.6"/>
+  <rect x="76" y="72" width="1048" height="486" rx="34" fill="#ffffff" filter="url(#shadow)"/>
+  <rect x="112" y="108" width="250" height="250" rx="28" fill="url(#panel)"/>
+  <path d="M154 235h46l22-72 38 145 29-83h50" fill="none" stroke="#ffffff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="410" y="167" fill="#315c3b" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="800">ExploringNeeds.com</text>
+  <text x="410" y="252" fill="#17231b" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="900">Name the feeling.</text>
+  <text x="410" y="320" fill="#17231b" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="900">Find the need.</text>
+  <text x="410" y="388" fill="#17231b" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="900">Choose the next move.</text>
+  <text x="410" y="456" fill="#5f6f64" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="600">Emotional intelligence, shadow work, repair scripts, and pattern tracking.</text>
+  <g transform="translate(410 492)">
+    <rect width="170" height="44" rx="22" fill="#edf6ee" stroke="#cfe1d1"/>
+    <text x="85" y="29" text-anchor="middle" fill="#315c3b" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800">Needs</text>
+    <rect x="188" width="170" height="44" rx="22" fill="#eef6fb" stroke="#cfe0ec"/>
+    <text x="273" y="29" text-anchor="middle" fill="#285a78" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800">Shadows</text>
+    <rect x="376" width="170" height="44" rx="22" fill="#fff3e8" stroke="#ead5c2"/>
+    <text x="461" y="29" text-anchor="middle" fill="#8c4f35" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800">Repair</text>
+  </g>
+</svg>

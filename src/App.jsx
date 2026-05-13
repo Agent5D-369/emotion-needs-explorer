@@ -34,6 +34,7 @@ const ATTR_LINE =
   "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) | ExploringNeeds.com | Rick Broider | Agent5D.com | HolisticLifeTribe.com";
 const CALENDAR_URL = "https://calendar.app.google/NQvsMN7X5evMK9Q1A";
 const PAYPAL_URL = "https://www.paypal.com/ncp/payment/PEDRQJN9PAREL";
+const AI_COACH_URL = "https://aiholisticwellnesscoach.com/";
 const REPORTS_STORAGE_KEY = "exploring_needs_reports_v1";
 
 const TRANSFORMATION_PATHS = [
@@ -570,6 +571,78 @@ const SHADOW_PATTERNS = [
     horseman: "Can lead to criticism when the rescue is not appreciated.",
     move: "Offer support without taking ownership. Ask: what is mine to carry, and what belongs to them?",
   },
+  {
+    id: "projection",
+    label: "Shadow of Projection",
+    triggers: ["Anger", "Fear", "shame", "trust", "clarity", "accountability"],
+    signal: "The mind may place an unwanted feeling, motive, or wound onto someone else before checking what is true inside.",
+    tactic: "Can look like accusing, mind reading, assuming motive, assigning intent, or treating a fear as evidence.",
+    horseman: "Can feed criticism, defensiveness, and contempt.",
+    move: "Separate what you know from what you are imagining. Say: I am noticing a story and I need to check what is true.",
+  },
+  {
+    id: "perfectionism",
+    label: "Shadow of Perfectionism",
+    triggers: ["Fear", "Sadness", "competence", "dignity", "control", "safety"],
+    signal: "The body tries to avoid shame by making mistakes feel unacceptable.",
+    tactic: "Can look like over-editing, procrastination, harsh self-judgment, impossible standards, or criticizing others first.",
+    horseman: "Often turns into criticism or defensiveness.",
+    move: "Trade perfect for repairable. Choose the next honest draft, attempt, apology, or small action.",
+  },
+  {
+    id: "entitlement",
+    label: "Shadow of Entitlement",
+    triggers: ["Anger", "Happiness", "respect", "recognition", "control", "value"],
+    signal: "A need for respect or recognition may turn into a demand for exception, access, or special treatment.",
+    tactic: "Can look like pressuring, taking, dismissing limits, ignoring consent, or treating disappointment as injustice.",
+    horseman: "Strongly linked to contempt and criticism.",
+    move: "Respect the other person's no. Make a request without assuming you are owed the answer you want.",
+  },
+  {
+    id: "compliance",
+    label: "Shadow of Compliance",
+    triggers: ["Fear", "Sadness", "belonging", "safety", "approval", "connection"],
+    signal: "The body may try to stay safe by agreeing faster than truth can speak.",
+    tactic: "Can look like automatic yes, appeasing, hiding disagreement, smiling through resentment, or becoming who others prefer.",
+    horseman: "Can later become stonewalling or criticism when resentment surfaces.",
+    move: "Pause before agreeing. Say: I need a minute to check what is true for me before I answer.",
+  },
+  {
+    id: "hyperindependence",
+    label: "Shadow of Hyper-Independence",
+    triggers: ["Fear", "Sadness", "support", "trust", "safety", "care"],
+    signal: "Support can feel dangerous, weak, or unreliable, so the body tries to carry everything alone.",
+    tactic: "Can look like refusing help, emotional isolation, over-functioning, distrust, or acting like needs are burdens.",
+    horseman: "Can become stonewalling when closeness asks for vulnerability.",
+    move: "Let one safe person support one specific thing. Ask for help that is clear, limited, and observable.",
+  },
+  {
+    id: "shamecollapse",
+    label: "Shadow of Shame Collapse",
+    triggers: ["Sadness", "Fear", "accountability", "repair", "dignity", "forgiveness"],
+    signal: "Feedback or impact may become a total identity verdict instead of a repairable behavior.",
+    tactic: "Can look like self-attack, giving up, making others comfort you, or turning accountability into your pain.",
+    horseman: "Often fuels defensiveness and stonewalling.",
+    move: "Stay with the behavior. Say: I can own this without making my shame the center.",
+  },
+  {
+    id: "envy",
+    label: "Shadow of Envy",
+    triggers: ["Sadness", "Anger", "belonging", "recognition", "security", "value"],
+    signal: "Someone else's success, attention, or closeness may feel like proof that you are losing worth or place.",
+    tactic: "Can look like comparison, subtle sabotage, dismissing wins, resentment, or trying to pull someone down.",
+    horseman: "Often shows up as contempt or criticism.",
+    move: "Name the longing underneath the comparison. Turn envy into a request, goal, or grief process.",
+  },
+  {
+    id: "scorekeeping",
+    label: "Shadow of Scorekeeping",
+    triggers: ["Anger", "Sadness", "fairness", "reciprocity", "acknowledgment", "support"],
+    signal: "A real need for fairness may turn into a ledger used to punish, withhold, or prove superiority.",
+    tactic: "Can look like tallying, resentment, transactional care, delayed punishment, or using past effort as a weapon.",
+    horseman: "Often becomes criticism, defensiveness, and contempt.",
+    move: "Ask for the current repair or agreement. Do not make the whole relationship stand trial at once.",
+  },
 ];
 
 const SHADOW_HEALING = {
@@ -657,11 +730,106 @@ const SHADOW_HEALING = {
     repair: "Say: I stepped into fixing instead of respecting your agency and mine. I can support without taking over.",
     doNot: "Do not over-function, tolerate harm, give unsolicited solutions, or call control care.",
   },
+  projection: {
+    wound: "Fear that your own hurt, shame, or motive will be too hard to face directly.",
+    need: "Clarity, self-honesty, safety, and reality testing.",
+    practice: "Write: what I know, what I fear, what I am adding. Ask one clean question before reacting.",
+    repair: "Say: I put a story on you before checking what was true. I want to separate my fear from your actual behavior.",
+    doNot: "Do not accuse, assign motive, diagnose, or punish someone for an unverified interpretation.",
+  },
+  perfectionism: {
+    wound: "Fear that mistakes mean rejection, humiliation, or proof that you are not enough.",
+    need: "Competence, dignity, encouragement, and repairable progress.",
+    practice: "Choose the smallest honest action that can be improved after it exists.",
+    repair: "Say: I made this about perfect performance. I am returning to learning, repair, and the next usable step.",
+    doNot: "Do not delay forever, attack yourself, attack others, or use standards as a shield against vulnerability.",
+  },
+  entitlement: {
+    wound: "Fear that not getting what you want means disrespect, invisibility, or loss of status.",
+    need: "Respect, recognition, agency, and consent-based connection.",
+    practice: "Make the request once. Let the other person have a real no without punishment.",
+    repair: "Say: I treated my want like an entitlement. I am respecting your choice and making a cleaner request.",
+    doNot: "Do not pressure, corner, guilt, punish, demand access, or ignore consent and limits.",
+  },
+  compliance: {
+    wound: "Fear that truth will cost safety, belonging, protection, or approval.",
+    need: "Autonomy, safety, honest connection, and enough time to answer truthfully.",
+    practice: "Before saying yes, pause and ask your body if resentment is already forming.",
+    repair: "Say: I agreed before I checked my truth. I need to correct that now instead of building resentment.",
+    doNot: "Do not abandon your truth, outsource your choices, or confuse appeasement with peace.",
+  },
+  hyperindependence: {
+    wound: "Support has felt unsafe, unreliable, humiliating, or conditional.",
+    need: "Trust, support, care, and relationships that do not punish need.",
+    practice: "Ask one safe person for one specific form of help this week.",
+    repair: "Say: I acted like needing support was a problem. I am practicing asking clearly instead of disappearing into self-reliance.",
+    doNot: "Do not isolate, refuse all help, shame your own needs, or call avoidance strength.",
+  },
+  shamecollapse: {
+    wound: "Fear that accountability means you are bad, unlovable, or beyond repair.",
+    need: "Dignity, forgiveness, repair, and behavior-level ownership.",
+    practice: "Name the specific behavior and impact. Keep the focus there until repair is clear.",
+    repair: "Say: I collapsed into shame instead of staying with my impact. I am ready to name the behavior and repair it.",
+    doNot: "Do not make others comfort you, disappear, self-attack, or use shame to avoid changed behavior.",
+  },
+  envy: {
+    wound: "Fear that someone else's good means there is less worth, attention, love, or possibility for you.",
+    need: "Recognition, belonging, security, grief, and permission to want.",
+    practice: "Translate comparison into longing. Ask what desire, grief, or goal the envy is revealing.",
+    repair: "Say: I let comparison turn into resentment. I am naming what I want without taking away from you.",
+    doNot: "Do not diminish, sabotage, mock, compete for worth, or punish someone for having what you want.",
+  },
+  scorekeeping: {
+    wound: "Fear that effort will never be seen unless every imbalance is recorded and used as proof.",
+    need: "Fairness, reciprocity, acknowledgment, and shared responsibility.",
+    practice: "Ask for one current agreement. Save the bigger pattern for a calm repair conversation.",
+    repair: "Say: I turned this into a ledger. I need acknowledgment and a clear agreement going forward.",
+    doNot: "Do not weaponize old effort, withhold care as punishment, or put the entire relationship on trial in one moment.",
+  },
 };
 
 function enrichShadow(shadow) {
   return { ...shadow, ...(SHADOW_HEALING[shadow.id] || {}) };
 }
+
+const SHADOW_CATEGORIES = [
+  {
+    id: "all",
+    label: "All",
+    description: "Every shadow pattern in the library.",
+    shadowIds: SHADOW_PATTERNS.map((shadow) => shadow.id),
+  },
+  {
+    id: "power",
+    label: "Power and control",
+    description: "Patterns that try to force certainty, status, compliance, or victory.",
+    shadowIds: ["control", "attack", "grandiosity", "entitlement", "scorekeeping"],
+  },
+  {
+    id: "avoidance",
+    label: "Avoidance and shutdown",
+    description: "Patterns that leave the moment, numb the body, or hide from repair.",
+    shadowIds: ["withdrawal", "numbing", "perfectionism", "hyperindependence", "story"],
+  },
+  {
+    id: "accountability",
+    label: "Accountability distortions",
+    description: "Patterns that dodge impact, distort reality, or collapse under feedback.",
+    shadowIds: ["darvo", "gaslight", "shamecollapse", "projection"],
+  },
+  {
+    id: "codependent",
+    label: "Codependent survival",
+    description: "Patterns that trade truth, boundaries, or agency for safety and closeness.",
+    shadowIds: ["approval", "jade", "rescue", "compliance"],
+  },
+  {
+    id: "identity",
+    label: "Identity wounds",
+    description: "Patterns shaped by shame, comparison, helplessness, and insecure worth.",
+    shadowIds: ["victim", "envy", "projection", "perfectionism", "shamecollapse"],
+  },
+];
 
 function getRelevantShadows({ core, needs, bodyLabels, situationLabel }) {
   const signals = [core, situationLabel, ...needs, ...bodyLabels].filter(Boolean).map((item) => item.toLowerCase());
@@ -838,7 +1006,16 @@ function Button({ children, onClick, variant = "primary", className = "", disabl
 
 function SupportActions({ className = "" }) {
   return (
-    <div className={cls("grid gap-2 sm:grid-cols-2", className)}>
+    <div className={cls("grid gap-2 sm:grid-cols-3", className)}>
+      <a
+        href={AI_COACH_URL}
+        target="_blank"
+        rel="noreferrer"
+        className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#7c3aed] px-4 text-sm font-black text-white ring-1 ring-[#ddd6fe] transition hover:bg-[#6d28d9]"
+      >
+        <MessageSquareText size={16} />
+        Talk about it now
+      </a>
       <a
         href={PAYPAL_URL}
         target="_blank"
@@ -2130,43 +2307,159 @@ function Reports({ reports }) {
 }
 
 function ShadowLibrary() {
+  const [query, setQuery] = useState("");
+  const [categoryId, setCategoryId] = useState("all");
+  const [selectedId, setSelectedId] = useState(SHADOW_PATTERNS[0].id);
+  const enriched = SHADOW_PATTERNS.map(enrichShadow);
+  const category = SHADOW_CATEGORIES.find((item) => item.id === categoryId) || SHADOW_CATEGORIES[0];
+  const normalizedQuery = query.trim().toLowerCase();
+  const filtered = enriched.filter((shadow) => {
+    const inCategory = category.id === "all" || category.shadowIds.includes(shadow.id);
+    const haystack = [
+      shadow.label,
+      shadow.signal,
+      shadow.tactic,
+      shadow.horseman,
+      shadow.move,
+      shadow.wound,
+      shadow.need,
+      shadow.practice,
+      shadow.repair,
+      shadow.doNot,
+    ].join(" ").toLowerCase();
+    return inCategory && (!normalizedQuery || haystack.includes(normalizedQuery));
+  });
+  const selectedShadow =
+    filtered.find((shadow) => shadow.id === selectedId) ||
+    enriched.find((shadow) => shadow.id === selectedId) ||
+    filtered[0] ||
+    enriched[0];
+  const repairSteps = selectedShadow
+    ? [
+        ["1. Notice the signal", selectedShadow.signal],
+        ["2. Name the hidden need", selectedShadow.need],
+        ["3. Interrupt the pattern", selectedShadow.practice],
+        ["4. Repair with words", selectedShadow.repair],
+        ["5. Guard the boundary", selectedShadow.doNot],
+      ]
+    : [];
+
   return (
-    <div className="mx-auto max-w-4xl space-y-4">
+    <div className="mx-auto max-w-5xl space-y-4">
       <SectionTitle
         title="Shadow Work Library"
-        copy="Shadow patterns are common ways emotional energy moves off target. Use this library to recognize the pattern and choose a cleaner move."
+        copy="Search by pattern, tactic, wound, need, or repair move. Pick one shadow and work the repair path one step at a time."
       />
-      <div className="grid gap-3 md:grid-cols-2">
-        {SHADOW_PATTERNS.map(enrichShadow).map((shadow) => (
-          <div key={shadow.id} className="rounded-lg border border-stone-200 bg-white p-4">
-            <div className="text-lg font-black text-stone-950">{shadow.label}</div>
-            <p className="mt-2 text-sm leading-6 text-stone-700">{shadow.signal}</p>
-            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
-              <div className="text-sm font-black text-stone-950">Core wound</div>
-              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.wound}</p>
-            </div>
-            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
-              <div className="text-sm font-black text-stone-950">Common pattern</div>
-              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.tactic}</p>
-            </div>
-            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
-              <div className="text-sm font-black text-stone-950">Four Horsemen link</div>
-              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.horseman}</p>
-            </div>
-            <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
-              <div className="text-sm font-black text-emerald-950">Self-healing practice</div>
-              <p className="mt-1 text-sm leading-6 text-emerald-950">{shadow.practice}</p>
-            </div>
-            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
-              <div className="text-sm font-black text-stone-950">Repair sentence</div>
-              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.repair}</p>
-            </div>
-            <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
-              <div className="text-sm font-black text-stone-950">Do not</div>
-              <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.doNot}</p>
-            </div>
-          </div>
+
+      <div className="rounded-lg border border-stone-200 bg-white p-3">
+        <label className="text-sm font-black text-stone-950" htmlFor="shadow-search">Find a shadow pattern</label>
+        <div className="relative mt-2">
+          <Search className="absolute left-3 top-3 text-stone-400" size={18} />
+          <input
+            id="shadow-search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search control, DARVO, shame, attack, repair..."
+            className="h-11 w-full rounded-lg border border-stone-200 bg-white pl-10 pr-3 text-sm text-stone-950 outline-none focus:border-emerald-800"
+          />
+        </div>
+      </div>
+
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {SHADOW_CATEGORIES.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => {
+              setCategoryId(item.id);
+              const first = enriched.find((shadow) => item.id === "all" || item.shadowIds.includes(shadow.id));
+              if (first) setSelectedId(first.id);
+            }}
+            className={cls(
+              "min-h-11 shrink-0 rounded-lg border px-3 text-left text-sm font-bold transition",
+              categoryId === item.id ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-white text-stone-800 hover:border-stone-400"
+            )}
+          >
+            {item.label}
+          </button>
         ))}
+      </div>
+
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-stone-700">
+        <strong>{category.label}:</strong> {category.description}
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-[minmax(240px,320px)_minmax(0,1fr)]">
+        <aside className="space-y-2">
+          <div className="text-xs font-black uppercase tracking-wide text-stone-500">{filtered.length} patterns</div>
+          {filtered.map((shadow) => (
+            <button
+              key={shadow.id}
+              onClick={() => setSelectedId(shadow.id)}
+              className={cls(
+                "w-full rounded-lg border p-3 text-left transition",
+                selectedShadow?.id === shadow.id ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-white text-stone-800 hover:border-stone-400"
+              )}
+            >
+              <div className="text-sm font-black">{shadow.label}</div>
+              <div className={cls("mt-1 line-clamp-2 text-xs leading-5", selectedShadow?.id === shadow.id ? "text-stone-100" : "text-stone-500")}>
+                {shadow.tactic}
+              </div>
+            </button>
+          ))}
+          {!filtered.length ? (
+            <div className="rounded-lg border border-stone-200 bg-white p-4 text-sm leading-6 text-stone-700">
+              No shadow patterns match that search. Try control, shame, repair, JADE, or shutdown.
+            </div>
+          ) : null}
+        </aside>
+
+        {selectedShadow ? (
+          <section className="rounded-lg border border-stone-200 bg-white p-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h3 className="text-2xl font-black text-stone-950">{selectedShadow.label}</h3>
+                <p className="mt-2 text-sm leading-6 text-stone-700">{selectedShadow.signal}</p>
+              </div>
+              <Button variant="secondary" onClick={() => copyText(`${selectedShadow.label}\n${selectedShadow.repair}\n\n${ATTR_LINE}`)}>
+                <Clipboard size={16} />
+                Copy repair
+              </Button>
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
+                <div className="text-sm font-black text-stone-950">Core wound</div>
+                <p className="mt-1 text-sm leading-6 text-stone-700">{selectedShadow.wound}</p>
+              </div>
+              <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
+                <div className="text-sm font-black text-stone-950">Common pattern</div>
+                <p className="mt-1 text-sm leading-6 text-stone-700">{selectedShadow.tactic}</p>
+              </div>
+              <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
+                <div className="text-sm font-black text-stone-950">Four Horsemen link</div>
+                <p className="mt-1 text-sm leading-6 text-stone-700">{selectedShadow.horseman}</p>
+              </div>
+              <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
+                <div className="text-sm font-black text-stone-950">Hidden need</div>
+                <p className="mt-1 text-sm leading-6 text-stone-700">{selectedShadow.need}</p>
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+              <div className="text-sm font-black text-emerald-950">Practical repair path</div>
+              <div className="mt-3 grid gap-2">
+                {repairSteps.map(([label, copy]) => (
+                  <div key={label} className="rounded-lg border border-emerald-200 bg-white p-3">
+                    <div className="text-sm font-black text-stone-950">{label}</div>
+                    <p className="mt-1 text-sm leading-6 text-stone-700">{copy}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <SupportActions className="mt-4" />
+          </section>
+        ) : null}
       </div>
     </div>
   );
