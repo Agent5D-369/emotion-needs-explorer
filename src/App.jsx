@@ -9,8 +9,10 @@ import {
   Clipboard,
   Compass,
   HeartHandshake,
+  HelpCircle,
   Home,
   MessageSquareText,
+  PlayCircle,
   RefreshCw,
   Save,
   Search,
@@ -23,8 +25,13 @@ import {
 import { EMOTION_DATA, toRows } from "./emotionData.js";
 import { guidanceFor } from "./prompts.js";
 
+const APP_NAME = "ExploringNeeds.com";
+const APP_TITLE = "Exploring Needs";
+const APP_TAGLINE = "Name the feeling. Find the need. Choose the next right move.";
+const APP_SUBTITLE =
+  "A practical emotional intelligence and shadow work tool for men, boys, families, partners, coaches, and mentors.";
 const ATTR_LINE =
-  "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) · Rick Broider · Agent5D.com · HolisticLifeTribe.com";
+  "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) | ExploringNeeds.com | Rick Broider | Agent5D.com | HolisticLifeTribe.com";
 const CALENDAR_URL = "https://calendar.app.google/NQvsMN7X5evMK9Q1A";
 
 const THEMES = [
@@ -637,11 +644,13 @@ const SCRIPT_TYPES = [
 ];
 
 const navItems = [
+  { id: "intro", label: "Start", icon: PlayCircle },
   { id: "checkin", label: "Check In", icon: Home },
-  { id: "explore", label: "Feelings", icon: Compass },
   { id: "report", label: "Report", icon: Sparkles },
+  { id: "explore", label: "Feelings", icon: Compass },
   { id: "shadows", label: "Shadows", icon: BookOpen },
   { id: "scripts", label: "Scripts", icon: Clipboard },
+  { id: "help", label: "Help", icon: HelpCircle },
 ];
 
 function showToast(msg) {
@@ -777,8 +786,8 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) 
               <Activity size={20} />
             </div>
             <div>
-              <div className="text-sm font-black uppercase tracking-wide">NeedCompass</div>
-              <div className={cls("text-xs", theme.muted)}>Name it. Decode it. Move well.</div>
+              <div className="text-sm font-black uppercase tracking-wide">{APP_NAME}</div>
+              <div className={cls("text-xs", theme.muted)}>{APP_TAGLINE}</div>
             </div>
           </div>
           <nav className="space-y-1">
@@ -810,10 +819,10 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) 
             <div className="flex items-center justify-between gap-3">
               <div>
                 <h1 className="max-w-[19rem] text-base font-black tracking-normal sm:max-w-none sm:text-lg md:text-2xl">
-                  Emotion → Unmet Needs Explorer
+                  {APP_TITLE}
                 </h1>
                 <p className={cls("hidden text-sm md:block", theme.muted)}>
-                  A practical emotional intelligence tool for men, boys, fathers, coaches, and mentors.
+                  {APP_SUBTITLE}
                 </p>
               </div>
               <Button variant="secondary" className="hidden md:inline-flex" onClick={onNewCheckIn}>
@@ -827,13 +836,13 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) 
       </div>
 
       <nav className={cls("fixed inset-x-0 bottom-0 z-30 border-t md:hidden", theme.surface, theme.border)}>
-        <div className="grid w-full max-w-full" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
+        <div className="flex w-full max-w-full overflow-x-auto px-1">
           {navItems.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setTab(id)}
               className={cls(
-                "flex min-h-16 min-w-0 flex-col items-center justify-center gap-1 text-[10px] font-bold min-[360px]:text-[11px]",
+                "flex min-h-16 min-w-[72px] flex-col items-center justify-center gap-1 text-[10px] font-bold min-[360px]:text-[11px]",
                 tab === id ? "text-emerald-800" : theme.muted
               )}
             >
@@ -884,6 +893,89 @@ function NeedBadges({ needs }) {
           {need}
         </span>
       ))}
+    </div>
+  );
+}
+
+function Intro({ setTab }) {
+  const steps = [
+    {
+      title: "Start with who is using it",
+      copy: "The app adapts its language for a man, woman, teen, parent, partner, coach, or mentor.",
+    },
+    {
+      title: "Choose the kind of work",
+      copy: "Use Quick Check In for speed, Relationship Repair for conflict, Shadow Work for patterns, Accountability for ownership, or Support Someone when guiding another person.",
+    },
+    {
+      title: "Let the body narrow the map",
+      copy: "Body signals help translate a charged moment into a likely feeling and need without forcing perfect words too early.",
+    },
+    {
+      title: "Use the report",
+      copy: "The final report gives the frame, needs, shadows to watch, scripts, repair language, and one practical next move.",
+    },
+  ];
+  const taglines = [
+    "From reaction to repair.",
+    "Decode the emotion. Meet the need. Move with integrity.",
+    "A practical map from charged emotion to clear action.",
+  ];
+
+  return (
+    <div className="mx-auto max-w-4xl space-y-4">
+      <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 md:p-6">
+        <div className="text-sm font-black uppercase tracking-wide text-emerald-950">{APP_NAME}</div>
+        <h2 className="mt-2 text-2xl font-black tracking-normal text-emerald-950 md:text-4xl">{APP_TAGLINE}</h2>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-emerald-950 md:text-base">
+          {APP_SUBTITLE} It helps turn emotional charge into a usable need, a practical request, a repair move, or a cleaner boundary.
+        </p>
+        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+          <Button variant="primary" onClick={() => setTab("checkin")}>
+            <PlayCircle size={16} />
+            Start guided check-in
+          </Button>
+          <Button variant="secondary" onClick={() => setTab("help")}>
+            <HelpCircle size={16} />
+            Read help wiki
+          </Button>
+        </div>
+      </section>
+
+      <section className="grid gap-3 md:grid-cols-3">
+        {taglines.map((tagline) => (
+          <div key={tagline} className="rounded-lg border border-stone-200 bg-white p-4">
+            <div className="text-sm font-black text-stone-950">{tagline}</div>
+          </div>
+        ))}
+      </section>
+
+      <section className="rounded-lg border border-stone-200 bg-white p-4 md:p-5">
+        <SectionTitle
+          title="How to use it"
+          copy="Move one screen at a time. Choose the closest fit. The goal is not a perfect label. The goal is a better next move."
+        />
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          {steps.map((step, index) => (
+            <div key={step.title} className="rounded-lg border border-stone-200 bg-stone-50 p-4">
+              <div className="flex items-center gap-3">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-800 text-sm font-black text-white">
+                  {index + 1}
+                </span>
+                <div className="text-sm font-black text-stone-950">{step.title}</div>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-stone-700">{step.copy}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="rounded-lg border border-amber-200 bg-amber-50 p-4 md:p-5">
+        <div className="text-sm font-black text-stone-950">Best use case</div>
+        <p className="mt-2 text-sm leading-6 text-stone-700">
+          Use it before a hard conversation, after a triggering moment, when you feel stuck in blame or shutdown, or when you want to support someone without controlling them.
+        </p>
+      </section>
     </div>
   );
 }
@@ -1554,7 +1646,7 @@ function Scripts({ latest }) {
 function Report({ report }) {
   const payload = report
     ? [
-        "NeedCompass check-in report",
+        `${APP_TITLE} check-in report`,
         "",
         `Who: ${report.audience || "Not selected"}`,
         `Mode: ${report.mode || "Check In"}`,
@@ -1590,9 +1682,9 @@ function Report({ report }) {
       <div className="mx-auto max-w-3xl rounded-lg border border-stone-200 bg-white p-6">
         <SectionTitle
           title="Report"
-          copy="Complete a Check In to generate a focused report with the frame, needs, shadow patterns, and scripts."
+          copy="Complete a Check In to generate a focused Exploring Needs report with the frame, needs, shadow patterns, and scripts."
         />
-        <Button className="mt-4" variant="primary" onClick={() => copyText("Run a Check In to create your NeedCompass report.")}>
+        <Button className="mt-4" variant="primary" onClick={() => copyText("Run a Check In to create your Exploring Needs report.")}>
           <Clipboard size={16} />
           Copy placeholder
         </Button>
@@ -1670,7 +1762,7 @@ function Report({ report }) {
       </div>
       <div className="grid gap-2 sm:grid-cols-3">
         <Button variant="amber" onClick={() => copyText(payload)}><Clipboard size={16} />Copy report</Button>
-        <Button variant="secondary" onClick={() => navigator.share ? navigator.share({ title: "NeedCompass Report", text: payload }).catch(() => copyText(payload)) : copyText(payload)}>
+        <Button variant="secondary" onClick={() => navigator.share ? navigator.share({ title: "Exploring Needs Report", text: payload }).catch(() => copyText(payload)) : copyText(payload)}>
           <ArrowRight size={16} />Share report
         </Button>
         <a href={CALENDAR_URL} target="_blank" rel="noreferrer" className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 text-sm font-semibold text-stone-950 transition hover:bg-amber-400">
@@ -1724,9 +1816,94 @@ function ShadowLibrary() {
   );
 }
 
+function HelpWiki({ setTab }) {
+  const topics = [
+    {
+      title: "What this is",
+      body: "ExploringNeeds.com is a guided emotional intelligence tool. It helps you move from a charged feeling into the unmet need, shadow pattern, repair language, and practical next action.",
+    },
+    {
+      title: "What it is not",
+      body: "It is not a diagnosis, a replacement for therapy, or a tool for labeling someone else. Use it to understand your own signal, choose cleaner action, and prepare for honest conversation.",
+    },
+    {
+      title: "What a need means",
+      body: "A need is the human value underneath the emotion. Examples include respect, safety, clarity, support, dignity, repair, autonomy, connection, rest, and reassurance.",
+    },
+    {
+      title: "How the check-in works",
+      body: "The wizard asks who is using it, what kind of work is needed, what happened, what the body did, which feeling fits, and which needs are active. The final report turns that into action.",
+    },
+    {
+      title: "How to use the report",
+      body: "Read the frame first. Then choose one corrective action, one script, and one shadow pattern to watch. Copy or share the report when it helps you stay clear in a conversation.",
+    },
+    {
+      title: "What shadow work means",
+      body: "A shadow is a protective pattern that can move emotional energy off target. Examples include control, withdrawal, attack, approval seeking, DARVO, JADE, rescue, grandiosity, and reality distortion.",
+    },
+    {
+      title: "Four Horsemen",
+      body: "Criticism, contempt, defensiveness, and stonewalling are warning signs in relationships. The shadow guidance points out where these patterns may be entering the moment.",
+    },
+    {
+      title: "DARVO and JADE",
+      body: "DARVO means deny, attack, reverse victim and offender. JADE means justify, argue, defend, explain. Both can keep people stuck when accountability or boundaries are needed.",
+    },
+    {
+      title: "When to slow down",
+      body: "If your body is hot, numb, shaky, tight, or ready to attack, regulate before speaking. A better script lands after your nervous system has enough room to choose.",
+    },
+    {
+      title: "When to get support",
+      body: "Book support when patterns repeat, conflict escalates, reality feels confusing, or you need help turning insight into consistent action.",
+    },
+  ];
+
+  const quickLinks = [
+    { label: "Run a check-in", tab: "checkin" },
+    { label: "Read latest report", tab: "report" },
+    { label: "Browse feelings", tab: "explore" },
+    { label: "Study shadows", tab: "shadows" },
+  ];
+
+  return (
+    <div className="mx-auto max-w-4xl space-y-4">
+      <SectionTitle
+        title="Help Wiki"
+        copy="A practical guide to the concepts inside ExploringNeeds.com and how to use the tool without getting lost."
+      />
+
+      <div className="grid gap-2 sm:grid-cols-4">
+        {quickLinks.map((item) => (
+          <Button key={item.label} variant="secondary" onClick={() => setTab(item.tab)}>
+            {item.label}
+          </Button>
+        ))}
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-2">
+        {topics.map((topic) => (
+          <article key={topic.title} className="rounded-lg border border-stone-200 bg-white p-4">
+            <h3 className="text-base font-black text-stone-950">{topic.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-stone-700">{topic.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+        <div className="text-sm font-black text-emerald-950">Simple operating rule</div>
+        <p className="mt-2 text-sm leading-6 text-emerald-950">
+          Name what happened, notice the body, identify the feeling, find the need, watch the shadow, choose one clean move.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const rows = useMemo(() => toRows(), []);
-  const [tab, setTab] = useState("checkin");
+  const [tab, setTab] = useState("intro");
   const [checkInKey, setCheckInKey] = useState(0);
   const [themeId, setThemeId] = useState("sage");
   const [latestReport, setLatestReport] = useState(null);
@@ -1738,11 +1915,13 @@ export default function App() {
 
   return (
     <AppShell tab={tab} setTab={setTab} onNewCheckIn={startNewCheckIn} themeId={themeId} setThemeId={setThemeId}>
+      {tab === "intro" && <Intro setTab={setTab} />}
       {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} setLatestReport={setLatestReport} setTab={setTab} />}
       {tab === "explore" && <Explore rows={rows} setLatestReport={setLatestReport} />}
       {tab === "report" && <Report report={latestReport} />}
       {tab === "shadows" && <ShadowLibrary />}
       {tab === "scripts" && <Scripts latest={latestReport} />}
+      {tab === "help" && <HelpWiki setTab={setTab} />}
     </AppShell>
   );
 }
