@@ -107,7 +107,7 @@ const TEXT_PATTERN_RULES = [
   {
     id: "criticism",
     label: "Criticism risk",
-    terms: ["always", "never", "what is wrong with you", "you are so", "you only", "you make me"],
+    terms: ["always", "never", "what is wrong with you", "you are so", "you only", "you make me", "you need to", "you have to"],
     pattern: "This may turn a specific behavior into a character judgment.",
     repair: "Name the specific behavior, the impact, and one request.",
   },
@@ -145,6 +145,13 @@ const TEXT_PATTERN_RULES = [
     terms: ["because", "let me explain", "you do not understand", "the reason is", "i had to"],
     pattern: "This may justify, argue, defend, or explain when a clean boundary or repair would work better.",
     repair: "Shorten the message. Lead with need, request, or accountability.",
+  },
+  {
+    id: "clean",
+    label: "No major red flag",
+    terms: [],
+    pattern: "This draft does not show an obvious attack, defense, shutdown, DARVO, JADE, or contempt pattern.",
+    repair: "Make it even cleaner by naming the need and asking for one specific behavior.",
   },
 ];
 
@@ -1059,7 +1066,7 @@ function analyzeTextDraft(draft) {
   }
   const normalized = draft.toLowerCase();
   const matches = TEXT_PATTERN_RULES.filter((rule) => rule.terms.some((term) => normalized.includes(term)));
-  return matches.length ? matches : [TEXT_PATTERN_RULES.find((rule) => rule.id === "jade")];
+  return matches.length ? matches : [TEXT_PATTERN_RULES.find((rule) => rule.id === "clean")];
 }
 
 function firstSentence(text) {
@@ -1068,15 +1075,35 @@ function firstSentence(text) {
   return cleaned.split(/[.!?]/)[0].slice(0, 130) || cleaned.slice(0, 130);
 }
 
+function inferBehaviorRequest(text) {
+  const cleaned = firstSentence(text)
+    .replace(/^(can|could|would)\s+you\s+(please\s+)?/i, "")
+    .replace(/^please\s+/i, "")
+    .replace(/^you\s+(need|have)\s+to\s+/i, "")
+    .replace(/^stop\s+/i, "stop ");
+  const lower = cleaned.toLowerCase();
+  if (lower.includes("yell") || lower.includes("scream") || lower.includes("raise your voice")) {
+    return "lower your voice while we talk";
+  }
+  if (lower.includes("interrupt")) {
+    return "let me finish before responding";
+  }
+  if (lower.includes("call me") || lower.includes("insult")) {
+    return "speak to the issue without insults";
+  }
+  if (cleaned && cleaned !== "what happened") return cleaned;
+  return "name one specific next step";
+}
+
 function buildTextRewrite({ draft, goal, need, tone }) {
-  const issue = firstSentence(draft);
+  const behavior = inferBehaviorRequest(draft);
   const needText = need || "clarity";
   const toneLine = tone === "firm" ? "firm and respectful" : tone === "warm" ? "warm and direct" : "calm and clear";
   const options = {
     pause: `I want to handle this well. I am activated and need ${needText}. I am going to pause for a bit, then come back when I can be ${toneLine}.`,
-    request: `When ${issue}, I felt activated because I need ${needText}. Could we focus on one specific next step that would help repair this?`,
+    request: `I want to talk this through, and I need ${needText}. Could you ${behavior} so we can stay clear?`,
     repair: `I do not like how I was about to say this. My real need is ${needText}. I want to own my part, slow down, and talk about the impact without attacking you.`,
-    boundary: `I want this conversation to stay respectful. I need ${needText}. If it turns into insults, blame, or pressure, I am going to pause and return when we can talk clearly.`,
+    boundary: `I want this conversation to stay respectful. I need ${needText}. If we cannot ${behavior}, I am going to pause and return when we can talk clearly.`,
   };
   return options[goal] || options.request;
 }
@@ -1525,7 +1552,7 @@ function BeforeTextTool({ setTab }) {
   ].join("\n");
   const needs = ["respect", "clarity", "repair", "safety", "dignity", "connection", "space", "accountability"];
   const goals = [
-    { id: "request", label: "Make a request" },
+    { id: "request", label: "Ask cleanly" },
     { id: "repair", label: "Repair my part" },
     { id: "boundary", label: "Set a boundary" },
     { id: "pause", label: "Pause safely" },
