@@ -56,7 +56,6 @@ const I18N = {
     nav: {
       intro: "Start",
       checkin: "Check In",
-      text: "Before Text",
       reset: "Reset",
       paths: "Paths",
       explore: "Feelings",
@@ -75,7 +74,6 @@ const I18N = {
       title: "Turn the reaction into a repair plan.",
       copy: "Use a guided check-in to name the feeling, find the unmet need, spot the shadow pattern, and choose one clean next move.",
       start: "Start guided check-in",
-      beforeText: "Before you text them",
       shadowFinder: "Shadow finder",
       reset: "90-second reset",
       help: "Read help wiki",
@@ -105,43 +103,6 @@ const I18N = {
         "Emotional intelligence training for men and boys",
       ],
     },
-    textTool: {
-      eyebrow: "Before you text them",
-      title: "Turn the draft into a clean message.",
-      copy: "Paste what you want to send. This checks for attack, defense, shutdown, DARVO, JADE, and contempt, then gives you a message that protects the need without creating more repair work.",
-      draftLabel: "What were you about to send?",
-      draftPlaceholder: "Paste the text here. Nothing is sent anywhere.",
-      privateNote: "Private in this browser. The tool rewrites locally from patterns and templates.",
-      goalTitle: "What is the clean goal?",
-      goals: {
-        request: "Ask cleanly",
-        repair: "Repair my part",
-        boundary: "Set a boundary",
-        pause: "Pause safely",
-      },
-      needTitle: "Main need",
-      toneTitle: "Tone",
-      tones: { calm: "Calm", warm: "Warm", firm: "Firm" },
-      patternTitle: "Pattern check",
-      cleanerMove: "Cleaner move:",
-      cleanerTitle: "Cleaner version",
-      copyClean: "Copy clean text",
-      copyFull: "Copy full check",
-      activatedTitle: "If you are too activated",
-      activatedCopy: "Do not send yet. Regulate first, then choose one clear message.",
-      reset: "90-second reset",
-      shareTitle: "Before You Text Them",
-      needs: {
-        respect: "Respect",
-        clarity: "Clarity",
-        repair: "Repair",
-        safety: "Safety",
-        dignity: "Dignity",
-        connection: "Connection",
-        space: "Space",
-        accountability: "Accountability",
-      },
-    },
   },
   es: {
     appTitle: "Kit de Inteligencia Emocional",
@@ -153,7 +114,6 @@ const I18N = {
     nav: {
       intro: "Inicio",
       checkin: "Check In",
-      text: "Antes de Enviar",
       reset: "Reset",
       paths: "Caminos",
       explore: "Emociones",
@@ -172,7 +132,6 @@ const I18N = {
       title: "Convierte la reacción en un plan de reparación.",
       copy: "Usa un check-in guiado para nombrar la emoción, encontrar la necesidad no atendida, detectar el patrón de sombra y elegir un siguiente movimiento limpio.",
       start: "Iniciar check-in guiado",
-      beforeText: "Antes de enviar",
       shadowFinder: "Buscar sombra",
       reset: "Reset de 90 segundos",
       help: "Leer la guía",
@@ -201,43 +160,6 @@ const I18N = {
         "Conciencia de los Cuatro Jinetes en relaciones",
         "Entrenamiento de inteligencia emocional para hombres y chicos",
       ],
-    },
-    textTool: {
-      eyebrow: "Antes de enviar",
-      title: "Convierte el borrador en un mensaje limpio.",
-      copy: "Pega lo que quieres enviar. Esto revisa ataque, defensa, cierre, DARVO, JADE y desprecio, y luego te da un mensaje que protege la necesidad sin crear más trabajo de reparación.",
-      draftLabel: "¿Qué estabas por enviar?",
-      draftPlaceholder: "Pega el texto aquí. Nada se envía a ningún lugar.",
-      privateNote: "Privado en este navegador. La herramienta reescribe localmente con patrones y plantillas.",
-      goalTitle: "¿Cuál es el objetivo limpio?",
-      goals: {
-        request: "Pedir con claridad",
-        repair: "Reparar mi parte",
-        boundary: "Poner un límite",
-        pause: "Pausar con cuidado",
-      },
-      needTitle: "Necesidad principal",
-      toneTitle: "Tono",
-      tones: { calm: "Calmo", warm: "Cálido", firm: "Firme" },
-      patternTitle: "Revisión del patrón",
-      cleanerMove: "Movimiento más limpio:",
-      cleanerTitle: "Versión más limpia",
-      copyClean: "Copiar texto limpio",
-      copyFull: "Copiar revisión completa",
-      activatedTitle: "Si estás muy activado",
-      activatedCopy: "No lo envíes todavía. Regúlate primero y luego elige un mensaje claro.",
-      reset: "Reset de 90 segundos",
-      shareTitle: "Antes de Enviar",
-      needs: {
-        respect: "Respeto",
-        clarity: "Claridad",
-        repair: "Reparación",
-        safety: "Seguridad",
-        dignity: "Dignidad",
-        connection: "Conexión",
-        space: "Espacio",
-        accountability: "Responsabilidad",
-      },
     },
   },
 };
@@ -304,58 +226,6 @@ const EMERGENCY_RESET_STEPS = [
   "Unclench your jaw, lower your shoulders, relax your hands, and look at one stable object.",
   "Name one body signal and one possible need. Use the closest fit, not the perfect word.",
   "Choose one clean move: pause, request, boundary, repair, or ask for support.",
-];
-
-const TEXT_PATTERN_RULES = [
-  {
-    id: "criticism",
-    label: "Criticism risk",
-    terms: ["always", "never", "what is wrong with you", "you are so", "you only", "you make me", "you need to", "you have to", "siempre", "nunca", "qué te pasa", "eres tan", "tienes que", "necesitas"],
-    pattern: "This may turn a specific behavior into a character judgment.",
-    repair: "Name the specific behavior, the impact, and one request.",
-  },
-  {
-    id: "contempt",
-    label: "Contempt risk",
-    terms: ["ridiculous", "pathetic", "stupid", "childish", "selfish", "narcissist", "crazy", "idiot", "ridículo", "patético", "estúpido", "infantil", "egoísta", "narcisista", "loco", "idiota"],
-    pattern: "This may attack dignity instead of naming the need.",
-    repair: "Remove insults and say what needs to change.",
-  },
-  {
-    id: "defensiveness",
-    label: "Defensiveness risk",
-    terms: ["not my fault", "you started", "if you had not", "i only did that because", "you made me", "no es mi culpa", "tú empezaste", "si no hubieras", "solo hice eso porque", "me hiciste"],
-    pattern: "This may avoid impact by arguing the case.",
-    repair: "Own one part first, then make one clear request.",
-  },
-  {
-    id: "stonewalling",
-    label: "Shutdown risk",
-    terms: ["whatever", "forget it", "i am done", "leave me alone", "nothing to say", "como sea", "olvídalo", "ya terminé", "déjame en paz", "no tengo nada que decir"],
-    pattern: "This may punish with distance instead of creating a return path.",
-    repair: "Ask for a pause, name a return time, and come back to one issue.",
-  },
-  {
-    id: "darvo",
-    label: "DARVO risk",
-    terms: ["you are attacking me", "you are the real problem", "after everything i do", "you are hurting me by saying that", "me estás atacando", "tú eres el problema", "después de todo lo que hago", "me estás lastimando al decir eso"],
-    pattern: "This may deny impact, attack back, or reverse victim and offender.",
-    repair: "Separate your pain from their impact. Address the named behavior first.",
-  },
-  {
-    id: "jade",
-    label: "JADE risk",
-    terms: ["because", "let me explain", "you do not understand", "the reason is", "i had to", "porque", "déjame explicar", "no entiendes", "la razón es", "tuve que"],
-    pattern: "This may justify, argue, defend, or explain when a clean boundary or repair would work better.",
-    repair: "Shorten the message. Lead with need, request, or accountability.",
-  },
-  {
-    id: "clean",
-    label: "No major red flag",
-    terms: [],
-    pattern: "This draft does not show an obvious attack, defense, shutdown, DARVO, JADE, or contempt pattern.",
-    repair: "Make it even cleaner by naming the need and asking for one specific behavior.",
-  },
 ];
 
 const THEMES = [
@@ -1137,7 +1007,6 @@ const SCRIPT_TYPES = [
 const navItems = [
   { id: "intro", label: "Start", icon: PlayCircle },
   { id: "checkin", label: "Check In", icon: Home },
-  { id: "text", label: "Before Text", icon: MessageSquareText },
   { id: "reset", label: "Reset", icon: Activity },
   { id: "paths", label: "Paths", icon: Trophy },
   { id: "explore", label: "Feelings", icon: Compass },
@@ -1281,134 +1150,9 @@ function getCopy(lang = "en") {
   return I18N[lang] || I18N.en;
 }
 
-function translateNeed(need, lang = "en") {
-  return getCopy(lang).textTool.needs?.[need] || need;
-}
-
 function makeTranslator(lang = "en") {
   const copy = getCopy(lang);
   return (path) => path.split(".").reduce((value, key) => value?.[key], copy) ?? path;
-}
-
-const TEXT_PATTERN_TRANSLATIONS = {
-  es: {
-    ready: {
-      label: "Listo cuando tú lo estés",
-      pattern: "Pega un borrador para revisar si puede caer como ataque, defensa, cierre, DARVO, JADE o desprecio.",
-      repair: "Empieza con el objetivo real: pedir, reparar, poner un límite o pausar.",
-    },
-    criticism: {
-      label: "Riesgo de crítica",
-      pattern: "Esto puede convertir una conducta específica en un juicio sobre el carácter.",
-      repair: "Nombra la conducta específica, el impacto y una petición.",
-    },
-    contempt: {
-      label: "Riesgo de desprecio",
-      pattern: "Esto puede atacar la dignidad en vez de nombrar la necesidad.",
-      repair: "Quita los insultos y di qué necesita cambiar.",
-    },
-    defensiveness: {
-      label: "Riesgo de defensa",
-      pattern: "Esto puede evitar el impacto al discutir el caso.",
-      repair: "Reconoce una parte primero y luego haz una petición clara.",
-    },
-    stonewalling: {
-      label: "Riesgo de cierre",
-      pattern: "Esto puede castigar con distancia en vez de crear un camino de regreso.",
-      repair: "Pide una pausa, nombra una hora de regreso y vuelve a un solo tema.",
-    },
-    darvo: {
-      label: "Riesgo de DARVO",
-      pattern: "Esto puede negar el impacto, contraatacar o invertir víctima y ofensor.",
-      repair: "Separa tu dolor del impacto que causaste. Atiende primero la conducta nombrada.",
-    },
-    jade: {
-      label: "Riesgo de JADE",
-      pattern: "Esto puede justificar, argumentar, defender o explicar cuando un límite o reparación clara funcionaría mejor.",
-      repair: "Acorta el mensaje. Empieza con necesidad, petición o responsabilidad.",
-    },
-    clean: {
-      label: "Sin alerta mayor",
-      pattern: "Este borrador no muestra un patrón obvio de ataque, defensa, cierre, DARVO, JADE o desprecio.",
-      repair: "Hazlo aún más limpio nombrando la necesidad y pidiendo una conducta específica.",
-    },
-  },
-};
-
-function localizePattern(pattern, lang = "en") {
-  const translated = TEXT_PATTERN_TRANSLATIONS[lang]?.[pattern.id];
-  return translated ? { ...pattern, ...translated } : pattern;
-}
-
-function analyzeTextDraft(draft, lang = "en") {
-  if (!draft.trim()) {
-    return [
-      {
-        id: "ready",
-        label: "Ready when you are",
-        pattern: "Paste a draft to check whether it is likely to land as attack, defense, shutdown, DARVO, JADE, or contempt.",
-        repair: "Start with the real goal: request, repair, boundary, or pause.",
-      },
-    ].map((pattern) => localizePattern(pattern, lang));
-  }
-  const normalized = draft.toLowerCase();
-  const matches = TEXT_PATTERN_RULES.filter((rule) => rule.terms.some((term) => normalized.includes(term)));
-  return (matches.length ? matches : [TEXT_PATTERN_RULES.find((rule) => rule.id === "clean")]).map((pattern) =>
-    localizePattern(pattern, lang)
-  );
-}
-
-function firstSentence(text) {
-  const cleaned = text.trim().replace(/\s+/g, " ");
-  if (!cleaned) return "what happened";
-  return cleaned.split(/[.!?]/)[0].slice(0, 130) || cleaned.slice(0, 130);
-}
-
-function inferBehaviorRequest(text, lang = "en") {
-  const cleaned = firstSentence(text)
-    .replace(/^(can|could|would)\s+you\s+(please\s+)?/i, "")
-    .replace(/^please\s+/i, "")
-    .replace(/^you\s+(need|have)\s+to\s+/i, "")
-    .replace(/^stop\s+/i, "stop ");
-  const lower = cleaned.toLowerCase();
-  if (lower.includes("yell") || lower.includes("scream") || lower.includes("raise your voice") || lower.includes("grit") || lower.includes("levantar la voz")) {
-    if (lang === "es") return "bajar la voz mientras hablamos";
-    return "lower your voice while we talk";
-  }
-  if (lower.includes("interrupt")) {
-    if (lang === "es") return "dejarme terminar antes de responder";
-    return "let me finish before responding";
-  }
-  if (lower.includes("call me") || lower.includes("insult")) {
-    if (lang === "es") return "hablar del tema sin insultos";
-    return "speak to the issue without insults";
-  }
-  if (cleaned && cleaned !== "what happened") return cleaned;
-  if (lang === "es") return "nombrar un siguiente paso específico";
-  return "name one specific next step";
-}
-
-function buildTextRewrite({ draft, goal, need, tone, lang = "en" }) {
-  const behavior = inferBehaviorRequest(draft, lang);
-  const needText = translateNeed(need || "clarity", lang).toLowerCase();
-  const toneLine = tone === "firm" ? "firm and respectful" : tone === "warm" ? "warm and direct" : "calm and clear";
-  if (lang === "es") {
-    const spanishToneLine = tone === "firm" ? "firme y respetuoso" : tone === "warm" ? "cálido y directo" : "calmo y claro";
-    const options = {
-      pause: `Quiero manejar esto bien. Estoy activado y necesito ${needText}. Voy a pausar un momento y luego volver cuando pueda estar ${spanishToneLine}.`,
-      request: `Quiero hablar esto bien y necesito ${needText}. ¿Podrías ${behavior} para que podamos mantenernos claros?`,
-      repair: `No me gusta cómo estaba por decir esto. Mi necesidad real es ${needText}. Quiero asumir mi parte, bajar la velocidad y hablar del impacto sin atacarte.`,
-      boundary: `Quiero que esta conversación se mantenga respetuosa. Necesito ${needText}. Si no podemos ${behavior}, voy a pausar y volver cuando podamos hablar con claridad.`,
-    };
-    return options[goal] || options.request;
-  }
-  const options = {
-    pause: `I want to handle this well. I am activated and need ${needText}. I am going to pause for a bit, then come back when I can be ${toneLine}.`,
-    request: `I want to talk this through, and I need ${needText}. Could you ${behavior} so we can stay clear?`,
-    repair: `I do not like how I was about to say this. My real need is ${needText}. I want to own my part, slow down, and talk about the impact without attacking you.`,
-    boundary: `I want this conversation to stay respectful. I need ${needText}. If we cannot ${behavior}, I am going to pause and return when we can talk clearly.`,
-  };
-  return options[goal] || options.request;
 }
 
 function cls(...parts) {
@@ -1699,10 +1443,6 @@ function Intro({ setTab, t }) {
             <PlayCircle size={16} />
             {t("intro.start")}
           </Button>
-          <Button variant="amber" onClick={() => setTab("text")}>
-            <MessageSquareText size={16} />
-            {t("intro.beforeText")}
-          </Button>
           <Button variant="secondary" onClick={() => setTab("shadows")}>
             <BookOpen size={16} />
             {t("intro.shadowFinder")}
@@ -1809,166 +1549,6 @@ function EmergencyReset({ setTab }) {
         </Button>
       </div>
       <SupportActions />
-    </div>
-  );
-}
-
-function BeforeTextTool({ setTab, lang, t }) {
-  const [draft, setDraft] = useState("");
-  const [goal, setGoal] = useState("request");
-  const [need, setNeed] = useState("respect");
-  const [tone, setTone] = useState("calm");
-  const patterns = analyzeTextDraft(draft, lang);
-  const rewrite = buildTextRewrite({ draft, goal, need, tone, lang });
-  const sharePayload = [
-    t("textTool.shareTitle"),
-    "",
-    `${t("textTool.patternTitle")}:`,
-    ...patterns.map((pattern) => `- ${pattern.label}: ${pattern.pattern}`),
-    "",
-    `${t("textTool.cleanerTitle")}:`,
-    rewrite,
-    "",
-    ATTR_LINE,
-  ].join("\n");
-  const needs = ["respect", "clarity", "repair", "safety", "dignity", "connection", "space", "accountability"];
-  const goals = [
-    { id: "request", label: t("textTool.goals.request") },
-    { id: "repair", label: t("textTool.goals.repair") },
-    { id: "boundary", label: t("textTool.goals.boundary") },
-    { id: "pause", label: t("textTool.goals.pause") },
-  ];
-  const tones = [
-    { id: "calm", label: t("textTool.tones.calm") },
-    { id: "warm", label: t("textTool.tones.warm") },
-    { id: "firm", label: t("textTool.tones.firm") },
-  ];
-
-  return (
-    <div className="mx-auto max-w-4xl space-y-4">
-      <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
-        <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide text-emerald-950">
-          <MessageSquareText size={16} />
-          {t("textTool.eyebrow")}
-        </div>
-        <h2 className="mt-2 text-2xl font-black text-emerald-950 md:text-3xl">{t("textTool.title")}</h2>
-        <p className="mt-3 text-sm leading-6 text-emerald-950">
-          {t("textTool.copy")}
-        </p>
-      </section>
-
-      <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <div className="space-y-4">
-          <div className="rounded-lg border border-stone-200 bg-white p-4">
-            <label className="text-sm font-black text-stone-950" htmlFor="text-draft">{t("textTool.draftLabel")}</label>
-            <textarea
-              id="text-draft"
-              value={draft}
-              onChange={(event) => setDraft(event.target.value)}
-              placeholder={t("textTool.draftPlaceholder")}
-              className="mt-2 min-h-40 w-full rounded-lg border border-stone-200 bg-white p-3 text-sm leading-6 text-stone-950 outline-none focus:border-emerald-800"
-            />
-            <p className="mt-2 text-xs font-semibold text-stone-500">{t("textTool.privateNote")}</p>
-          </div>
-
-          <div className="rounded-lg border border-stone-200 bg-white p-4">
-            <div className="text-sm font-black text-stone-950">{t("textTool.goalTitle")}</div>
-            <div className="mt-3 grid gap-2 sm:grid-cols-2">
-              {goals.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setGoal(item.id)}
-                  className={cls(
-                    "rounded-lg border p-3 text-left text-sm font-bold transition",
-                    goal === item.id ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-400"
-                  )}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-lg border border-stone-200 bg-white p-4">
-              <div className="text-sm font-black text-stone-950">{t("textTool.needTitle")}</div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {needs.map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => setNeed(item)}
-                    className={cls(
-                      "rounded-full border px-3 py-2 text-sm font-semibold capitalize transition",
-                      need === item ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-400"
-                    )}
-                  >
-                    {translateNeed(item, lang)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-stone-200 bg-white p-4">
-              <div className="text-sm font-black text-stone-950">{t("textTool.toneTitle")}</div>
-              <div className="mt-3 grid gap-2">
-                {tones.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setTone(item.id)}
-                    className={cls(
-                      "rounded-lg border p-3 text-left text-sm font-bold transition",
-                      tone === item.id ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-400"
-                    )}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <aside className="space-y-4">
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-            <div className="text-sm font-black text-stone-950">{t("textTool.patternTitle")}</div>
-            <div className="mt-3 grid gap-2">
-              {patterns.map((pattern) => (
-                <div key={pattern.id} className="rounded-lg border border-amber-200 bg-white p-3">
-                  <div className="text-sm font-black text-stone-950">{pattern.label}</div>
-                  <p className="mt-1 text-sm leading-6 text-stone-700">{pattern.pattern}</p>
-                  <p className="mt-1 text-sm leading-6 text-stone-700"><strong>{t("textTool.cleanerMove")}</strong> {pattern.repair}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-            <div className="text-sm font-black text-emerald-950">{t("textTool.cleanerTitle")}</div>
-            <p className="mt-3 text-base font-semibold leading-7 text-emerald-950">{rewrite}</p>
-            <div className="mt-4 grid gap-2">
-              <Button variant="amber" onClick={() => copyText(rewrite)}>
-                <Clipboard size={16} />
-                {t("textTool.copyClean")}
-              </Button>
-              <Button variant="secondary" onClick={() => copyText(sharePayload)}>
-                <Clipboard size={16} />
-                {t("textTool.copyFull")}
-              </Button>
-            </div>
-          </div>
-
-          <div className="rounded-lg border border-stone-200 bg-white p-4">
-            <div className="text-sm font-black text-stone-950">{t("textTool.activatedTitle")}</div>
-            <p className="mt-2 text-sm leading-6 text-stone-700">
-              {t("textTool.activatedCopy")}
-            </p>
-            <Button className="mt-3 w-full" variant="secondary" onClick={() => setTab("reset")}>
-              <Activity size={16} />
-              {t("textTool.reset")}
-            </Button>
-          </div>
-        </aside>
-      </section>
     </div>
   );
 }
@@ -3266,7 +2846,6 @@ function HelpWiki({ setTab }) {
 
   const quickLinks = [
     { label: "Run a check-in", tab: "checkin" },
-    { label: "Before you text", tab: "text" },
     { label: "Emergency reset", tab: "reset" },
     { label: "Read reports", tab: "reports" },
     { label: "Track patterns", tab: "tracker" },
@@ -3374,7 +2953,6 @@ export default function App() {
     >
       {tab === "intro" && <Intro setTab={setTab} t={t} />}
       {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} saveReport={saveReport} setTab={setTab} />}
-      {tab === "text" && <BeforeTextTool setTab={setTab} lang={lang} t={t} />}
       {tab === "reset" && <EmergencyReset setTab={setTab} />}
       {tab === "paths" && <TransformationPaths setTab={setTab} />}
       {tab === "explore" && <Explore rows={rows} saveReport={saveReport} setTab={setTab} />}
