@@ -103,6 +103,51 @@ const EMERGENCY_RESET_STEPS = [
   "Choose one clean move: pause, request, boundary, repair, or ask for support.",
 ];
 
+const TEXT_PATTERN_RULES = [
+  {
+    id: "criticism",
+    label: "Criticism risk",
+    terms: ["always", "never", "what is wrong with you", "you are so", "you only", "you make me"],
+    pattern: "This may turn a specific behavior into a character judgment.",
+    repair: "Name the specific behavior, the impact, and one request.",
+  },
+  {
+    id: "contempt",
+    label: "Contempt risk",
+    terms: ["ridiculous", "pathetic", "stupid", "childish", "selfish", "narcissist", "crazy", "idiot"],
+    pattern: "This may attack dignity instead of naming the need.",
+    repair: "Remove insults and say what needs to change.",
+  },
+  {
+    id: "defensiveness",
+    label: "Defensiveness risk",
+    terms: ["not my fault", "you started", "if you had not", "i only did that because", "you made me"],
+    pattern: "This may avoid impact by arguing the case.",
+    repair: "Own one part first, then make one clear request.",
+  },
+  {
+    id: "stonewalling",
+    label: "Shutdown risk",
+    terms: ["whatever", "forget it", "i am done", "leave me alone", "nothing to say"],
+    pattern: "This may punish with distance instead of creating a return path.",
+    repair: "Ask for a pause, name a return time, and come back to one issue.",
+  },
+  {
+    id: "darvo",
+    label: "DARVO risk",
+    terms: ["you are attacking me", "you are the real problem", "after everything i do", "you are hurting me by saying that"],
+    pattern: "This may deny impact, attack back, or reverse victim and offender.",
+    repair: "Separate your pain from their impact. Address the named behavior first.",
+  },
+  {
+    id: "jade",
+    label: "JADE risk",
+    terms: ["because", "let me explain", "you do not understand", "the reason is", "i had to"],
+    pattern: "This may justify, argue, defend, or explain when a clean boundary or repair would work better.",
+    repair: "Shorten the message. Lead with need, request, or accountability.",
+  },
+];
+
 const THEMES = [
   {
     id: "sage",
@@ -882,6 +927,7 @@ const SCRIPT_TYPES = [
 const navItems = [
   { id: "intro", label: "Start", icon: PlayCircle },
   { id: "checkin", label: "Check In", icon: Home },
+  { id: "text", label: "Before Text", icon: MessageSquareText },
   { id: "reset", label: "Reset", icon: Activity },
   { id: "paths", label: "Paths", icon: Trophy },
   { id: "explore", label: "Feelings", icon: Compass },
@@ -998,6 +1044,41 @@ function shareText(title, text) {
     return;
   }
   copyText(text);
+}
+
+function analyzeTextDraft(draft) {
+  if (!draft.trim()) {
+    return [
+      {
+        id: "ready",
+        label: "Ready when you are",
+        pattern: "Paste a draft to check whether it is likely to land as attack, defense, shutdown, DARVO, JADE, or contempt.",
+        repair: "Start with the real goal: request, repair, boundary, or pause.",
+      },
+    ];
+  }
+  const normalized = draft.toLowerCase();
+  const matches = TEXT_PATTERN_RULES.filter((rule) => rule.terms.some((term) => normalized.includes(term)));
+  return matches.length ? matches : [TEXT_PATTERN_RULES.find((rule) => rule.id === "jade")];
+}
+
+function firstSentence(text) {
+  const cleaned = text.trim().replace(/\s+/g, " ");
+  if (!cleaned) return "what happened";
+  return cleaned.split(/[.!?]/)[0].slice(0, 130) || cleaned.slice(0, 130);
+}
+
+function buildTextRewrite({ draft, goal, need, tone }) {
+  const issue = firstSentence(draft);
+  const needText = need || "clarity";
+  const toneLine = tone === "firm" ? "firm and respectful" : tone === "warm" ? "warm and direct" : "calm and clear";
+  const options = {
+    pause: `I want to handle this well. I am activated and need ${needText}. I am going to pause for a bit, then come back when I can be ${toneLine}.`,
+    request: `When ${issue}, I felt activated because I need ${needText}. Could we focus on one specific next step that would help repair this?`,
+    repair: `I do not like how I was about to say this. My real need is ${needText}. I want to own my part, slow down, and talk about the impact without attacking you.`,
+    boundary: `I want this conversation to stay respectful. I need ${needText}. If it turns into insults, blame, or pressure, I am going to pause and return when we can talk clearly.`,
+  };
+  return options[goal] || options.request;
 }
 
 function cls(...parts) {
@@ -1303,10 +1384,20 @@ function Intro({ setTab }) {
             <PlayCircle size={16} />
             Start guided check-in
           </Button>
+          <Button variant="amber" onClick={() => setTab("text")}>
+            <MessageSquareText size={16} />
+            Before you text them
+          </Button>
+          <Button variant="secondary" onClick={() => setTab("shadows")}>
+            <BookOpen size={16} />
+            Shadow finder
+          </Button>
           <Button variant="amber" onClick={() => setTab("reset")}>
             <Activity size={16} />
             90-second reset
           </Button>
+        </div>
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <Button variant="secondary" onClick={() => setTab("help")}>
             <HelpCircle size={16} />
             Read help wiki
@@ -1410,6 +1501,166 @@ function EmergencyReset({ setTab }) {
         </Button>
       </div>
       <SupportActions />
+    </div>
+  );
+}
+
+function BeforeTextTool({ setTab }) {
+  const [draft, setDraft] = useState("");
+  const [goal, setGoal] = useState("request");
+  const [need, setNeed] = useState("respect");
+  const [tone, setTone] = useState("calm");
+  const patterns = analyzeTextDraft(draft);
+  const rewrite = buildTextRewrite({ draft, goal, need, tone });
+  const sharePayload = [
+    "Before You Text Them",
+    "",
+    "Pattern check:",
+    ...patterns.map((pattern) => `- ${pattern.label}: ${pattern.pattern}`),
+    "",
+    "Cleaner version:",
+    rewrite,
+    "",
+    ATTR_LINE,
+  ].join("\n");
+  const needs = ["respect", "clarity", "repair", "safety", "dignity", "connection", "space", "accountability"];
+  const goals = [
+    { id: "request", label: "Make a request" },
+    { id: "repair", label: "Repair my part" },
+    { id: "boundary", label: "Set a boundary" },
+    { id: "pause", label: "Pause safely" },
+  ];
+  const tones = [
+    { id: "calm", label: "Calm" },
+    { id: "warm", label: "Warm" },
+    { id: "firm", label: "Firm" },
+  ];
+
+  return (
+    <div className="mx-auto max-w-4xl space-y-4">
+      <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
+        <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide text-emerald-950">
+          <MessageSquareText size={16} />
+          Before you text them
+        </div>
+        <h2 className="mt-2 text-2xl font-black text-emerald-950 md:text-3xl">Turn the draft into a clean message.</h2>
+        <p className="mt-3 text-sm leading-6 text-emerald-950">
+          Paste what you want to send. This checks for attack, defense, shutdown, DARVO, JADE, and contempt, then gives you a message that protects the need without creating more repair work.
+        </p>
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="space-y-4">
+          <div className="rounded-lg border border-stone-200 bg-white p-4">
+            <label className="text-sm font-black text-stone-950" htmlFor="text-draft">What were you about to send?</label>
+            <textarea
+              id="text-draft"
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              placeholder="Paste the text here. Nothing is sent anywhere."
+              className="mt-2 min-h-40 w-full rounded-lg border border-stone-200 bg-white p-3 text-sm leading-6 text-stone-950 outline-none focus:border-emerald-800"
+            />
+            <p className="mt-2 text-xs font-semibold text-stone-500">Private in this browser. The tool rewrites locally from patterns and templates.</p>
+          </div>
+
+          <div className="rounded-lg border border-stone-200 bg-white p-4">
+            <div className="text-sm font-black text-stone-950">What is the clean goal?</div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              {goals.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setGoal(item.id)}
+                  className={cls(
+                    "rounded-lg border p-3 text-left text-sm font-bold transition",
+                    goal === item.id ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-400"
+                  )}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-stone-200 bg-white p-4">
+              <div className="text-sm font-black text-stone-950">Main need</div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {needs.map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => setNeed(item)}
+                    className={cls(
+                      "rounded-full border px-3 py-2 text-sm font-semibold capitalize transition",
+                      need === item ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-400"
+                    )}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-stone-200 bg-white p-4">
+              <div className="text-sm font-black text-stone-950">Tone</div>
+              <div className="mt-3 grid gap-2">
+                {tones.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setTone(item.id)}
+                    className={cls(
+                      "rounded-lg border p-3 text-left text-sm font-bold transition",
+                      tone === item.id ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-400"
+                    )}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside className="space-y-4">
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+            <div className="text-sm font-black text-stone-950">Pattern check</div>
+            <div className="mt-3 grid gap-2">
+              {patterns.map((pattern) => (
+                <div key={pattern.id} className="rounded-lg border border-amber-200 bg-white p-3">
+                  <div className="text-sm font-black text-stone-950">{pattern.label}</div>
+                  <p className="mt-1 text-sm leading-6 text-stone-700">{pattern.pattern}</p>
+                  <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Cleaner move:</strong> {pattern.repair}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+            <div className="text-sm font-black text-emerald-950">Cleaner version</div>
+            <p className="mt-3 text-base font-semibold leading-7 text-emerald-950">{rewrite}</p>
+            <div className="mt-4 grid gap-2">
+              <Button variant="amber" onClick={() => copyText(rewrite)}>
+                <Clipboard size={16} />
+                Copy clean text
+              </Button>
+              <Button variant="secondary" onClick={() => copyText(sharePayload)}>
+                <Clipboard size={16} />
+                Copy full check
+              </Button>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-stone-200 bg-white p-4">
+            <div className="text-sm font-black text-stone-950">If you are too activated</div>
+            <p className="mt-2 text-sm leading-6 text-stone-700">
+              Do not send yet. Regulate first, then choose one clear message.
+            </p>
+            <Button className="mt-3 w-full" variant="secondary" onClick={() => setTab("reset")}>
+              <Activity size={16} />
+              90-second reset
+            </Button>
+          </div>
+        </aside>
+      </section>
     </div>
   );
 }
@@ -2707,6 +2958,7 @@ function HelpWiki({ setTab }) {
 
   const quickLinks = [
     { label: "Run a check-in", tab: "checkin" },
+    { label: "Before you text", tab: "text" },
     { label: "Emergency reset", tab: "reset" },
     { label: "Read reports", tab: "reports" },
     { label: "Track patterns", tab: "tracker" },
@@ -2719,7 +2971,7 @@ function HelpWiki({ setTab }) {
         copy="A practical guide to the concepts inside the tool and how to use it without getting lost."
       />
 
-      <div className="grid gap-2 sm:grid-cols-4">
+      <div className="grid gap-2 sm:grid-cols-5">
         {quickLinks.map((item) => (
           <Button key={item.label} variant="secondary" onClick={() => setTab(item.tab)}>
             {item.label}
@@ -2788,6 +3040,7 @@ export default function App() {
     <AppShell tab={tab} setTab={setTab} onNewCheckIn={startNewCheckIn} themeId={themeId} setThemeId={setThemeId}>
       {tab === "intro" && <Intro setTab={setTab} />}
       {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} saveReport={saveReport} setTab={setTab} />}
+      {tab === "text" && <BeforeTextTool setTab={setTab} />}
       {tab === "reset" && <EmergencyReset setTab={setTab} />}
       {tab === "paths" && <TransformationPaths setTab={setTab} />}
       {tab === "explore" && <Explore rows={rows} saveReport={saveReport} setTab={setTab} />}
