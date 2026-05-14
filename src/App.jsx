@@ -38,6 +38,209 @@ const CALENDAR_URL = "https://calendar.app.google/NQvsMN7X5evMK9Q1A";
 const PAYPAL_URL = "https://www.paypal.com/ncp/payment/PEDRQJN9PAREL";
 const AI_COACH_URL = "https://aiholisticwellnesscoach.com/";
 const REPORTS_STORAGE_KEY = "exploring_needs_reports_v1";
+const LANGUAGE_STORAGE_KEY = "exploring_needs_language_v1";
+
+const LANGUAGES = [
+  { id: "en", label: "English", short: "EN" },
+  { id: "es", label: "Español", short: "ES" },
+];
+
+const I18N = {
+  en: {
+    appTitle: "Emotional Intelligence Toolkit",
+    appTagline: "Feelings to needs to repair.",
+    appSubtitle: "Name feelings. Find needs. Repair patterns.",
+    newCheckIn: "New check-in",
+    copied: "Copied",
+    language: "Language",
+    nav: {
+      intro: "Start",
+      checkin: "Check In",
+      text: "Before Text",
+      reset: "Reset",
+      paths: "Paths",
+      explore: "Feelings",
+      shadows: "Shadows",
+      scripts: "Scripts",
+      reports: "Reports",
+      tracker: "Tracker",
+      help: "Help",
+    },
+    support: {
+      talk: "Talk about it now",
+      donate: "Support with a donation",
+      book: "Book coaching support",
+    },
+    intro: {
+      title: "Turn the reaction into a repair plan.",
+      copy: "Use a guided check-in to name the feeling, find the unmet need, spot the shadow pattern, and choose one clean next move.",
+      start: "Start guided check-in",
+      beforeText: "Before you text them",
+      shadowFinder: "Shadow finder",
+      reset: "90-second reset",
+      help: "Read help wiki",
+      tags: [
+        "From reaction to repair.",
+        "Decode the emotion. Meet the need. Move with integrity.",
+        "A practical map from charged emotion to clear action.",
+      ],
+      howTitle: "How to use it",
+      howCopy: "Move one screen at a time. Choose the closest fit. The goal is not a perfect label. The goal is a better next move.",
+      steps: [
+        ["Start with who is using it", "The app adapts its language for a man, woman, teen, parent, partner, coach, or mentor."],
+        ["Choose the kind of work", "Use Quick Check In for speed, Relationship Repair for conflict, Shadow Work for patterns, Accountability for ownership, or Support Someone when guiding another person."],
+        ["Let the body narrow the map", "Body signals help translate a charged moment into a likely feeling and need without forcing perfect words too early."],
+        ["Use the report", "The final report gives the frame, needs, shadows to watch, scripts, repair language, and one practical next move."],
+      ],
+      bestTitle: "Best use case",
+      bestCopy: "Use it before a hard conversation, after a triggering moment, when you feel stuck in blame or shutdown, or when you want to support someone without controlling them.",
+      helpsTitle: "What this helps with",
+      helpsCopy: "Use it when emotions are high, repair matters, accountability is needed, or the same relationship pattern keeps repeating.",
+      helps: [
+        "Unmet needs explorer",
+        "Relationship repair tool",
+        "Shadow work guide",
+        "DARVO and JADE pattern support",
+        "Four Horsemen relationship awareness",
+        "Emotional intelligence training for men and boys",
+      ],
+    },
+    textTool: {
+      eyebrow: "Before you text them",
+      title: "Turn the draft into a clean message.",
+      copy: "Paste what you want to send. This checks for attack, defense, shutdown, DARVO, JADE, and contempt, then gives you a message that protects the need without creating more repair work.",
+      draftLabel: "What were you about to send?",
+      draftPlaceholder: "Paste the text here. Nothing is sent anywhere.",
+      privateNote: "Private in this browser. The tool rewrites locally from patterns and templates.",
+      goalTitle: "What is the clean goal?",
+      goals: {
+        request: "Ask cleanly",
+        repair: "Repair my part",
+        boundary: "Set a boundary",
+        pause: "Pause safely",
+      },
+      needTitle: "Main need",
+      toneTitle: "Tone",
+      tones: { calm: "Calm", warm: "Warm", firm: "Firm" },
+      patternTitle: "Pattern check",
+      cleanerMove: "Cleaner move:",
+      cleanerTitle: "Cleaner version",
+      copyClean: "Copy clean text",
+      copyFull: "Copy full check",
+      activatedTitle: "If you are too activated",
+      activatedCopy: "Do not send yet. Regulate first, then choose one clear message.",
+      reset: "90-second reset",
+      shareTitle: "Before You Text Them",
+      needs: {
+        respect: "Respect",
+        clarity: "Clarity",
+        repair: "Repair",
+        safety: "Safety",
+        dignity: "Dignity",
+        connection: "Connection",
+        space: "Space",
+        accountability: "Accountability",
+      },
+    },
+  },
+  es: {
+    appTitle: "Kit de Inteligencia Emocional",
+    appTagline: "De sentir a necesitar y reparar.",
+    appSubtitle: "Nombra emociones. Encuentra necesidades. Repara patrones.",
+    newCheckIn: "Nuevo check-in",
+    copied: "Copiado",
+    language: "Idioma",
+    nav: {
+      intro: "Inicio",
+      checkin: "Check In",
+      text: "Antes de Enviar",
+      reset: "Reset",
+      paths: "Caminos",
+      explore: "Emociones",
+      shadows: "Sombras",
+      scripts: "Guiones",
+      reports: "Planes",
+      tracker: "Patrones",
+      help: "Ayuda",
+    },
+    support: {
+      talk: "Hablarlo ahora",
+      donate: "Apoyar con donación",
+      book: "Reservar apoyo",
+    },
+    intro: {
+      title: "Convierte la reacción en un plan de reparación.",
+      copy: "Usa un check-in guiado para nombrar la emoción, encontrar la necesidad no atendida, detectar el patrón de sombra y elegir un siguiente movimiento limpio.",
+      start: "Iniciar check-in guiado",
+      beforeText: "Antes de enviar",
+      shadowFinder: "Buscar sombra",
+      reset: "Reset de 90 segundos",
+      help: "Leer la guía",
+      tags: [
+        "De reacción a reparación.",
+        "Decodifica la emoción. Atiende la necesidad. Actúa con integridad.",
+        "Un mapa práctico de carga emocional a acción clara.",
+      ],
+      howTitle: "Cómo usarlo",
+      howCopy: "Avanza una pantalla a la vez. Elige lo que más se acerque. La meta no es una etiqueta perfecta. La meta es un mejor siguiente movimiento.",
+      steps: [
+        ["Empieza con quién lo está usando", "La app adapta su lenguaje para hombre, mujer, adolescente, madre, padre, pareja, coach o mentor."],
+        ["Elige el tipo de trabajo", "Usa Check In Rápido para velocidad, Reparación Relacional para conflicto, Trabajo de Sombra para patrones, Responsabilidad para apropiarte de tu parte, o Apoyar a Alguien cuando guías a otra persona."],
+        ["Deja que el cuerpo reduzca el mapa", "Las señales corporales ayudan a traducir un momento cargado en una emoción y necesidad probable sin forzar palabras perfectas demasiado pronto."],
+        ["Usa el plan", "El resultado final te da el marco, necesidades, sombras a vigilar, guiones, lenguaje de reparación y un siguiente movimiento práctico."],
+      ],
+      bestTitle: "Mejor uso",
+      bestCopy: "Úsalo antes de una conversación difícil, después de un disparador, cuando te quedes en culpa o cierre, o cuando quieras apoyar a alguien sin controlarlo.",
+      helpsTitle: "En qué ayuda",
+      helpsCopy: "Úsalo cuando las emociones están altas, la reparación importa, se necesita responsabilidad o el mismo patrón relacional se repite.",
+      helps: [
+        "Explorador de necesidades no atendidas",
+        "Herramienta de reparación relacional",
+        "Guía de trabajo de sombra",
+        "Apoyo para patrones DARVO y JADE",
+        "Conciencia de los Cuatro Jinetes en relaciones",
+        "Entrenamiento de inteligencia emocional para hombres y chicos",
+      ],
+    },
+    textTool: {
+      eyebrow: "Antes de enviar",
+      title: "Convierte el borrador en un mensaje limpio.",
+      copy: "Pega lo que quieres enviar. Esto revisa ataque, defensa, cierre, DARVO, JADE y desprecio, y luego te da un mensaje que protege la necesidad sin crear más trabajo de reparación.",
+      draftLabel: "¿Qué estabas por enviar?",
+      draftPlaceholder: "Pega el texto aquí. Nada se envía a ningún lugar.",
+      privateNote: "Privado en este navegador. La herramienta reescribe localmente con patrones y plantillas.",
+      goalTitle: "¿Cuál es el objetivo limpio?",
+      goals: {
+        request: "Pedir con claridad",
+        repair: "Reparar mi parte",
+        boundary: "Poner un límite",
+        pause: "Pausar con cuidado",
+      },
+      needTitle: "Necesidad principal",
+      toneTitle: "Tono",
+      tones: { calm: "Calmo", warm: "Cálido", firm: "Firme" },
+      patternTitle: "Revisión del patrón",
+      cleanerMove: "Movimiento más limpio:",
+      cleanerTitle: "Versión más limpia",
+      copyClean: "Copiar texto limpio",
+      copyFull: "Copiar revisión completa",
+      activatedTitle: "Si estás muy activado",
+      activatedCopy: "No lo envíes todavía. Regúlate primero y luego elige un mensaje claro.",
+      reset: "Reset de 90 segundos",
+      shareTitle: "Antes de Enviar",
+      needs: {
+        respect: "Respeto",
+        clarity: "Claridad",
+        repair: "Reparación",
+        safety: "Seguridad",
+        dignity: "Dignidad",
+        connection: "Conexión",
+        space: "Espacio",
+        accountability: "Responsabilidad",
+      },
+    },
+  },
+};
 
 const TRANSFORMATION_PATHS = [
   {
@@ -107,42 +310,42 @@ const TEXT_PATTERN_RULES = [
   {
     id: "criticism",
     label: "Criticism risk",
-    terms: ["always", "never", "what is wrong with you", "you are so", "you only", "you make me", "you need to", "you have to"],
+    terms: ["always", "never", "what is wrong with you", "you are so", "you only", "you make me", "you need to", "you have to", "siempre", "nunca", "qué te pasa", "eres tan", "tienes que", "necesitas"],
     pattern: "This may turn a specific behavior into a character judgment.",
     repair: "Name the specific behavior, the impact, and one request.",
   },
   {
     id: "contempt",
     label: "Contempt risk",
-    terms: ["ridiculous", "pathetic", "stupid", "childish", "selfish", "narcissist", "crazy", "idiot"],
+    terms: ["ridiculous", "pathetic", "stupid", "childish", "selfish", "narcissist", "crazy", "idiot", "ridículo", "patético", "estúpido", "infantil", "egoísta", "narcisista", "loco", "idiota"],
     pattern: "This may attack dignity instead of naming the need.",
     repair: "Remove insults and say what needs to change.",
   },
   {
     id: "defensiveness",
     label: "Defensiveness risk",
-    terms: ["not my fault", "you started", "if you had not", "i only did that because", "you made me"],
+    terms: ["not my fault", "you started", "if you had not", "i only did that because", "you made me", "no es mi culpa", "tú empezaste", "si no hubieras", "solo hice eso porque", "me hiciste"],
     pattern: "This may avoid impact by arguing the case.",
     repair: "Own one part first, then make one clear request.",
   },
   {
     id: "stonewalling",
     label: "Shutdown risk",
-    terms: ["whatever", "forget it", "i am done", "leave me alone", "nothing to say"],
+    terms: ["whatever", "forget it", "i am done", "leave me alone", "nothing to say", "como sea", "olvídalo", "ya terminé", "déjame en paz", "no tengo nada que decir"],
     pattern: "This may punish with distance instead of creating a return path.",
     repair: "Ask for a pause, name a return time, and come back to one issue.",
   },
   {
     id: "darvo",
     label: "DARVO risk",
-    terms: ["you are attacking me", "you are the real problem", "after everything i do", "you are hurting me by saying that"],
+    terms: ["you are attacking me", "you are the real problem", "after everything i do", "you are hurting me by saying that", "me estás atacando", "tú eres el problema", "después de todo lo que hago", "me estás lastimando al decir eso"],
     pattern: "This may deny impact, attack back, or reverse victim and offender.",
     repair: "Separate your pain from their impact. Address the named behavior first.",
   },
   {
     id: "jade",
     label: "JADE risk",
-    terms: ["because", "let me explain", "you do not understand", "the reason is", "i had to"],
+    terms: ["because", "let me explain", "you do not understand", "the reason is", "i had to", "porque", "déjame explicar", "no entiendes", "la razón es", "tuve que"],
     pattern: "This may justify, argue, defend, or explain when a clean boundary or repair would work better.",
     repair: "Shorten the message. Lead with need, request, or accountability.",
   },
@@ -945,6 +1148,27 @@ const navItems = [
   { id: "help", label: "Help", icon: HelpCircle },
 ];
 
+function LanguagePicker({ lang, setLang, compact = false }) {
+  return (
+    <div className={cls("grid gap-2", compact ? "grid-cols-2" : "grid-cols-1")}>
+      {LANGUAGES.map((language) => (
+        <button
+          key={language.id}
+          onClick={() => setLang(language.id)}
+          className={cls(
+            "min-h-10 rounded-lg border px-3 text-left text-xs font-black transition",
+            lang === language.id
+              ? "border-emerald-800 bg-emerald-800 text-white"
+              : "border-stone-200 bg-white text-stone-800 hover:border-stone-400"
+          )}
+        >
+          {compact ? language.short : language.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function showToast(msg) {
   const id = "ene_toast_portal";
   let portal = document.getElementById(id);
@@ -1053,7 +1277,70 @@ function shareText(title, text) {
   copyText(text);
 }
 
-function analyzeTextDraft(draft) {
+function getCopy(lang = "en") {
+  return I18N[lang] || I18N.en;
+}
+
+function translateNeed(need, lang = "en") {
+  return getCopy(lang).textTool.needs?.[need] || need;
+}
+
+function makeTranslator(lang = "en") {
+  const copy = getCopy(lang);
+  return (path) => path.split(".").reduce((value, key) => value?.[key], copy) ?? path;
+}
+
+const TEXT_PATTERN_TRANSLATIONS = {
+  es: {
+    ready: {
+      label: "Listo cuando tú lo estés",
+      pattern: "Pega un borrador para revisar si puede caer como ataque, defensa, cierre, DARVO, JADE o desprecio.",
+      repair: "Empieza con el objetivo real: pedir, reparar, poner un límite o pausar.",
+    },
+    criticism: {
+      label: "Riesgo de crítica",
+      pattern: "Esto puede convertir una conducta específica en un juicio sobre el carácter.",
+      repair: "Nombra la conducta específica, el impacto y una petición.",
+    },
+    contempt: {
+      label: "Riesgo de desprecio",
+      pattern: "Esto puede atacar la dignidad en vez de nombrar la necesidad.",
+      repair: "Quita los insultos y di qué necesita cambiar.",
+    },
+    defensiveness: {
+      label: "Riesgo de defensa",
+      pattern: "Esto puede evitar el impacto al discutir el caso.",
+      repair: "Reconoce una parte primero y luego haz una petición clara.",
+    },
+    stonewalling: {
+      label: "Riesgo de cierre",
+      pattern: "Esto puede castigar con distancia en vez de crear un camino de regreso.",
+      repair: "Pide una pausa, nombra una hora de regreso y vuelve a un solo tema.",
+    },
+    darvo: {
+      label: "Riesgo de DARVO",
+      pattern: "Esto puede negar el impacto, contraatacar o invertir víctima y ofensor.",
+      repair: "Separa tu dolor del impacto que causaste. Atiende primero la conducta nombrada.",
+    },
+    jade: {
+      label: "Riesgo de JADE",
+      pattern: "Esto puede justificar, argumentar, defender o explicar cuando un límite o reparación clara funcionaría mejor.",
+      repair: "Acorta el mensaje. Empieza con necesidad, petición o responsabilidad.",
+    },
+    clean: {
+      label: "Sin alerta mayor",
+      pattern: "Este borrador no muestra un patrón obvio de ataque, defensa, cierre, DARVO, JADE o desprecio.",
+      repair: "Hazlo aún más limpio nombrando la necesidad y pidiendo una conducta específica.",
+    },
+  },
+};
+
+function localizePattern(pattern, lang = "en") {
+  const translated = TEXT_PATTERN_TRANSLATIONS[lang]?.[pattern.id];
+  return translated ? { ...pattern, ...translated } : pattern;
+}
+
+function analyzeTextDraft(draft, lang = "en") {
   if (!draft.trim()) {
     return [
       {
@@ -1062,11 +1349,13 @@ function analyzeTextDraft(draft) {
         pattern: "Paste a draft to check whether it is likely to land as attack, defense, shutdown, DARVO, JADE, or contempt.",
         repair: "Start with the real goal: request, repair, boundary, or pause.",
       },
-    ];
+    ].map((pattern) => localizePattern(pattern, lang));
   }
   const normalized = draft.toLowerCase();
   const matches = TEXT_PATTERN_RULES.filter((rule) => rule.terms.some((term) => normalized.includes(term)));
-  return matches.length ? matches : [TEXT_PATTERN_RULES.find((rule) => rule.id === "clean")];
+  return (matches.length ? matches : [TEXT_PATTERN_RULES.find((rule) => rule.id === "clean")]).map((pattern) =>
+    localizePattern(pattern, lang)
+  );
 }
 
 function firstSentence(text) {
@@ -1075,30 +1364,44 @@ function firstSentence(text) {
   return cleaned.split(/[.!?]/)[0].slice(0, 130) || cleaned.slice(0, 130);
 }
 
-function inferBehaviorRequest(text) {
+function inferBehaviorRequest(text, lang = "en") {
   const cleaned = firstSentence(text)
     .replace(/^(can|could|would)\s+you\s+(please\s+)?/i, "")
     .replace(/^please\s+/i, "")
     .replace(/^you\s+(need|have)\s+to\s+/i, "")
     .replace(/^stop\s+/i, "stop ");
   const lower = cleaned.toLowerCase();
-  if (lower.includes("yell") || lower.includes("scream") || lower.includes("raise your voice")) {
+  if (lower.includes("yell") || lower.includes("scream") || lower.includes("raise your voice") || lower.includes("grit") || lower.includes("levantar la voz")) {
+    if (lang === "es") return "bajar la voz mientras hablamos";
     return "lower your voice while we talk";
   }
   if (lower.includes("interrupt")) {
+    if (lang === "es") return "dejarme terminar antes de responder";
     return "let me finish before responding";
   }
   if (lower.includes("call me") || lower.includes("insult")) {
+    if (lang === "es") return "hablar del tema sin insultos";
     return "speak to the issue without insults";
   }
   if (cleaned && cleaned !== "what happened") return cleaned;
+  if (lang === "es") return "nombrar un siguiente paso específico";
   return "name one specific next step";
 }
 
-function buildTextRewrite({ draft, goal, need, tone }) {
-  const behavior = inferBehaviorRequest(draft);
-  const needText = need || "clarity";
+function buildTextRewrite({ draft, goal, need, tone, lang = "en" }) {
+  const behavior = inferBehaviorRequest(draft, lang);
+  const needText = translateNeed(need || "clarity", lang).toLowerCase();
   const toneLine = tone === "firm" ? "firm and respectful" : tone === "warm" ? "warm and direct" : "calm and clear";
+  if (lang === "es") {
+    const spanishToneLine = tone === "firm" ? "firme y respetuoso" : tone === "warm" ? "cálido y directo" : "calmo y claro";
+    const options = {
+      pause: `Quiero manejar esto bien. Estoy activado y necesito ${needText}. Voy a pausar un momento y luego volver cuando pueda estar ${spanishToneLine}.`,
+      request: `Quiero hablar esto bien y necesito ${needText}. ¿Podrías ${behavior} para que podamos mantenernos claros?`,
+      repair: `No me gusta cómo estaba por decir esto. Mi necesidad real es ${needText}. Quiero asumir mi parte, bajar la velocidad y hablar del impacto sin atacarte.`,
+      boundary: `Quiero que esta conversación se mantenga respetuosa. Necesito ${needText}. Si no podemos ${behavior}, voy a pausar y volver cuando podamos hablar con claridad.`,
+    };
+    return options[goal] || options.request;
+  }
   const options = {
     pause: `I want to handle this well. I am activated and need ${needText}. I am going to pause for a bit, then come back when I can be ${toneLine}.`,
     request: `I want to talk this through, and I need ${needText}. Could you ${behavior} so we can stay clear?`,
@@ -1137,7 +1440,7 @@ function Button({ children, onClick, variant = "primary", className = "", disabl
   );
 }
 
-function SupportActions({ className = "" }) {
+function SupportActions({ className = "", t = makeTranslator("en") }) {
   return (
     <div className={cls("grid gap-2 sm:grid-cols-3", className)}>
       <a
@@ -1147,7 +1450,7 @@ function SupportActions({ className = "" }) {
         className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#7c3aed] px-4 text-sm font-black text-white ring-1 ring-[#ddd6fe] transition hover:bg-[#6d28d9]"
       >
         <MessageSquareText size={16} />
-        Talk about it now
+        {t("support.talk")}
       </a>
       <a
         href={PAYPAL_URL}
@@ -1156,7 +1459,7 @@ function SupportActions({ className = "" }) {
         className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#f6c344] px-4 text-sm font-black text-[#1f1600] ring-1 ring-[#5f4500] transition hover:bg-[#ffd86a]"
       >
         <HeartHandshake size={16} />
-        Support with a donation
+        {t("support.donate")}
       </a>
       <a
         href={CALENDAR_URL}
@@ -1165,7 +1468,7 @@ function SupportActions({ className = "" }) {
         className="flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#1d4ed8] px-4 text-sm font-black text-white ring-1 ring-[#bfdbfe] transition hover:bg-[#1e40af]"
       >
         <CalendarDays size={16} />
-        Book coaching support
+        {t("support.book")}
       </a>
     </div>
   );
@@ -1226,7 +1529,7 @@ function ThemePicker({ themeId, setThemeId, compact = false }) {
   );
 }
 
-function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) {
+function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, lang, setLang, t, children }) {
   const theme = THEMES.find((item) => item.id === themeId) || THEMES[0];
   return (
     <div className={cls("min-h-screen overflow-x-hidden", `theme-${theme.mode}`, theme.bg, theme.text)}>
@@ -1238,7 +1541,7 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) 
             </div>
             <div>
               <div className="text-sm font-black uppercase tracking-wide">{APP_NAME}</div>
-              <div className={cls("text-xs", theme.muted)}>{APP_TAGLINE}</div>
+              <div className={cls("text-xs", theme.muted)}>{t("appTagline")}</div>
             </div>
           </div>
           <nav className="space-y-1">
@@ -1252,10 +1555,14 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) 
                 )}
               >
                 <Icon size={18} />
-                {label}
+                {t(`nav.${id}`) || label}
               </button>
             ))}
           </nav>
+          <div className="mt-8 border-t border-stone-200 pt-4">
+            <div className="mb-2 text-xs font-black uppercase tracking-wide">{t("language")}</div>
+            <LanguagePicker lang={lang} setLang={setLang} />
+          </div>
           <div className="mt-8 border-t border-stone-200 pt-4">
             <div className="mb-2 flex items-center gap-2 text-xs font-black uppercase tracking-wide">
               <Palette size={14} />
@@ -1270,16 +1577,19 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) 
             <div className="flex items-center justify-between gap-3">
               <div>
                 <h1 className="max-w-[19rem] text-base font-black tracking-normal sm:max-w-none sm:text-lg md:text-2xl">
-                  {APP_TITLE}
+                  {t("appTitle")}
                 </h1>
                 <p className={cls("hidden text-sm md:block", theme.muted)}>
-                  {APP_SUBTITLE}
+                  {t("appSubtitle")}
                 </p>
               </div>
-              <Button variant="secondary" className="hidden md:inline-flex" onClick={onNewCheckIn}>
-                <RefreshCw size={16} />
-                New check-in
-              </Button>
+              <div className="flex items-center gap-2">
+                <LanguagePicker lang={lang} setLang={setLang} compact />
+                <Button variant="secondary" className="hidden md:inline-flex" onClick={onNewCheckIn}>
+                  <RefreshCw size={16} />
+                  {t("newCheckIn")}
+                </Button>
+              </div>
             </div>
           </header>
           <div className="min-w-0 px-4 py-5 md:px-8 md:py-8">{children}</div>
@@ -1296,9 +1606,9 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, children }) 
                 "flex min-h-16 min-w-[72px] flex-col items-center justify-center gap-1 text-[10px] font-bold min-[360px]:text-[11px]",
                 tab === id ? "text-emerald-800" : theme.muted
               )}
-            >
-              <Icon size={20} strokeWidth={tab === id ? 2.6 : 2} />
-              <span>{label}</span>
+              >
+                <Icon size={20} strokeWidth={tab === id ? 2.6 : 2} />
+              <span>{t(`nav.${id}`) || label}</span>
             </button>
           ))}
         </div>
@@ -1374,63 +1684,41 @@ function CheckInBreadcrumb({ audience, mode, situation, bodySignals, activePath,
   );
 }
 
-function Intro({ setTab }) {
-  const steps = [
-    {
-      title: "Start with who is using it",
-      copy: "The app adapts its language for a man, woman, teen, parent, partner, coach, or mentor.",
-    },
-    {
-      title: "Choose the kind of work",
-      copy: "Use Quick Check In for speed, Relationship Repair for conflict, Shadow Work for patterns, Accountability for ownership, or Support Someone when guiding another person.",
-    },
-    {
-      title: "Let the body narrow the map",
-      copy: "Body signals help translate a charged moment into a likely feeling and need without forcing perfect words too early.",
-    },
-    {
-      title: "Use the report",
-      copy: "The final report gives the frame, needs, shadows to watch, scripts, repair language, and one practical next move.",
-    },
-  ];
-  const taglines = [
-    "From reaction to repair.",
-    "Decode the emotion. Meet the need. Move with integrity.",
-    "A practical map from charged emotion to clear action.",
-  ];
-
+function Intro({ setTab, t }) {
+  const steps = t("intro.steps");
+  const taglines = t("intro.tags");
   return (
     <div className="mx-auto max-w-4xl space-y-4">
       <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 md:p-6">
-        <h2 className="text-2xl font-black tracking-normal text-emerald-950 md:text-4xl">{HERO_TITLE}</h2>
+        <h2 className="text-2xl font-black tracking-normal text-emerald-950 md:text-4xl">{t("intro.title")}</h2>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-emerald-950 md:text-base">
-          {HERO_COPY}
+          {t("intro.copy")}
         </p>
         <div className="mt-5 flex flex-col gap-2 sm:flex-row">
           <Button variant="primary" onClick={() => setTab("checkin")}>
             <PlayCircle size={16} />
-            Start guided check-in
+            {t("intro.start")}
           </Button>
           <Button variant="amber" onClick={() => setTab("text")}>
             <MessageSquareText size={16} />
-            Before you text them
+            {t("intro.beforeText")}
           </Button>
           <Button variant="secondary" onClick={() => setTab("shadows")}>
             <BookOpen size={16} />
-            Shadow finder
+            {t("intro.shadowFinder")}
           </Button>
           <Button variant="amber" onClick={() => setTab("reset")}>
             <Activity size={16} />
-            90-second reset
+            {t("intro.reset")}
           </Button>
         </div>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <Button variant="secondary" onClick={() => setTab("help")}>
             <HelpCircle size={16} />
-            Read help wiki
+            {t("intro.help")}
           </Button>
         </div>
-        <SupportActions className="mt-4" />
+        <SupportActions className="mt-4" t={t} />
       </section>
 
       <section className="grid gap-3 md:grid-cols-3">
@@ -1443,45 +1731,38 @@ function Intro({ setTab }) {
 
       <section className="rounded-lg border border-stone-200 bg-white p-4 md:p-5">
         <SectionTitle
-          title="How to use it"
-          copy="Move one screen at a time. Choose the closest fit. The goal is not a perfect label. The goal is a better next move."
+          title={t("intro.howTitle")}
+          copy={t("intro.howCopy")}
         />
         <div className="mt-4 grid gap-3 md:grid-cols-2">
-          {steps.map((step, index) => (
-            <div key={step.title} className="rounded-lg border border-stone-200 bg-stone-50 p-4">
+          {steps.map(([title, copy], index) => (
+            <div key={title} className="rounded-lg border border-stone-200 bg-stone-50 p-4">
               <div className="flex items-center gap-3">
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-800 text-sm font-black text-white">
                   {index + 1}
                 </span>
-                <div className="text-sm font-black text-stone-950">{step.title}</div>
+                <div className="text-sm font-black text-stone-950">{title}</div>
               </div>
-              <p className="mt-3 text-sm leading-6 text-stone-700">{step.copy}</p>
+              <p className="mt-3 text-sm leading-6 text-stone-700">{copy}</p>
             </div>
           ))}
         </div>
       </section>
 
       <section className="rounded-lg border border-amber-200 bg-amber-50 p-4 md:p-5">
-        <div className="text-sm font-black text-stone-950">Best use case</div>
+        <div className="text-sm font-black text-stone-950">{t("intro.bestTitle")}</div>
         <p className="mt-2 text-sm leading-6 text-stone-700">
-          Use it before a hard conversation, after a triggering moment, when you feel stuck in blame or shutdown, or when you want to support someone without controlling them.
+          {t("intro.bestCopy")}
         </p>
       </section>
 
       <section className="rounded-lg border border-stone-200 bg-white p-4 md:p-5">
         <SectionTitle
-          title="What this helps with"
-          copy="Use it when emotions are high, repair matters, accountability is needed, or the same relationship pattern keeps repeating."
+          title={t("intro.helpsTitle")}
+          copy={t("intro.helpsCopy")}
         />
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          {[
-            "Unmet needs explorer",
-            "Relationship repair tool",
-            "Shadow work guide",
-            "DARVO and JADE pattern support",
-            "Four Horsemen relationship awareness",
-            "Emotional intelligence training for men and boys",
-          ].map((item) => (
+          {t("intro.helps").map((item) => (
             <div key={item} className="rounded-lg border border-stone-200 bg-stone-50 p-3 text-sm font-semibold text-stone-800">
               {item}
             </div>
@@ -1532,35 +1813,35 @@ function EmergencyReset({ setTab }) {
   );
 }
 
-function BeforeTextTool({ setTab }) {
+function BeforeTextTool({ setTab, lang, t }) {
   const [draft, setDraft] = useState("");
   const [goal, setGoal] = useState("request");
   const [need, setNeed] = useState("respect");
   const [tone, setTone] = useState("calm");
-  const patterns = analyzeTextDraft(draft);
-  const rewrite = buildTextRewrite({ draft, goal, need, tone });
+  const patterns = analyzeTextDraft(draft, lang);
+  const rewrite = buildTextRewrite({ draft, goal, need, tone, lang });
   const sharePayload = [
-    "Before You Text Them",
+    t("textTool.shareTitle"),
     "",
-    "Pattern check:",
+    `${t("textTool.patternTitle")}:`,
     ...patterns.map((pattern) => `- ${pattern.label}: ${pattern.pattern}`),
     "",
-    "Cleaner version:",
+    `${t("textTool.cleanerTitle")}:`,
     rewrite,
     "",
     ATTR_LINE,
   ].join("\n");
   const needs = ["respect", "clarity", "repair", "safety", "dignity", "connection", "space", "accountability"];
   const goals = [
-    { id: "request", label: "Ask cleanly" },
-    { id: "repair", label: "Repair my part" },
-    { id: "boundary", label: "Set a boundary" },
-    { id: "pause", label: "Pause safely" },
+    { id: "request", label: t("textTool.goals.request") },
+    { id: "repair", label: t("textTool.goals.repair") },
+    { id: "boundary", label: t("textTool.goals.boundary") },
+    { id: "pause", label: t("textTool.goals.pause") },
   ];
   const tones = [
-    { id: "calm", label: "Calm" },
-    { id: "warm", label: "Warm" },
-    { id: "firm", label: "Firm" },
+    { id: "calm", label: t("textTool.tones.calm") },
+    { id: "warm", label: t("textTool.tones.warm") },
+    { id: "firm", label: t("textTool.tones.firm") },
   ];
 
   return (
@@ -1568,30 +1849,30 @@ function BeforeTextTool({ setTab }) {
       <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
         <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide text-emerald-950">
           <MessageSquareText size={16} />
-          Before you text them
+          {t("textTool.eyebrow")}
         </div>
-        <h2 className="mt-2 text-2xl font-black text-emerald-950 md:text-3xl">Turn the draft into a clean message.</h2>
+        <h2 className="mt-2 text-2xl font-black text-emerald-950 md:text-3xl">{t("textTool.title")}</h2>
         <p className="mt-3 text-sm leading-6 text-emerald-950">
-          Paste what you want to send. This checks for attack, defense, shutdown, DARVO, JADE, and contempt, then gives you a message that protects the need without creating more repair work.
+          {t("textTool.copy")}
         </p>
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="space-y-4">
           <div className="rounded-lg border border-stone-200 bg-white p-4">
-            <label className="text-sm font-black text-stone-950" htmlFor="text-draft">What were you about to send?</label>
+            <label className="text-sm font-black text-stone-950" htmlFor="text-draft">{t("textTool.draftLabel")}</label>
             <textarea
               id="text-draft"
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
-              placeholder="Paste the text here. Nothing is sent anywhere."
+              placeholder={t("textTool.draftPlaceholder")}
               className="mt-2 min-h-40 w-full rounded-lg border border-stone-200 bg-white p-3 text-sm leading-6 text-stone-950 outline-none focus:border-emerald-800"
             />
-            <p className="mt-2 text-xs font-semibold text-stone-500">Private in this browser. The tool rewrites locally from patterns and templates.</p>
+            <p className="mt-2 text-xs font-semibold text-stone-500">{t("textTool.privateNote")}</p>
           </div>
 
           <div className="rounded-lg border border-stone-200 bg-white p-4">
-            <div className="text-sm font-black text-stone-950">What is the clean goal?</div>
+            <div className="text-sm font-black text-stone-950">{t("textTool.goalTitle")}</div>
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               {goals.map((item) => (
                 <button
@@ -1610,7 +1891,7 @@ function BeforeTextTool({ setTab }) {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-lg border border-stone-200 bg-white p-4">
-              <div className="text-sm font-black text-stone-950">Main need</div>
+              <div className="text-sm font-black text-stone-950">{t("textTool.needTitle")}</div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {needs.map((item) => (
                   <button
@@ -1621,14 +1902,14 @@ function BeforeTextTool({ setTab }) {
                       need === item ? "border-emerald-800 bg-emerald-800 text-white" : "border-stone-200 bg-stone-50 text-stone-800 hover:border-stone-400"
                     )}
                   >
-                    {item}
+                    {translateNeed(item, lang)}
                   </button>
                 ))}
               </div>
             </div>
 
             <div className="rounded-lg border border-stone-200 bg-white p-4">
-              <div className="text-sm font-black text-stone-950">Tone</div>
+              <div className="text-sm font-black text-stone-950">{t("textTool.toneTitle")}</div>
               <div className="mt-3 grid gap-2">
                 {tones.map((item) => (
                   <button
@@ -1649,41 +1930,41 @@ function BeforeTextTool({ setTab }) {
 
         <aside className="space-y-4">
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-            <div className="text-sm font-black text-stone-950">Pattern check</div>
+            <div className="text-sm font-black text-stone-950">{t("textTool.patternTitle")}</div>
             <div className="mt-3 grid gap-2">
               {patterns.map((pattern) => (
                 <div key={pattern.id} className="rounded-lg border border-amber-200 bg-white p-3">
                   <div className="text-sm font-black text-stone-950">{pattern.label}</div>
                   <p className="mt-1 text-sm leading-6 text-stone-700">{pattern.pattern}</p>
-                  <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Cleaner move:</strong> {pattern.repair}</p>
+                  <p className="mt-1 text-sm leading-6 text-stone-700"><strong>{t("textTool.cleanerMove")}</strong> {pattern.repair}</p>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-            <div className="text-sm font-black text-emerald-950">Cleaner version</div>
+            <div className="text-sm font-black text-emerald-950">{t("textTool.cleanerTitle")}</div>
             <p className="mt-3 text-base font-semibold leading-7 text-emerald-950">{rewrite}</p>
             <div className="mt-4 grid gap-2">
               <Button variant="amber" onClick={() => copyText(rewrite)}>
                 <Clipboard size={16} />
-                Copy clean text
+                {t("textTool.copyClean")}
               </Button>
               <Button variant="secondary" onClick={() => copyText(sharePayload)}>
                 <Clipboard size={16} />
-                Copy full check
+                {t("textTool.copyFull")}
               </Button>
             </div>
           </div>
 
           <div className="rounded-lg border border-stone-200 bg-white p-4">
-            <div className="text-sm font-black text-stone-950">If you are too activated</div>
+            <div className="text-sm font-black text-stone-950">{t("textTool.activatedTitle")}</div>
             <p className="mt-2 text-sm leading-6 text-stone-700">
-              Do not send yet. Regulate first, then choose one clear message.
+              {t("textTool.activatedCopy")}
             </p>
             <Button className="mt-3 w-full" variant="secondary" onClick={() => setTab("reset")}>
               <Activity size={16} />
-              90-second reset
+              {t("textTool.reset")}
             </Button>
           </div>
         </aside>
@@ -3031,6 +3312,13 @@ export default function App() {
   const [tab, setTab] = useState("intro");
   const [checkInKey, setCheckInKey] = useState(0);
   const [themeId, setThemeId] = useState("sage");
+  const [lang, setLang] = useState(() => {
+    try {
+      return window.localStorage.getItem(LANGUAGE_STORAGE_KEY) || "en";
+    } catch {
+      return "en";
+    }
+  });
   const [reports, setReports] = useState(() => {
     try {
       const stored = window.localStorage.getItem(REPORTS_STORAGE_KEY);
@@ -3040,6 +3328,16 @@ export default function App() {
     }
   });
   const latestReport = reports[0] || null;
+  const t = useMemo(() => makeTranslator(lang), [lang]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+    } catch {
+      // Local storage can be unavailable in private or restricted browser modes.
+    }
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   useEffect(() => {
     try {
@@ -3064,10 +3362,19 @@ export default function App() {
   };
 
   return (
-    <AppShell tab={tab} setTab={setTab} onNewCheckIn={startNewCheckIn} themeId={themeId} setThemeId={setThemeId}>
-      {tab === "intro" && <Intro setTab={setTab} />}
+    <AppShell
+      tab={tab}
+      setTab={setTab}
+      onNewCheckIn={startNewCheckIn}
+      themeId={themeId}
+      setThemeId={setThemeId}
+      lang={lang}
+      setLang={setLang}
+      t={t}
+    >
+      {tab === "intro" && <Intro setTab={setTab} t={t} />}
       {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} saveReport={saveReport} setTab={setTab} />}
-      {tab === "text" && <BeforeTextTool setTab={setTab} />}
+      {tab === "text" && <BeforeTextTool setTab={setTab} lang={lang} t={t} />}
       {tab === "reset" && <EmergencyReset setTab={setTab} />}
       {tab === "paths" && <TransformationPaths setTab={setTab} />}
       {tab === "explore" && <Explore rows={rows} saveReport={saveReport} setTab={setTab} />}
