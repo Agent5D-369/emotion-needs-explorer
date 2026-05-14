@@ -977,6 +977,29 @@ function buildGrowthPlan(report) {
   };
 }
 
+function buildShareCardText(report) {
+  if (!report) return "";
+  const topNeed = report.needs?.[0] || "clarity";
+  const shadow = report.shadows?.[0]?.label || "a protective pattern";
+  return [
+    "I paused before reacting.",
+    `Feeling: ${report.specific || "activated"}`,
+    `Need: ${topNeed}`,
+    `Pattern to watch: ${shadow}`,
+    `Next move: ${buildGrowthPlan(report).today}`,
+    "",
+    "Explore your signal: https://exploringneeds.com/",
+  ].join("\n");
+}
+
+function shareText(title, text) {
+  if (navigator.share) {
+    navigator.share({ title, text }).catch(() => copyText(text));
+    return;
+  }
+  copyText(text);
+}
+
 function cls(...parts) {
   return parts.filter(Boolean).join(" ");
 }
@@ -1537,6 +1560,7 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
     guidance: guidedPrompt,
     createdAt: new Date().toISOString(),
   };
+  const shareCardText = buildShareCardText(report);
 
   const saveCurrentReport = () => {
     saveReport(report);
@@ -1852,6 +1876,23 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
               <summary className="cursor-pointer text-sm font-black text-stone-950">Optional deeper guidance</summary>
               <p className="mt-2 text-sm leading-6 text-stone-700">{guidedPrompt}</p>
             </details>
+            <div className="rounded-lg border border-stone-200 bg-white p-4">
+              <div className="text-sm font-black text-stone-950">Shareable insight</div>
+              <p className="mt-1 text-sm leading-6 text-stone-700">
+                Use this public version when you want to share the tool without sharing the private story.
+              </p>
+              <pre className="mt-3 whitespace-pre-wrap rounded-lg border border-stone-200 bg-stone-50 p-3 text-sm leading-6 text-stone-800">{shareCardText}</pre>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                <Button variant="amber" onClick={() => copyText(shareCardText)}>
+                  <Clipboard size={16} />
+                  Copy share card
+                </Button>
+                <Button variant="secondary" onClick={() => shareText("Exploring Needs insight", shareCardText)}>
+                  <ArrowRight size={16} />
+                  Share insight
+                </Button>
+              </div>
+            </div>
             <div className="grid gap-2 sm:grid-cols-3">
               <Button variant="amber" onClick={() => copyText(summary)}>
                 <Clipboard size={16} />
@@ -2123,6 +2164,7 @@ function Reports({ reports }) {
     }
   }, [reports, selectedId]);
   const growthPlan = buildGrowthPlan(report);
+  const shareCardText = buildShareCardText(report);
   const payload = report
     ? [
         `${APP_TITLE} check-in report`,
@@ -2217,6 +2259,23 @@ function Reports({ reports }) {
         </div>
         <p className="mt-3 text-lg font-semibold leading-8 text-emerald-950">{report.frame}</p>
       </div>
+      <div className="rounded-lg border border-stone-200 bg-white p-4">
+        <div className="text-sm font-black text-stone-950">Shareable insight</div>
+        <p className="mt-2 text-sm leading-6 text-stone-700">
+          A short, non-private version of the report that can invite someone else into the tool without exposing the full story.
+        </p>
+        <pre className="mt-3 whitespace-pre-wrap rounded-lg border border-stone-200 bg-stone-50 p-3 text-sm leading-6 text-stone-800">{shareCardText}</pre>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          <Button variant="amber" onClick={() => copyText(shareCardText)}>
+            <Clipboard size={16} />
+            Copy share card
+          </Button>
+          <Button variant="secondary" onClick={() => shareText("Exploring Needs insight", shareCardText)}>
+            <ArrowRight size={16} />
+            Share insight
+          </Button>
+        </div>
+      </div>
       {report.mindset ? (
         <div className="rounded-lg border border-stone-200 bg-white p-4">
           <div className="text-sm font-black text-stone-950">Mindset</div>
@@ -2295,7 +2354,7 @@ function Reports({ reports }) {
       </div>
       <div className="grid gap-2 sm:grid-cols-3">
         <Button variant="amber" onClick={() => copyText(payload)}><Clipboard size={16} />Copy report</Button>
-        <Button variant="secondary" onClick={() => navigator.share ? navigator.share({ title: "Exploring Needs Report", text: payload }).catch(() => copyText(payload)) : copyText(payload)}>
+        <Button variant="secondary" onClick={() => shareText("Exploring Needs Report", payload)}>
           <ArrowRight size={16} />Share report
         </Button>
         <Button variant="secondary" onClick={() => copyText(`${report.frame}\n\n${ATTR_LINE}`)}>
@@ -2312,6 +2371,32 @@ function ShadowLibrary() {
   const [categoryId, setCategoryId] = useState("all");
   const [selectedId, setSelectedId] = useState(SHADOW_PATTERNS[0].id);
   const enriched = SHADOW_PATTERNS.map(enrichShadow);
+  const finderPrompts = [
+    {
+      label: "I need to win or control it",
+      category: "power",
+      shadowId: "control",
+      copy: "Start with power patterns: control, attack, entitlement, grandiosity, and scorekeeping.",
+    },
+    {
+      label: "I shut down or disappear",
+      category: "avoidance",
+      shadowId: "withdrawal",
+      copy: "Start with avoidance patterns: withdrawal, numbing, perfectionism, and hyper-independence.",
+    },
+    {
+      label: "I defend, explain, or reverse blame",
+      category: "accountability",
+      shadowId: "darvo",
+      copy: "Start with accountability distortions: DARVO, JADE, projection, and shame collapse.",
+    },
+    {
+      label: "I over-give or abandon myself",
+      category: "codependent",
+      shadowId: "rescue",
+      copy: "Start with codependent survival: rescue, approval seeking, compliance, and JADE.",
+    },
+  ];
   const category = SHADOW_CATEGORIES.find((item) => item.id === categoryId) || SHADOW_CATEGORIES[0];
   const normalizedQuery = query.trim().toLowerCase();
   const filtered = enriched.filter((shadow) => {
@@ -2365,6 +2450,29 @@ function ShadowLibrary() {
           />
         </div>
       </div>
+
+      <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+        <div className="text-sm font-black text-emerald-950">What is running me right now?</div>
+        <p className="mt-1 text-sm leading-6 text-emerald-950">
+          Pick the closest pattern. This jumps you to the most likely shadow category and repair path.
+        </p>
+        <div className="mt-3 grid gap-2 md:grid-cols-2">
+          {finderPrompts.map((prompt) => (
+            <button
+              key={prompt.label}
+              onClick={() => {
+                setCategoryId(prompt.category);
+                setSelectedId(prompt.shadowId);
+                setQuery("");
+              }}
+              className="rounded-lg border border-emerald-200 bg-white p-3 text-left transition hover:border-emerald-800"
+            >
+              <div className="text-sm font-black text-stone-950">{prompt.label}</div>
+              <div className="mt-1 text-sm leading-6 text-stone-700">{prompt.copy}</div>
+            </button>
+          ))}
+        </div>
+      </section>
 
       <div className="flex gap-2 overflow-x-auto pb-1">
         {SHADOW_CATEGORIES.map((item) => (
