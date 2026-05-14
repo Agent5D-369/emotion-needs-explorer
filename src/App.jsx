@@ -25,11 +25,13 @@ import {
 import { EMOTION_DATA, toRows } from "./emotionData.js";
 import { guidanceFor } from "./prompts.js";
 
-const APP_NAME = "ExploringNeeds.com";
-const APP_TITLE = "Exploring Needs";
-const APP_TAGLINE = "Name the feeling. Find the need. Choose the next right move.";
-const APP_SUBTITLE =
-  "A practical emotional intelligence and shadow work tool for men, boys, families, partners, coaches, and mentors.";
+const APP_NAME = "Exploring Needs";
+const APP_TITLE = "Emotional Intelligence Toolkit";
+const APP_TAGLINE = "Feelings to needs to repair.";
+const APP_SUBTITLE = "Name feelings. Find needs. Repair patterns.";
+const HERO_TITLE = "Turn the reaction into a repair plan.";
+const HERO_COPY =
+  "Use a guided check-in to name the feeling, find the unmet need, spot the shadow pattern, and choose one clean next move.";
 const ATTR_LINE =
   "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/) | ExploringNeeds.com | Rick Broider | Agent5D.com | HolisticLifeTribe.com";
 const CALENDAR_URL = "https://calendar.app.google/NQvsMN7X5evMK9Q1A";
@@ -1269,10 +1271,9 @@ function Intro({ setTab }) {
   return (
     <div className="mx-auto max-w-4xl space-y-4">
       <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 md:p-6">
-        <div className="text-sm font-black uppercase tracking-wide text-emerald-950">{APP_NAME}</div>
-        <h2 className="mt-2 text-2xl font-black tracking-normal text-emerald-950 md:text-4xl">{APP_TAGLINE}</h2>
+        <h2 className="text-2xl font-black tracking-normal text-emerald-950 md:text-4xl">{HERO_TITLE}</h2>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-emerald-950 md:text-base">
-          {APP_SUBTITLE} It helps turn emotional charge into a usable need, a practical request, a repair move, or a cleaner boundary.
+          {HERO_COPY}
         </p>
         <div className="mt-5 flex flex-col gap-2 sm:flex-row">
           <Button variant="primary" onClick={() => setTab("checkin")}>
@@ -1328,8 +1329,8 @@ function Intro({ setTab }) {
 
       <section className="rounded-lg border border-stone-200 bg-white p-4 md:p-5">
         <SectionTitle
-          title="Built for high-intent emotional intelligence work"
-          copy="ExploringNeeds.com is designed as a feelings and needs app, emotional intelligence tool, shadow work library, relationship repair script builder, accountability guide, and pattern tracker."
+          title="What this helps with"
+          copy="Use it when emotions are high, repair matters, accountability is needed, or the same relationship pattern keeps repeating."
         />
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
           {[
@@ -2552,7 +2553,7 @@ function HelpWiki({ setTab }) {
   const topics = [
     {
       title: "What this is",
-      body: "ExploringNeeds.com is a guided emotional intelligence tool, unmet needs explorer, shadow work app, relationship repair guide, and pattern tracker. It helps you move from a charged feeling into the unmet need, shadow pattern, repair language, and practical next action.",
+      body: "This is a guided emotional intelligence tool, unmet needs explorer, shadow work app, relationship repair guide, and pattern tracker. It helps you move from a charged feeling into the unmet need, shadow pattern, repair language, and practical next action.",
     },
     {
       title: "What it is not",
@@ -2607,7 +2608,7 @@ function HelpWiki({ setTab }) {
     <div className="mx-auto max-w-4xl space-y-4">
       <SectionTitle
         title="Help Wiki"
-        copy="A practical guide to the concepts inside ExploringNeeds.com and how to use the tool without getting lost."
+        copy="A practical guide to the concepts inside the tool and how to use it without getting lost."
       />
 
       <div className="grid gap-2 sm:grid-cols-4">
