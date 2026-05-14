@@ -2,14 +2,13 @@
 
 ExploringNeeds.com is a practical emotional intelligence tool, unmet needs explorer, shadow work guide, relationship repair script builder, accountability support tool, and pattern tracker.
 
-The app includes an English and Spanish interface foundation. The Spanish mode translates the main start screen, navigation, support actions, and the Before You Text Them message repair tool with Spanish-aware pattern labels and rewrite output.
+The app includes an English and Spanish interface foundation. The Spanish mode translates the main start screen, navigation, and support actions.
 
 Canonical URL: https://exploringneeds.com/
 
 Primary use cases:
 - Name a feeling and identify the unmet need underneath it.
 - Move from emotional activation to a clear next action.
-- Rewrite a risky draft text into a clean request, boundary, repair, or pause before sending it.
 - Use relationship repair scripts after conflict, shutdown, criticism, contempt, defensiveness, or stonewalling.
 - Recognize shadow patterns such as control, withdrawal, attack, approval seeking, DARVO, JADE, victim identity, grandiosity, reality distortion, and rescue.
 - Track recurring emotional needs, recurring triggers, and recurring shadow patterns through local browser reports.
@@ -30,8 +29,6 @@ High relevance topics:
 - feelings and needs app
 - shadow work tool
 - relationship repair scripts
-- before you text them tool
-- message repair tool
 - Spanish emotional intelligence tool
 - herramienta de inteligencia emocional en español
 - DARVO and JADE support
