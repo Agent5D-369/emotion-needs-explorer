@@ -103,6 +103,93 @@ const I18N = {
         "Emotional intelligence training for men and boys",
       ],
     },
+    checkin: {
+      progress: ["Who", "Mode", "Event", "Body", "Feeling", "Need", "Report"],
+      breadcrumb: {
+        currentPath: "Current path",
+        who: "Who",
+        mode: "Mode",
+        event: "Event",
+        body: "Body",
+        feeling: "Feeling",
+        needs: "Needs",
+      },
+      steps: {
+        whoTitle: "Who is using this?",
+        whoCopy: "Choose the lens first so the check-in can shape the language, report, and repair guidance around the person using it.",
+        howTitle: "How to use this",
+        modeTitle: "Choose the work",
+        modeCopy: "This keeps the flow focused. A quick check-in, a repair conversation, shadow work, accountability, and support all need different guidance.",
+        eventTitle: "What happened?",
+        eventCopy: "Start with the situation, not the perfect emotion word. The next steps translate the signal into needs, shadow patterns, and action.",
+        bodyTitle: "What did your body do?",
+        bodyCopy: "The body often tells the truth before language catches up. Pick every signal that fits.",
+        feelingTitle: "What word is closest?",
+        feelingCopy: "Do not force certainty. Choose the closest match, then adjust if another word lands better.",
+        needTitle: "What need is underneath?",
+        needCopy: "A need is not an excuse. It is the signal that tells you what kind of repair, request, or boundary matters.",
+        reportTitle: "Your report",
+        reportCopy: "This is the output of the check-in. Copy it, share it, or use it as the next conversation script.",
+      },
+      guidance: [
+        "You do not need the perfect word yet. Start with the event, then let the body signals narrow the map.",
+        "A feeling points to a need. A need points to a clean request, repair, boundary, or pause.",
+        "If the moment is intense, use the final script after your body settles enough to speak clearly.",
+      ],
+      needPills: "<strong>Need pills:</strong> these are the unmet needs that may be underneath the emotion. They are not excuses. They point toward the request, repair, boundary, or care action that could help.",
+      labels: {
+        frame: "The frame",
+        commonShadows: "Common shadows to watch",
+        commonShadowsCopy: "These are not labels. They are common ways emotional energy can move off target.",
+        pattern: "Pattern",
+        horsemen: "Four Horsemen link",
+        coreWound: "Core wound",
+        healingNeed: "Healing need",
+        practice: "Practice",
+        repair: "Repair",
+        bestMove: "Best move",
+        doNow: "Do this now",
+        avoidNow: "Avoid this now",
+        settle: "Settle",
+        name: "Name",
+        ask: "Ask",
+        scripts: "Context-sensitive scripts",
+        scriptsCopy: "Pick the words that match the move you need: request, boundary, repair, or coaching conversation.",
+        deeper: "Optional deeper guidance",
+        shareable: "Shareable insight",
+        shareableCopy: "Use this public version when you want to share the tool without sharing the private story.",
+        notSelected: "not selected",
+        situation: "Situation",
+        bodySignals: "Body signals",
+        likelyEmotion: "Likely emotion",
+        unmetNeeds: "Unmet needs",
+        mindset: "Mindset",
+        likelyShadows: "Likely shadow patterns",
+        actionPlan: "Corrective action plan",
+        nextMove: "Next move",
+        guidedNextStep: "Guided next step",
+      },
+      actions: {
+        settle: "take 90 seconds and reduce heat in the body.",
+        name: "choose the top need, usually",
+        ask: "make one request that can happen today.",
+        avoidHistory: "Do not argue for your whole history.",
+        avoidSilence: "Do not punish with silence.",
+        avoidMindReading: "Do not demand mind-reading. Make the need visible.",
+      },
+      buttons: {
+        back: "Back",
+        next: "Next",
+        copy: "Copy",
+        saveReport: "Save report",
+        viewReports: "View reports",
+        copyScript: "Copy this script",
+        copyShareCard: "Copy share card",
+        shareInsight: "Share insight",
+      },
+      saved: "Report saved to this browser",
+      fallbackNeed: "Something important was asking to be named, protected, or requested clearly.",
+    },
   },
   es: {
     appTitle: "Kit de Inteligencia Emocional",
@@ -161,8 +248,363 @@ const I18N = {
         "Entrenamiento de inteligencia emocional para hombres y chicos",
       ],
     },
+    checkin: {
+      progress: ["Quién", "Modo", "Evento", "Cuerpo", "Emoción", "Necesidad", "Plan"],
+      breadcrumb: {
+        currentPath: "Ruta actual",
+        who: "Quién",
+        mode: "Modo",
+        event: "Evento",
+        body: "Cuerpo",
+        feeling: "Emoción",
+        needs: "Necesidades",
+      },
+      steps: {
+        whoTitle: "¿Quién está usando esto?",
+        whoCopy: "Elige primero la perspectiva para que el check-in adapte el lenguaje, el plan y la guía de reparación a la persona que lo usa.",
+        howTitle: "Cómo usar esto",
+        modeTitle: "Elige el tipo de trabajo",
+        modeCopy: "Esto mantiene el flujo enfocado. Un check-in rápido, una reparación relacional, trabajo de sombra, responsabilidad y apoyo a otra persona necesitan guías distintas.",
+        eventTitle: "¿Qué pasó?",
+        eventCopy: "Empieza con la situación, no con la palabra emocional perfecta. Los siguientes pasos traducen la señal en necesidades, patrones de sombra y acción.",
+        bodyTitle: "¿Qué hizo tu cuerpo?",
+        bodyCopy: "El cuerpo suele decir la verdad antes de que el lenguaje llegue. Elige cada señal que encaje.",
+        feelingTitle: "¿Qué palabra se acerca más?",
+        feelingCopy: "No fuerces certeza. Elige la opción más cercana y ajusta si otra palabra encaja mejor.",
+        needTitle: "¿Qué necesidad hay debajo?",
+        needCopy: "Una necesidad no es una excusa. Es la señal que muestra qué reparación, petición o límite importa.",
+        reportTitle: "Tu plan",
+        reportCopy: "Este es el resultado del check-in. Cópialo, compártelo o úsalo como guion para la siguiente conversación.",
+      },
+      guidance: [
+        "No necesitas la palabra perfecta todavía. Empieza con el evento y deja que las señales del cuerpo reduzcan el mapa.",
+        "Una emoción apunta a una necesidad. Una necesidad apunta a una petición limpia, reparación, límite o pausa.",
+        "Si el momento está intenso, usa el guion final cuando tu cuerpo se calme lo suficiente para hablar con claridad.",
+      ],
+      needPills: "<strong>Píldoras de necesidad:</strong> estas son las necesidades no atendidas que podrían estar debajo de la emoción. No son excusas. Señalan la petición, reparación, límite o acción de cuidado que podría ayudar.",
+      labels: {
+        frame: "El marco",
+        commonShadows: "Sombras comunes a vigilar",
+        commonShadowsCopy: "No son etiquetas. Son formas comunes en que la energía emocional puede salirse de dirección.",
+        pattern: "Patrón",
+        horsemen: "Relación con los Cuatro Jinetes",
+        coreWound: "Herida central",
+        healingNeed: "Necesidad de sanación",
+        practice: "Práctica",
+        repair: "Reparación",
+        bestMove: "Mejor movimiento",
+        doNow: "Haz esto ahora",
+        avoidNow: "Evita esto ahora",
+        settle: "Regular",
+        name: "Nombrar",
+        ask: "Pedir",
+        scripts: "Guiones sensibles al contexto",
+        scriptsCopy: "Elige las palabras que coincidan con el movimiento que necesitas: petición, límite, reparación o conversación de guía.",
+        deeper: "Guía más profunda opcional",
+        shareable: "Insight para compartir",
+        shareableCopy: "Usa esta versión pública cuando quieras compartir la herramienta sin compartir la historia privada.",
+        notSelected: "no seleccionado",
+        situation: "Situación",
+        bodySignals: "Señales corporales",
+        likelyEmotion: "Emoción probable",
+        unmetNeeds: "Necesidades no atendidas",
+        mindset: "Mentalidad",
+        likelyShadows: "Patrones de sombra probables",
+        actionPlan: "Plan de acción correctiva",
+        nextMove: "Siguiente movimiento",
+        guidedNextStep: "Siguiente paso guiado",
+      },
+      actions: {
+        settle: "toma 90 segundos y baja el calor del cuerpo.",
+        name: "elige la necesidad principal, normalmente",
+        ask: "haz una petición que pueda ocurrir hoy.",
+        avoidHistory: "No discutas toda tu historia.",
+        avoidSilence: "No castigues con silencio.",
+        avoidMindReading: "No exijas que te lean la mente. Haz visible la necesidad.",
+      },
+      buttons: {
+        back: "Atrás",
+        next: "Siguiente",
+        copy: "Copiar",
+        saveReport: "Guardar plan",
+        viewReports: "Ver planes",
+        copyScript: "Copiar este guion",
+        copyShareCard: "Copiar tarjeta",
+        shareInsight: "Compartir insight",
+      },
+      saved: "Plan guardado en este navegador",
+      fallbackNeed: "Algo importante pedía ser nombrado, protegido o solicitado con claridad.",
+    },
   },
 };
+
+const ES_ENTITY_COPY = {
+  audiences: {
+    man: { label: "Hombre", description: "directo, responsable y listo para relaciones" },
+    woman: { label: "Mujer", description: "necesidades claras, límites limpios y reparación centrada" },
+    "teen-boy": { label: "Chico adolescente", description: "lenguaje simple, menos presión y más ejemplos" },
+    "teen-girl": { label: "Chica adolescente", description: "lenguaje claro, seguridad, confianza y apoyo" },
+    father: { label: "Padre", description: "liderazgo sin control ni cierre emocional" },
+    mother: { label: "Madre", description: "cuidar sin cargarlo todo ni borrarte" },
+    coach: { label: "Coach / Maestro / Mentor", description: "preguntas que guían sin acorralar" },
+    partner: { label: "Pareja", description: "reparación, responsabilidad y conexión" },
+  },
+  modes: {
+    quick: {
+      label: "Check In Rápido",
+      description: "Nombra la señal y recibe un siguiente movimiento limpio.",
+      lens: "Pasa de la activación a una acción clara.",
+    },
+    repair: {
+      label: "Reparación Relacional",
+      description: "Úsalo cuando la cercanía, la confianza o la comunicación estén tensas.",
+      lens: "Protege la dignidad, reduce los Cuatro Jinetes y elige un movimiento de reparación.",
+    },
+    shadow: {
+      label: "Trabajo de Sombra",
+      description: "Encuentra el patrón protector debajo de la reacción.",
+      lens: "Estudia el patrón sin vergüenza y elige una expresión más limpia de la necesidad.",
+    },
+    accountability: {
+      label: "Responsabilidad",
+      description: "Hazte cargo del impacto sin caer en vergüenza ni voltear la culpa.",
+      lens: "Separa la dignidad de la defensa y haz que la reparación sea observable.",
+    },
+    support: {
+      label: "Apoyar a Alguien",
+      description: "Úsalo cuando ayudas a un hijo, pareja, cliente o amigo.",
+      lens: "Guía con curiosidad, no con control. Ayuda a nombrar la señal y elegir un siguiente paso.",
+    },
+  },
+  situations: {
+    disrespected: { label: "Me sentí irrespetado o tratado con desprecio", hint: "tono, desestimación, insulto, interrupción" },
+    criticized: { label: "Me sentí criticado o corregido", hint: "retroalimentación, culpa, ser señalado" },
+    unseen: { label: "Me sentí invisible o poco apreciado", hint: "esfuerzo no visto, carga invisible, sin agradecimiento" },
+    rejected: { label: "Rechazado o excluido", hint: "ignorado, excluido, no elegido" },
+    "sexual-rejection": { label: "Rechazo sexual o sentirme no deseado", hint: "deseo, contacto, intimidad, vergüenza" },
+    abandoned: { label: "Abandono emocional", hint: "solo en el momento, sin respuesta" },
+    controlled: { label: "Controlado, atrapado o acorralado", hint: "reglas, presión, sin espacio para elegir" },
+    exposed: { label: "Expuesto, avergonzado o descubierto", hint: "error, vulnerabilidad, vergüenza" },
+    pressure: { label: "Demasiada presión", hint: "escuela, trabajo, dinero, rendimiento" },
+    accountability: { label: "Me pidieron asumir responsabilidad", hint: "impacto nombrado, disculpa necesaria, defensa subiendo" },
+    "partner-upset": { label: "Mi pareja está molesta y me siento culpado", hint: "tensión relacional, conflicto, defensividad" },
+    shutdown: { label: "Quiero cerrarme", hint: "silencio, adormecido, sobrecargado, hacia adentro" },
+    "prove-right": { label: "Quiero demostrar que tengo razón", hint: "debate, hechos, ganar, energía de juicio" },
+    "victim-loop": { label: "Me siento como la víctima", hint: "injusticia, resentimiento, impotencia" },
+    overgiving: { label: "Usado, drenado o dando de más", hint: "impulso codependiente, resentimiento, rescate" },
+    jealous: { label: "Celoso, reemplazado o comparado", hint: "competencia, miedo a perder mi lugar" },
+    "woman-disrespect": { label: "Irrespetado por una mujer", hint: "herida materna, conflicto de pareja, espejo femenino" },
+    "purpose-power": { label: "Sin poder con dinero, trabajo o propósito", hint: "presión de proveedor, dirección, estatus, estrés" },
+    "crossed-line": { label: "Crucé una línea y necesito reparar", hint: "herí a alguien, rompí confianza, necesito asumir limpio" },
+    betrayal: { label: "La confianza fue rota", hint: "mentira, exposición, decepción" },
+    failure: { label: "Fallé o no estuve a la altura", hint: "error, pérdida, vergüenza, arrepentimiento" },
+    conflict: { label: "Discusión o tensión", hint: "pareja, padre o madre, compañero, amigo" },
+  },
+  bodySignals: {
+    jaw: "Mandíbula tensa",
+    heat: "Calor en la cara",
+    chest: "Pecho apretado",
+    stomach: "Vacío en el estómago",
+    numb: "Adormecido o cerrado",
+    restless: "Energía inquieta",
+    "urge-yell": "Ganas de gritar",
+    "urge-leave": "Ganas de irme",
+  },
+};
+
+const ES_NEEDS = {
+  respect: "respeto",
+  safety: "seguridad",
+  fairness: "justicia",
+  connection: "conexión",
+  belonging: "pertenencia",
+  clarity: "claridad",
+  support: "apoyo",
+  autonomy: "autonomía",
+  rest: "descanso",
+  acknowledgment: "reconocimiento",
+  reassurance: "tranquilidad",
+  dignity: "dignidad",
+  repair: "reparación",
+  honesty: "honestidad",
+  forgiveness: "perdón",
+  space: "espacio",
+  care: "cuidado",
+  competence: "competencia",
+  agency: "agencia",
+  reciprocity: "reciprocidad",
+  security: "seguridad emocional",
+  stability: "estabilidad",
+  accountability: "responsabilidad",
+  patience: "paciencia",
+  tolerance: "tolerancia",
+  understanding: "comprensión",
+  calm: "calma",
+  control: "control",
+  empowerment: "empoderamiento",
+  choice: "elección",
+  movement: "movimiento",
+  "to be heard": "ser escuchado",
+  resolution: "resolución",
+  encouragement: "ánimo",
+};
+
+const ES_NEED_EXPLAINERS = {
+  respect: "Ser tratado con dignidad, sin ser menospreciado ni descartado.",
+  safety: "Saber que no estás bajo amenaza y que puedes bajar el ritmo.",
+  fairness: "Confiar en que las reglas, cargas o consecuencias están equilibradas.",
+  connection: "Sentirte cerca, incluido y recordado.",
+  belonging: "Saber que tienes un lugar con tu gente.",
+  clarity: "Saber qué es verdad, qué importa y qué pasa después.",
+  support: "No tener que cargar todo solo.",
+  autonomy: "Tener elección, voz y espacio para decidir.",
+  rest: "Recuperarte antes de seguir empujando.",
+  acknowledgment: "Que tu esfuerzo, dolor o verdad sean nombrados con precisión.",
+  reassurance: "Recibir suficiente verdad y estabilidad para dejar de adivinar.",
+  dignity: "Seguir siendo humano y valioso incluso cuando se nombra algo difícil.",
+  repair: "Hacer específico el daño y restaurar confianza con acción.",
+  honesty: "Trabajar con lo real en vez de manejar imagen o evitar impacto.",
+  forgiveness: "Poder aprender, reparar y volver a la integridad.",
+  space: "Tener suficiente espacio para regularte antes de responder.",
+  care: "Recibir ternura, atención y protección donde estás herido.",
+  competence: "Sentirte capaz y apoyado para enfrentar el reto.",
+  agency: "Recordar que todavía tienes un siguiente movimiento aunque la situación sea injusta.",
+  reciprocity: "Que el esfuerzo, el cuidado y la responsabilidad se muevan en ambas direcciones.",
+  security: "Sentirte elegido, estable y no fácilmente reemplazable.",
+  stability: "Tener suficiente previsibilidad para calmarte y actuar con claridad.",
+  accountability: "Asumir impacto sin perder dignidad ni voltear la culpa.",
+};
+
+const ES_AUDIENCE_MINDSET = {
+  man: "Esto no se trata de ser blando. Se trata de leer la señal antes de que maneje tu siguiente movimiento.",
+  woman: "Esto se trata de nombrar la señal, honrar tu cuerpo y elegir acción clara sin abandonarte.",
+  "teen-boy": "No tienes que explicarlo perfecto. Elige la respuesta más cercana y sigue.",
+  "teen-girl": "No necesitas las palabras perfectas. Elige lo que encaja y deja que la herramienta te ayude a nombrar la necesidad.",
+  father: "Lidera sin controlar. Tu claridad calmada enseña más que la presión.",
+  mother: "Cuida sin cargarlo todo. La meta es verdad, límites y reparación.",
+  coach: "Guía con curiosidad. La meta es ayudarles a nombrar la señal sin acorralarlos.",
+  partner: "Mantente cerca del impacto, la necesidad y la reparación. No conviertas la conversación en un juicio.",
+};
+
+const ES_EMOTIONS = {
+  Anger: "Enojo",
+  Disgust: "Rechazo",
+  Fear: "Miedo",
+  Happiness: "Alegría",
+  Sadness: "Tristeza",
+  Surprise: "Sorpresa",
+};
+
+function localizeNeed(need, lang = "en") {
+  if (lang !== "es") return need;
+  return ES_NEEDS[need] || need;
+}
+
+function localizeNeeds(needs = [], lang = "en") {
+  return needs.map((need) => localizeNeed(need, lang));
+}
+
+function localizeEntity(type, item, lang = "en") {
+  if (lang !== "es" || !item) return item;
+  const override = ES_ENTITY_COPY[type]?.[item.id];
+  return override ? { ...item, ...override } : item;
+}
+
+function localizeBodySignal(item, lang = "en") {
+  if (lang !== "es" || !item) return item;
+  return { ...item, label: ES_ENTITY_COPY.bodySignals[item.id] || item.label };
+}
+
+function localizeEmotion(value, lang = "en") {
+  if (lang !== "es") return value;
+  return ES_EMOTIONS[value] || value;
+}
+
+function localizeNeedExplainer(need, lang = "en") {
+  if (lang === "es") return ES_NEED_EXPLAINERS[need];
+  return NEED_EXPLAINERS[need];
+}
+
+function buildActionFrame({ activePath, audienceLabel, modeLens, needs, lang = "en" }) {
+  const emotion = activePath?.specific?.toLowerCase() || (lang === "es" ? "activado" : "activated");
+  const topNeeds = needs.slice(0, 3).join(", ");
+  if (lang === "es") {
+    return [
+      `No solo estás sintiendo ${emotion}. Como ${audienceLabel.toLowerCase()}, tu sistema está señalando una necesidad de ${topNeeds}.`,
+      `${modeLens} Regula primero, nombra la necesidad con claridad y haz una petición o acción de reparación que pueda ocurrir hoy.`,
+    ].join(" ");
+  }
+  return [
+    `You are not just ${emotion}. As a ${audienceLabel.toLowerCase()}, your system is signaling a need for ${topNeeds}.`,
+    `${modeLens} Regulate first, name the need cleanly, and make one request or repair action that can happen today.`,
+  ].join(" ");
+}
+
+function buildLocalizedScripts({ emotion, needs, situation, mode, audience, lang = "en" }) {
+  if (lang !== "es") {
+    return SCRIPT_TYPES.map((script) => ({
+      ...script,
+      text: script.build({ emotion, needs, situation, mode, audience }),
+    }));
+  }
+  const primaryNeed = needs[0] || "claridad";
+  return [
+    {
+      id: "request",
+      label: "Petición limpia",
+      icon: MessageSquareText,
+      text: `Estoy sintiendo ${emotion || "activación"} alrededor de ${situation || "esta situación"} y necesito ${needs.join(", ") || "claridad"}. En ${mode || "esta conversación"}, ¿podemos elegir un siguiente paso concreto y un momento para revisar?`,
+    },
+    {
+      id: "boundary",
+      label: "Límite",
+      icon: Shield,
+      text: `Quiero manejar esto bien. Estoy sintiendo ${emotion || "carga"} y necesito ${primaryNeed}. Si esto sigue moviéndose de una forma que bloquea esa necesidad, voy a pausar y volver con una petición clara y una hora de regreso.`,
+    },
+    {
+      id: "repair",
+      label: "Reparación",
+      icon: HeartHandshake,
+      text: `No manejé eso como quiero. Debajo de eso estaba sintiendo ${emotion || "sobrecarga"} y necesitaba ${needs.join(", ") || "apoyo"}. Lo siento por mi parte. La reparación que puedo ofrecer ahora es nombrar mi impacto, bajar el ritmo y escuchar antes de pedir ser entendido.`,
+    },
+    {
+      id: "coach",
+      label: "Pregunta de guía",
+      icon: UserRound,
+      text: `Prueba preguntarle a ${audience || "la persona"}: "Cuando apareció ${emotion || "esa emoción"}, ¿qué hizo tu cuerpo y qué necesidad pedía atención: ${needs.slice(0, 3).join(", ") || "respeto, seguridad o apoyo"}?"`,
+    },
+  ];
+}
+
+function localizedGuidanceFor(path, lang = "en") {
+  if (lang !== "es") return guidanceFor(path);
+  const emotion = path?.specific || path?.sub || path?.core || "activación";
+  const needs = localizeNeeds(path?.needs || [], "es").slice(0, 3);
+  const needText = needs.join(", ") || "claridad";
+  return `Regula primero, nombra que estás sintiendo ${emotion}, y centra el siguiente movimiento en ${needText}. Haz una sola petición observable, ofrece una reparación específica o toma una pausa con hora de regreso.`;
+}
+
+function localizedCorrectiveActions(lang = "en") {
+  if (lang !== "es") return CORRECTIVE_ACTIONS;
+  return [
+    {
+      title: "Regular primero",
+      copy: "Toma 90 segundos antes de la conversación si tu cuerpo está caliente, tenso, adormecido o listo para atacar. Respira más bajo, suelta la mandíbula, relaja las manos y reduce estímulos.",
+    },
+    {
+      title: "Nombrar la necesidad sin culpar",
+      copy: "Usa una palabra de necesidad como centro de la conversación. Prueba respeto, claridad, tranquilidad, apoyo, seguridad, descanso, conexión o justicia.",
+    },
+    {
+      title: "Hacer una petición posible",
+      copy: "Pide una conducta que pueda ocurrir hoy. Las buenas peticiones son específicas, con tiempo definido y observables.",
+    },
+    {
+      title: "Fijar seguimiento",
+      copy: "Las necesidades se atienden con acción repetida. Elige cuándo revisarás si la petición, límite o reparación realmente funcionó.",
+    },
+  ];
+}
 
 const TRANSFORMATION_PATHS = [
   {
@@ -1110,11 +1552,20 @@ function countValues(values) {
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }
 
-function buildGrowthPlan(report) {
+function buildGrowthPlan(report, lang = "en") {
   const topNeed = report?.needs?.[0] || "clarity";
   const shadow = report?.shadows?.[0];
   const script = report?.scripts?.[0];
   const scriptText = typeof script === "string" ? script : script?.text;
+  if (lang === "es") {
+    const topNeedEs = localizeNeed(topNeed, "es");
+    return {
+      today: `Regula primero y luego haz una petición o reparación centrada en ${topNeedEs}.`,
+      next24: scriptText || `Di: Estoy notando activación y necesito ${topNeedEs}. ¿Podemos elegir un siguiente paso claro?`,
+      week: shadow?.practice || "Repite el movimiento limpio cada día y observa qué cambia en tu cuerpo, conducta y relaciones.",
+      integration: shadow?.metric || `Observa si tu siguiente acción crea más ${topNeedEs}, menos reactividad y reparación más limpia.`,
+    };
+  }
   return {
     today: `Regulate first, then make one request or repair move centered on ${topNeed}.`,
     next24: scriptText || `Say: I am noticing activation and I need ${topNeed}. Can we choose one clear next step?`,
@@ -1123,10 +1574,21 @@ function buildGrowthPlan(report) {
   };
 }
 
-function buildShareCardText(report) {
+function buildShareCardText(report, lang = "en") {
   if (!report) return "";
   const topNeed = report.needs?.[0] || "clarity";
   const shadow = report.shadows?.[0]?.label || "a protective pattern";
+  if (lang === "es") {
+    return [
+      "Pausé antes de reaccionar.",
+      `Emoción: ${report.specific || "activación"}`,
+      `Necesidad: ${localizeNeed(topNeed, "es")}`,
+      `Patrón a vigilar: ${shadow}`,
+      `Siguiente movimiento: ${buildGrowthPlan(report, "es").today}`,
+      "",
+      "Explora tu señal: https://exploringneeds.com/",
+    ].join("\n");
+  }
   return [
     "I paused before reacting.",
     `Feeling: ${report.specific || "activated"}`,
@@ -1236,11 +1698,12 @@ function Chip({ children, active, onClick, className = "" }) {
   );
 }
 
-function NeedPillHelp({ compact = false }) {
+function NeedPillHelp({ compact = false, t = makeTranslator("en") }) {
   return (
-    <div className={cls("rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm leading-6 text-emerald-950", compact && "p-2 text-xs")}>
-      <strong>Need pills:</strong> these are the unmet needs that may be underneath the emotion. They are not excuses. They point toward the request, repair, boundary, or care action that could help.
-    </div>
+    <div
+      className={cls("rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm leading-6 text-emerald-950", compact && "p-2 text-xs")}
+      dangerouslySetInnerHTML={{ __html: t("checkin.needPills") }}
+    />
   );
 }
 
@@ -1361,8 +1824,8 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, lang, setLan
   );
 }
 
-function ProgressRail({ step }) {
-  const steps = ["Who", "Mode", "Event", "Body", "Feeling", "Need", "Report"];
+function ProgressRail({ step, t = makeTranslator("en") }) {
+  const steps = t("checkin.progress");
   return (
     <div className="overflow-hidden rounded-lg border border-stone-200 bg-stone-50 p-3 md:p-4">
       <div className="grid grid-cols-7 gap-1">
@@ -1390,33 +1853,34 @@ function ProgressRail({ step }) {
   );
 }
 
-function NeedBadges({ needs }) {
+function NeedBadges({ needs, lang = "en" }) {
   return (
     <div className="flex flex-wrap gap-2">
       {needs.map((need) => (
         <span key={need} className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-950">
-          {need}
+          {localizeNeed(need, lang)}
         </span>
       ))}
     </div>
   );
 }
 
-function CheckInBreadcrumb({ audience, mode, situation, bodySignals, activePath, needs }) {
+function CheckInBreadcrumb({ audience, mode, situation, bodySignals, activePath, needs, lang = "en", t = makeTranslator("en") }) {
+  const label = t("checkin.breadcrumb");
   const items = [
-    ["Who", audience?.label],
-    ["Mode", mode?.label],
-    ["Event", situation?.label],
-    ["Body", bodySignals?.map((item) => item.label).join(", ")],
-    ["Feeling", activePath?.specific ? `${activePath.core} / ${activePath.sub} / ${activePath.specific}` : ""],
-    ["Needs", needs?.length ? needs.slice(0, 4).join(", ") : ""],
+    [label.who, audience?.label],
+    [label.mode, mode?.label],
+    [label.event, situation?.label],
+    [label.body, bodySignals?.map((item) => item.label).join(", ")],
+    [label.feeling, activePath?.specific ? `${localizeEmotion(activePath.core, lang)} / ${activePath.sub} / ${activePath.specific}` : ""],
+    [label.needs, needs?.length ? localizeNeeds(needs.slice(0, 4), lang).join(", ") : ""],
   ].filter(([, value]) => value);
 
   if (!items.length) return null;
 
   return (
     <div className="rounded-lg border border-stone-200 bg-white p-3">
-      <div className="text-xs font-black uppercase tracking-wide text-stone-500">Current path</div>
+      <div className="text-xs font-black uppercase tracking-wide text-stone-500">{label.currentPath}</div>
       <div className="mt-2 flex flex-wrap gap-2">
         {items.map(([label, value]) => (
           <span key={label} className="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-semibold text-stone-800">
@@ -1592,7 +2056,7 @@ function TransformationPaths({ setTab }) {
   );
 }
 
-function GuidedCheckIn({ rows, saveReport, setTab }) {
+function GuidedCheckIn({ rows, saveReport, setTab, lang = "en", t = makeTranslator("en") }) {
   const [step, setStep] = useState(0);
   const [audience, setAudience] = useState("man");
   const [modeId, setModeId] = useState("quick");
@@ -1602,15 +2066,18 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
   const [selectedShadowId, setSelectedShadowId] = useState(null);
 
   const maxStep = 6;
-  const mode = CHECKIN_MODES.find((item) => item.id === modeId) || CHECKIN_MODES[0];
-  const audienceData = AUDIENCES.find((item) => item.id === audience) || AUDIENCES[0];
+  const modeRaw = CHECKIN_MODES.find((item) => item.id === modeId) || CHECKIN_MODES[0];
+  const mode = localizeEntity("modes", modeRaw, lang);
+  const audienceRaw = AUDIENCES.find((item) => item.id === audience) || AUDIENCES[0];
+  const audienceData = localizeEntity("audiences", audienceRaw, lang);
   const situationOptions = SITUATIONS.filter((item) => mode.situationIds.includes(item.id));
-  const situation = SITUATIONS.find((item) => item.id === situationId) || SITUATIONS[0];
-  const selectedBody = BODY_SIGNALS.filter((item) => bodyIds.includes(item.id));
+  const situationRaw = SITUATIONS.find((item) => item.id === situationId) || SITUATIONS[0];
+  const situation = localizeEntity("situations", situationRaw, lang);
+  const selectedBody = BODY_SIGNALS.filter((item) => bodyIds.includes(item.id)).map((item) => localizeBodySignal(item, lang));
 
   const suggestions = useMemo(() => {
     const emotionScores = new Map();
-    situation.emotions.forEach((emotion, idx) => emotionScores.set(emotion, 5 - idx));
+    situationRaw.emotions.forEach((emotion, idx) => emotionScores.set(emotion, 5 - idx));
     selectedBody.forEach((signal) =>
       signal.emotions.forEach((emotion) => emotionScores.set(emotion, (emotionScores.get(emotion) || 0) + 3))
     );
@@ -1619,7 +2086,7 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
         ...row,
         score:
           (emotionScores.get(row.core) || 0) +
-          row.needs.reduce((score, need) => score + (situation.needs.includes(need) ? 2 : 0), 0),
+          row.needs.reduce((score, need) => score + (situationRaw.needs.includes(need) ? 2 : 0), 0),
       }))
       .filter((row) => row.score > 0)
       .sort((a, b) => b.score - a.score || a.specific.localeCompare(b.specific));
@@ -1629,29 +2096,28 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
       if (!unique.has(key)) unique.set(key, row);
     });
     return Array.from(unique.values()).slice(0, 8);
-  }, [rows, selectedBody, situation]);
+  }, [rows, selectedBody, situationRaw]);
 
   const activePath = selectedPath || suggestions[0] || rows[0];
   const inferredNeeds = useMemo(() => {
-    const all = new Set([...(activePath?.needs || []), ...situation.needs]);
+    const all = new Set([...(activePath?.needs || []), ...situationRaw.needs]);
     selectedBody.forEach((signal) => signal.needs.forEach((need) => all.add(need)));
     return Array.from(all).slice(0, 7);
-  }, [activePath, selectedBody, situation]);
+  }, [activePath, selectedBody, situationRaw]);
+
+  const uiNeeds = localizeNeeds(inferredNeeds, lang);
 
   const scriptContext = {
     emotion: activePath?.specific || activePath?.sub || activePath?.core,
-    needs: inferredNeeds,
+    needs: uiNeeds,
     situation: situation.label,
     audience: audienceData.label,
     mode: mode.label,
   };
-  const resultScripts = SCRIPT_TYPES.map((script) => ({
-    ...script,
-    text: script.build(scriptContext),
-  }));
+  const resultScripts = buildLocalizedScripts({ ...scriptContext, lang });
   const primaryScript = resultScripts[0].text;
-  const guidedPrompt = guidanceFor({ ...activePath, needs: inferredNeeds });
-  const audienceCopy = {
+  const guidedPrompt = localizedGuidanceFor({ ...activePath, needs: inferredNeeds }, lang);
+  const audienceCopy = lang === "es" ? ES_AUDIENCE_MINDSET[audience] : {
     man: "This is not about being soft. It is about reading the signal before it drives your next move.",
     woman: "This is about naming the signal, honoring your body, and choosing clear action without self-abandonment.",
     "teen-boy": "You do not have to explain it perfectly. Pick the closest answer and keep going.",
@@ -1661,19 +2127,16 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
     coach: "Guide with curiosity. The goal is to help them name the signal without cornering them.",
     partner: "Stay close to impact, need, and repair. Do not turn the conversation into a trial.",
   }[audience];
-  const actionFrame = [
-    `You are not just ${activePath?.specific?.toLowerCase() || "activated"}. As a ${audienceData.label.toLowerCase()}, your system is signaling a need for ${inferredNeeds.slice(0, 3).join(", ")}.`,
-    `${mode.lens} Regulate first, name the need cleanly, and make one request or repair action that can happen today.`,
-  ].join(" ");
+  const actionFrame = buildActionFrame({ activePath, audienceLabel: audienceData.label, modeLens: mode.lens, needs: uiNeeds, lang });
   const relevantShadows = useMemo(
     () =>
       getRelevantShadows({
         core: activePath?.core,
         needs: inferredNeeds,
         bodyLabels: selectedBody.map((item) => item.label),
-        situationLabel: situation.label,
+        situationLabel: situationRaw.label,
       }),
-    [activePath?.core, inferredNeeds, selectedBody, situation.label]
+    [activePath?.core, inferredNeeds, selectedBody, situationRaw.label]
   );
   const selectedShadow = relevantShadows.find((shadow) => shadow.id === selectedShadowId) || relevantShadows[0];
 
@@ -1683,7 +2146,7 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
 
   const report = {
     id: makeReportId(),
-    source: "Guided Check In",
+    source: lang === "es" ? "Check In Guiado" : "Guided Check In",
     core: activePath.core,
     sub: activePath.sub,
     specific: activePath.specific,
@@ -1699,37 +2162,37 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
     guidance: guidedPrompt,
     createdAt: new Date().toISOString(),
   };
-  const shareCardText = buildShareCardText(report);
+  const shareCardText = buildShareCardText(report, lang);
 
   const saveCurrentReport = () => {
     saveReport(report);
-    showToast("Report saved to this browser");
+    showToast(t("checkin.saved"));
   };
 
   const summary = [
-    `Situation: ${situation.label}`,
-    `Who: ${audienceData.label}`,
-    `Mode: ${mode.label}`,
-    `Body signals: ${selectedBody.map((item) => item.label).join(", ") || "not selected"}`,
-    `Likely emotion: ${activePath.core} / ${activePath.sub} / ${activePath.specific}`,
-    `Unmet needs: ${inferredNeeds.join(", ")}`,
+    `${t("checkin.labels.situation")}: ${situation.label}`,
+    `${t("checkin.breadcrumb.who")}: ${audienceData.label}`,
+    `${t("checkin.breadcrumb.mode")}: ${mode.label}`,
+    `${t("checkin.labels.bodySignals")}: ${selectedBody.map((item) => item.label).join(", ") || t("checkin.labels.notSelected")}`,
+    `${t("checkin.labels.likelyEmotion")}: ${localizeEmotion(activePath.core, lang)} / ${activePath.sub} / ${activePath.specific}`,
+    `${t("checkin.labels.unmetNeeds")}: ${uiNeeds.join(", ")}`,
     "",
-    "Frame:",
+    `${t("checkin.labels.frame")}:`,
     actionFrame,
     "",
-    "Mindset:",
+    `${t("checkin.labels.mindset")}:`,
     audienceCopy,
     "",
-    "Likely shadow patterns:",
-    ...relevantShadows.map((shadow) => `- ${shadow.label}: ${shadow.move} Practice: ${shadow.practice}`),
+    `${t("checkin.labels.likelyShadows")}:`,
+    ...relevantShadows.map((shadow) => `- ${shadow.label}: ${shadow.move} ${t("checkin.labels.practice")}: ${shadow.practice}`),
     "",
-    "Corrective action plan:",
-    ...CORRECTIVE_ACTIONS.map((item) => `- ${item.title}: ${item.copy}`),
+    `${t("checkin.labels.actionPlan")}:`,
+    ...localizedCorrectiveActions(lang).map((item) => `- ${item.title}: ${item.copy}`),
     "",
-    "Next move:",
+    `${t("checkin.labels.nextMove")}:`,
     primaryScript,
     "",
-    "Guided next step:",
+    `${t("checkin.labels.guidedNextStep")}:`,
     guidedPrompt,
     "",
     ATTR_LINE,
@@ -1737,7 +2200,7 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
 
   return (
     <div className="mx-auto grid min-w-0 max-w-3xl gap-4 overflow-hidden">
-      <ProgressRail step={step} />
+      <ProgressRail step={step} t={t} />
       <CheckInBreadcrumb
         audience={audienceData}
         mode={mode}
@@ -1745,19 +2208,21 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
         bodySignals={step >= 3 ? selectedBody : []}
         activePath={step >= 4 ? activePath : null}
         needs={step >= 5 ? inferredNeeds : []}
+        lang={lang}
+        t={t}
       />
 
       <section className="min-w-0 max-w-full overflow-hidden rounded-lg border border-stone-200 bg-white p-4 shadow-sm md:p-6">
         {step === 0 && (
           <div className="space-y-5">
             <SectionTitle
-              title="Who is using this?"
-              copy="Choose the lens first so the check-in can shape the language, report, and repair guidance around the person using it."
+              title={t("checkin.steps.whoTitle")}
+              copy={t("checkin.steps.whoCopy")}
             />
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-              <div className="text-sm font-black text-stone-950">How to use this</div>
+              <div className="text-sm font-black text-stone-950">{t("checkin.steps.howTitle")}</div>
               <div className="mt-3 grid gap-2">
-                {CHECKIN_GUIDANCE.map((item, index) => (
+                {t("checkin.guidance").map((item, index) => (
                   <div key={item} className="flex gap-3 text-sm leading-6 text-stone-800">
                     <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-xs font-black text-stone-950">
                       {index + 1}
@@ -1768,14 +2233,16 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
               </div>
             </div>
             <div className="grid min-w-0 gap-2 sm:grid-cols-2">
-              {AUDIENCES.map((item) => (
+              {AUDIENCES.map((item) => {
+                const view = localizeEntity("audiences", item, lang);
+                return (
                 <Chip key={item.id} active={audience === item.id} onClick={() => setAudience(item.id)}>
-                  <span className="block">{item.label}</span>
+                  <span className="block">{view.label}</span>
                   <span className={cls("mt-1 block text-xs font-medium", audience === item.id ? "text-stone-300" : "text-stone-500")}>
-                    {item.description}
+                    {view.description}
                   </span>
                 </Chip>
-              ))}
+              )})}
             </div>
           </div>
         )}
@@ -1783,11 +2250,13 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
         {step === 1 && (
           <div className="space-y-5">
             <SectionTitle
-              title="Choose the work"
-              copy="This keeps the flow focused. A quick check-in, a repair conversation, shadow work, accountability, and support all need different guidance."
+              title={t("checkin.steps.modeTitle")}
+              copy={t("checkin.steps.modeCopy")}
             />
             <div className="grid min-w-0 gap-2">
-              {CHECKIN_MODES.map((item) => (
+              {CHECKIN_MODES.map((item) => {
+                const view = localizeEntity("modes", item, lang);
+                return (
                 <Chip
                   key={item.id}
                   active={modeId === item.id}
@@ -1799,12 +2268,12 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
                     setSelectedShadowId(null);
                   }}
                 >
-                  <span className="block">{item.label}</span>
+                  <span className="block">{view.label}</span>
                   <span className={cls("mt-1 block text-xs font-medium", modeId === item.id ? "text-stone-300" : "text-stone-500")}>
-                    {item.description}
+                    {view.description}
                   </span>
                 </Chip>
-              ))}
+              )})}
             </div>
           </div>
         )}
@@ -1812,18 +2281,20 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
         {step === 2 && (
           <div className="space-y-5">
             <SectionTitle
-              title="What happened?"
-              copy="Start with the situation, not the perfect emotion word. The next steps translate the signal into needs, shadow patterns, and action."
+              title={t("checkin.steps.eventTitle")}
+              copy={t("checkin.steps.eventCopy")}
             />
             <div className="grid min-w-0 gap-2 sm:grid-cols-2">
-              {situationOptions.map((item) => (
+              {situationOptions.map((item) => {
+                const view = localizeEntity("situations", item, lang);
+                return (
                 <Chip key={item.id} active={situationId === item.id} onClick={() => { setSituationId(item.id); setSelectedPath(null); setSelectedShadowId(null); }}>
-                  <span className="block">{item.label}</span>
+                  <span className="block">{view.label}</span>
                   <span className={cls("mt-1 block text-xs font-medium", situationId === item.id ? "text-stone-300" : "text-stone-500")}>
-                    {item.hint}
+                    {view.hint}
                   </span>
                 </Chip>
-              ))}
+              )})}
             </div>
           </div>
         )}
@@ -1831,15 +2302,17 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
         {step === 3 && (
           <div className="space-y-5">
             <SectionTitle
-              title="What did your body do?"
-              copy="The body often tells the truth before language catches up. Pick every signal that fits."
+              title={t("checkin.steps.bodyTitle")}
+              copy={t("checkin.steps.bodyCopy")}
             />
             <div className="grid min-w-0 gap-2 sm:grid-cols-2">
-              {BODY_SIGNALS.map((item) => (
+              {BODY_SIGNALS.map((item) => {
+                const view = localizeBodySignal(item, lang);
+                return (
                 <Chip key={item.id} active={bodyIds.includes(item.id)} onClick={() => toggleBody(item.id)}>
-                  {item.label}
+                  {view.label}
                 </Chip>
-              ))}
+              )})}
             </div>
           </div>
         )}
@@ -1847,10 +2320,10 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
         {step === 4 && (
           <div className="space-y-5">
             <SectionTitle
-              title="What word is closest?"
-              copy="Do not force certainty. Choose the closest match, then adjust if another word lands better."
+              title={t("checkin.steps.feelingTitle")}
+              copy={t("checkin.steps.feelingCopy")}
             />
-            <NeedPillHelp />
+            <NeedPillHelp t={t} />
             <div className="grid gap-2">
               {suggestions.map((row) => {
                 const active = activePath && row.core === activePath.core && row.sub === activePath.sub && row.specific === activePath.specific;
@@ -1867,10 +2340,10 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
                       <div>
                         <div className="text-sm font-black">{row.specific}</div>
                         <div className={cls("text-xs font-semibold", active ? "text-stone-300" : "text-stone-500")}>
-                          {row.core} / {row.sub}
+                          {localizeEmotion(row.core, lang)} / {row.sub}
                         </div>
                       </div>
-                      <NeedBadges needs={row.needs.slice(0, 3)} />
+                      <NeedBadges needs={row.needs.slice(0, 3)} lang={lang} />
                     </div>
                   </button>
                 );
@@ -1882,17 +2355,17 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
         {step === 5 && (
           <div className="space-y-5">
             <SectionTitle
-              title="What need is underneath?"
-              copy="A need is not an excuse. It is the signal that tells you what kind of repair, request, or boundary matters."
+              title={t("checkin.steps.needTitle")}
+              copy={t("checkin.steps.needCopy")}
             />
-            <NeedPillHelp />
-            <NeedBadges needs={inferredNeeds} />
+            <NeedPillHelp t={t} />
+            <NeedBadges needs={inferredNeeds} lang={lang} />
             <div className="grid gap-2">
               {inferredNeeds.slice(0, 6).map((need) => (
                 <div key={need} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
-                  <div className="text-sm font-black capitalize text-stone-950">{need}</div>
+                  <div className="text-sm font-black capitalize text-stone-950">{localizeNeed(need, lang)}</div>
                   <div className="mt-1 text-sm leading-6 text-stone-600">
-                    {NEED_EXPLAINERS[need] || "Something important was asking to be named, protected, or requested clearly."}
+                    {localizeNeedExplainer(need, lang) || t("checkin.fallbackNeed")}
                   </div>
                 </div>
               ))}
@@ -1903,21 +2376,21 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
         {step === 6 && (
           <div className="space-y-5">
             <SectionTitle
-              title="Your report"
-              copy="This is the output of the check-in. Copy it, share it, or use it as the next conversation script."
+              title={t("checkin.steps.reportTitle")}
+              copy={t("checkin.steps.reportCopy")}
             />
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
               <div className="flex items-center gap-2 text-sm font-black uppercase tracking-wide text-emerald-950">
                 <Trophy size={16} />
-                The frame
+                {t("checkin.labels.frame")}
               </div>
               <p className="mt-3 text-lg font-semibold leading-8 text-emerald-950">{actionFrame}</p>
             </div>
             {relevantShadows.length ? (
               <div className="rounded-lg border border-stone-200 bg-white p-4">
-                <div className="text-sm font-black text-stone-950">Common shadows to watch</div>
+                <div className="text-sm font-black text-stone-950">{t("checkin.labels.commonShadows")}</div>
                 <p className="mt-1 text-sm leading-6 text-stone-600">
-                  These are not labels. They are common ways emotional energy can move off target.
+                  {t("checkin.labels.commonShadowsCopy")}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {relevantShadows.map((shadow) => (
@@ -1940,33 +2413,33 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
                     <div className="text-sm font-black text-stone-950">{selectedShadow.label}</div>
                     <p className="mt-2 text-sm leading-6 text-stone-700">{selectedShadow.signal}</p>
                     <p className="mt-2 text-sm leading-6 text-stone-700">
-                      <strong>Pattern:</strong> {selectedShadow.tactic}
+                      <strong>{t("checkin.labels.pattern")}:</strong> {selectedShadow.tactic}
                     </p>
                     <p className="mt-2 text-sm leading-6 text-stone-700">
-                      <strong>Four Horsemen link:</strong> {selectedShadow.horseman}
+                      <strong>{t("checkin.labels.horsemen")}:</strong> {selectedShadow.horseman}
                     </p>
                     {selectedShadow.wound ? (
                       <p className="mt-2 text-sm leading-6 text-stone-700">
-                        <strong>Core wound:</strong> {selectedShadow.wound}
+                        <strong>{t("checkin.labels.coreWound")}:</strong> {selectedShadow.wound}
                       </p>
                     ) : null}
                     {selectedShadow.need ? (
                       <p className="mt-2 text-sm leading-6 text-stone-700">
-                        <strong>Healing need:</strong> {selectedShadow.need}
+                        <strong>{t("checkin.labels.healingNeed")}:</strong> {selectedShadow.need}
                       </p>
                     ) : null}
                     {selectedShadow.practice ? (
                       <p className="mt-2 text-sm leading-6 text-stone-700">
-                        <strong>Practice:</strong> {selectedShadow.practice}
+                        <strong>{t("checkin.labels.practice")}:</strong> {selectedShadow.practice}
                       </p>
                     ) : null}
                     {selectedShadow.repair ? (
                       <p className="mt-2 text-sm leading-6 text-stone-700">
-                        <strong>Repair:</strong> {selectedShadow.repair}
+                        <strong>{t("checkin.labels.repair")}:</strong> {selectedShadow.repair}
                       </p>
                     ) : null}
                     <p className="mt-2 text-sm leading-6 text-stone-700">
-                      <strong>Best move:</strong> {selectedShadow.move}
+                      <strong>{t("checkin.labels.bestMove")}:</strong> {selectedShadow.move}
                     </p>
                   </div>
                 ) : null}
@@ -1974,26 +2447,26 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
             ) : null}
             <div className="grid gap-3 md:grid-cols-2">
               <div className="rounded-lg border border-stone-200 bg-white p-4">
-                <div className="text-sm font-black text-stone-950">Do this now</div>
+                <div className="text-sm font-black text-stone-950">{t("checkin.labels.doNow")}</div>
                 <ol className="mt-3 space-y-3 text-sm leading-6 text-stone-700">
-                  <li><strong>1. Settle:</strong> take 90 seconds and reduce heat in the body.</li>
-                  <li><strong>2. Name:</strong> choose the top need, usually {inferredNeeds[0] || "clarity"}.</li>
-                  <li><strong>3. Ask:</strong> make one request that can happen today.</li>
+                  <li><strong>1. {t("checkin.labels.settle")}:</strong> {t("checkin.actions.settle")}</li>
+                  <li><strong>2. {t("checkin.labels.name")}:</strong> {t("checkin.actions.name")} {localizeNeed(inferredNeeds[0] || "clarity", lang)}.</li>
+                  <li><strong>3. {t("checkin.labels.ask")}:</strong> {t("checkin.actions.ask")}</li>
                 </ol>
               </div>
               <div className="rounded-lg border border-stone-200 bg-white p-4">
-                <div className="text-sm font-black text-stone-950">Avoid this now</div>
+                <div className="text-sm font-black text-stone-950">{t("checkin.labels.avoidNow")}</div>
                 <ul className="mt-3 space-y-3 text-sm leading-6 text-stone-700">
-                  <li>Do not argue for your whole history.</li>
-                  <li>Do not punish with silence.</li>
-                  <li>Do not demand mind-reading. Make the need visible.</li>
+                  <li>{t("checkin.actions.avoidHistory")}</li>
+                  <li>{t("checkin.actions.avoidSilence")}</li>
+                  <li>{t("checkin.actions.avoidMindReading")}</li>
                 </ul>
               </div>
             </div>
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-              <div className="text-sm font-black text-stone-950">Context-sensitive scripts</div>
+              <div className="text-sm font-black text-stone-950">{t("checkin.labels.scripts")}</div>
               <p className="mt-1 text-sm leading-6 text-stone-700">
-                Pick the words that match the move you need: request, boundary, repair, or coaching conversation.
+                {t("checkin.labels.scriptsCopy")}
               </p>
               <div className="mt-3 grid gap-3">
                 {resultScripts.map(({ id, label, icon: Icon, text }) => (
@@ -2005,58 +2478,58 @@ function GuidedCheckIn({ rows, saveReport, setTab }) {
                     <p className="mt-2 text-sm leading-6 text-stone-800">{text}</p>
                     <Button variant="secondary" className="mt-3 w-full" onClick={() => copyText(`${text}\n\n${ATTR_LINE}`)}>
                       <Clipboard size={16} />
-                      Copy this script
+                      {t("checkin.buttons.copyScript")}
                     </Button>
                   </div>
                 ))}
               </div>
             </div>
             <details className="rounded-lg border border-stone-200 bg-white p-4">
-              <summary className="cursor-pointer text-sm font-black text-stone-950">Optional deeper guidance</summary>
+              <summary className="cursor-pointer text-sm font-black text-stone-950">{t("checkin.labels.deeper")}</summary>
               <p className="mt-2 text-sm leading-6 text-stone-700">{guidedPrompt}</p>
             </details>
             <div className="rounded-lg border border-stone-200 bg-white p-4">
-              <div className="text-sm font-black text-stone-950">Shareable insight</div>
+              <div className="text-sm font-black text-stone-950">{t("checkin.labels.shareable")}</div>
               <p className="mt-1 text-sm leading-6 text-stone-700">
-                Use this public version when you want to share the tool without sharing the private story.
+                {t("checkin.labels.shareableCopy")}
               </p>
               <pre className="mt-3 whitespace-pre-wrap rounded-lg border border-stone-200 bg-stone-50 p-3 text-sm leading-6 text-stone-800">{shareCardText}</pre>
               <div className="mt-3 grid gap-2 sm:grid-cols-2">
                 <Button variant="amber" onClick={() => copyText(shareCardText)}>
                   <Clipboard size={16} />
-                  Copy share card
+                  {t("checkin.buttons.copyShareCard")}
                 </Button>
                 <Button variant="secondary" onClick={() => shareText("Exploring Needs insight", shareCardText)}>
                   <ArrowRight size={16} />
-                  Share insight
+                  {t("checkin.buttons.shareInsight")}
                 </Button>
               </div>
             </div>
             <div className="grid gap-2 sm:grid-cols-3">
               <Button variant="amber" onClick={() => copyText(summary)}>
                 <Clipboard size={16} />
-                Copy
+                {t("checkin.buttons.copy")}
               </Button>
               <Button variant="secondary" onClick={saveCurrentReport}>
                 <Save size={16} />
-                Save report
+                {t("checkin.buttons.saveReport")}
               </Button>
               <Button variant="secondary" onClick={() => { saveCurrentReport(); setTab("reports"); }}>
-                View reports
+                {t("checkin.buttons.viewReports")}
                 <ArrowRight size={16} />
               </Button>
             </div>
-            <SupportActions />
+            <SupportActions t={t} />
           </div>
         )}
 
         <div className="mt-6 flex items-center justify-between border-t border-stone-200 pt-4">
           <Button variant="ghost" disabled={step === 0} onClick={() => setStep((value) => Math.max(0, value - 1))}>
             <ArrowLeft size={16} />
-            Back
+            {t("checkin.buttons.back")}
           </Button>
           <Button variant="primary" disabled={step === maxStep} onClick={() => setStep((value) => Math.min(maxStep, value + 1))}>
-            Next
+            {t("checkin.buttons.next")}
             <ArrowRight size={16} />
           </Button>
         </div>
@@ -2952,7 +3425,7 @@ export default function App() {
       t={t}
     >
       {tab === "intro" && <Intro setTab={setTab} t={t} />}
-      {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} saveReport={saveReport} setTab={setTab} />}
+      {tab === "checkin" && <GuidedCheckIn key={checkInKey} rows={rows} saveReport={saveReport} setTab={setTab} lang={lang} t={t} />}
       {tab === "reset" && <EmergencyReset setTab={setTab} />}
       {tab === "paths" && <TransformationPaths setTab={setTab} />}
       {tab === "explore" && <Explore rows={rows} saveReport={saveReport} setTab={setTab} />}
