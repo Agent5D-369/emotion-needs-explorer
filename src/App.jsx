@@ -70,6 +70,8 @@ const I18N = {
       donate: "Support with a donation",
       book: "Book coaching support",
     },
+    themeLabel: "Themes",
+    themes: {},
     intro: {
       title: "Turn the reaction into a repair plan.",
       copy: "Use a guided check-in to name the feeling, find the unmet need, spot the shadow pattern, and choose one clean next move.",
@@ -200,8 +202,8 @@ const I18N = {
     language: "Idioma",
     nav: {
       intro: "Inicio",
-      checkin: "Check In",
-      reset: "Reset",
+      checkin: "Check-in",
+      reset: "Regular",
       paths: "Caminos",
       explore: "Emociones",
       shadows: "Sombras",
@@ -214,6 +216,15 @@ const I18N = {
       talk: "Hablarlo ahora",
       donate: "Apoyar con donación",
       book: "Reservar apoyo",
+    },
+    themeLabel: "Temas",
+    themes: {
+      "Light: Sage Ground": "Claro: Tierra salvia",
+      "Light: Clear Sky": "Claro: Cielo limpio",
+      "Light: Warm Clay": "Claro: Arcilla cálida",
+      "Dark: Forest Night": "Oscuro: Bosque nocturno",
+      "Dark: Harbor Blue": "Oscuro: Azul puerto",
+      "Dark: Ember Calm": "Oscuro: Brasa calma",
     },
     intro: {
       title: "Convierte la reacción en un plan de reparación.",
@@ -1716,7 +1727,7 @@ function SectionTitle({ title, copy }) {
   );
 }
 
-function ThemePicker({ themeId, setThemeId, compact = false }) {
+function ThemePicker({ themeId, setThemeId, compact = false, t = makeTranslator("en") }) {
   return (
     <div className={cls("grid gap-2", compact ? "grid-cols-2" : "grid-cols-1")}>
       {THEMES.map((theme) => (
@@ -1729,7 +1740,7 @@ function ThemePicker({ themeId, setThemeId, compact = false }) {
           )}
         >
           <span className={cls("h-4 w-4 rounded-full", theme.accent)} />
-          <span>{theme.label}</span>
+          <span>{t(`themes.${theme.label}`) !== `themes.${theme.label}` ? t(`themes.${theme.label}`) : theme.label}</span>
         </button>
       ))}
     </div>
@@ -1773,9 +1784,9 @@ function AppShell({ tab, setTab, onNewCheckIn, themeId, setThemeId, lang, setLan
           <div className="mt-8 border-t border-stone-200 pt-4">
             <div className="mb-2 flex items-center gap-2 text-xs font-black uppercase tracking-wide">
               <Palette size={14} />
-              Themes
+              {t("themeLabel")}
             </div>
-            <ThemePicker themeId={themeId} setThemeId={setThemeId} />
+            <ThemePicker themeId={themeId} setThemeId={setThemeId} t={t} />
           </div>
         </aside>
 
