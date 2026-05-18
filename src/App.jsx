@@ -45,6 +45,73 @@ const LANGUAGES = [
   { id: "es", label: "Español", short: "ES" },
 ];
 
+const GLOSSARY = {
+  darvo: {
+    plain: "flipping blame",
+    term: "DARVO",
+    body: "Deny, attack, then reverse victim and offender. It shifts attention away from the impact and pressures the harmed person to defend their reality.",
+    esPlain: "invertir la culpa",
+    esTerm: "DARVO",
+    esBody: "Negar, atacar y luego invertir víctima y ofensor. Desvía la atención del impacto y presiona a la persona dañada a defender su realidad.",
+  },
+  jade: {
+    plain: "over-explaining",
+    term: "JADE",
+    body: "Justifying, arguing, defending, and explaining when a clear boundary, request, or repair would work better.",
+    esPlain: "sobreexplicar",
+    esTerm: "JADE",
+    esBody: "Justificar, argumentar, defender y explicar cuando un límite, petición o reparación clara funcionaría mejor.",
+  },
+  projection: {
+    plain: "putting it on them",
+    term: "Projection",
+    body: "When something hard to face inside gets treated like it only belongs to the other person.",
+    esPlain: "ponerlo en la otra persona",
+    esTerm: "Proyección",
+    esBody: "Cuando algo difícil de mirar adentro se trata como si solo perteneciera a la otra persona.",
+  },
+  coreWound: {
+    plain: "old pain underneath",
+    term: "Core wound",
+    body: "A repeated hurt or fear that can make today's situation feel bigger, more dangerous, or more personal than it is.",
+    esPlain: "dolor antiguo debajo",
+    esTerm: "Herida central",
+    esBody: "Una herida o miedo repetido que puede hacer que la situación actual se sienta más grande, peligrosa o personal de lo que es.",
+  },
+  fourHorsemen: {
+    plain: "relationship damage patterns",
+    term: "Four Horsemen",
+    body: "Criticism, defensiveness, contempt, and stonewalling. These patterns make repair harder and trust weaker.",
+    esPlain: "patrones que dañan la relación",
+    esTerm: "Cuatro Jinetes",
+    esBody: "Crítica, defensividad, desprecio y cierre emocional. Estos patrones hacen más difícil reparar y debilitan la confianza.",
+  },
+  shadow: {
+    plain: "protective pattern",
+    term: "Shadow",
+    body: "A habit that once tried to protect you but may now create damage, distance, or confusion.",
+    esPlain: "patrón protector",
+    esTerm: "Sombra",
+    esBody: "Un hábito que alguna vez intentó protegerte, pero que ahora puede crear daño, distancia o confusión.",
+  },
+  repair: {
+    plain: "make it right",
+    term: "Repair",
+    body: "A clear action that names impact, restores trust, or changes behavior. It is more than saying sorry.",
+    esPlain: "hacerlo bien",
+    esTerm: "Reparación",
+    esBody: "Una acción clara que nombra el impacto, restaura confianza o cambia conducta. Es más que decir perdón.",
+  },
+  pattern: {
+    plain: "what it can look like",
+    term: "Pattern",
+    body: "The repeated behavior or move to watch for, especially when emotion is high.",
+    esPlain: "cómo se puede ver",
+    esTerm: "Patrón",
+    esBody: "La conducta o movimiento repetido que conviene observar, especialmente cuando la emoción está alta.",
+  },
+};
+
 const I18N = {
   en: {
     appTitle: "Emotional Intelligence Toolkit",
@@ -59,7 +126,7 @@ const I18N = {
       reset: "Reset",
       paths: "Paths",
       explore: "Feelings",
-      shadows: "Shadows",
+      shadows: "Patterns",
       scripts: "Scripts",
       reports: "Reports",
       tracker: "Tracker",
@@ -76,7 +143,7 @@ const I18N = {
       title: "Turn the reaction into a repair plan.",
       copy: "Use a guided check-in to name the feeling, find the unmet need, spot the shadow pattern, and choose one clean next move.",
       start: "Start guided check-in",
-      shadowFinder: "Shadow finder",
+      shadowFinder: "Pattern finder",
       reset: "90-second reset",
       help: "Read help wiki",
       tags: [
@@ -100,8 +167,8 @@ const I18N = {
         "Unmet needs explorer",
         "Relationship repair tool",
         "Shadow work guide",
-        "DARVO and JADE pattern support",
-        "Four Horsemen relationship awareness",
+        "Blame-flipping and over-explaining support",
+        "Relationship damage pattern awareness",
         "Emotional intelligence training for men and boys",
       ],
     },
@@ -206,7 +273,7 @@ const I18N = {
       reset: "Regular",
       paths: "Caminos",
       explore: "Emociones",
-      shadows: "Sombras",
+      shadows: "Biblioteca",
       scripts: "Guiones",
       reports: "Planes",
       tracker: "Patrones",
@@ -230,7 +297,7 @@ const I18N = {
       title: "Convierte la reacción en un plan de reparación.",
       copy: "Usa un check-in guiado para nombrar la emoción, encontrar la necesidad no atendida, detectar el patrón de sombra y elegir un siguiente movimiento limpio.",
       start: "Iniciar check-in guiado",
-      shadowFinder: "Buscar sombra",
+      shadowFinder: "Buscar patrón",
       reset: "Reset de 90 segundos",
       help: "Leer la guía",
       tags: [
@@ -254,8 +321,8 @@ const I18N = {
         "Explorador de necesidades no atendidas",
         "Herramienta de reparación relacional",
         "Guía de trabajo de sombra",
-        "Apoyo para patrones DARVO y JADE",
-        "Conciencia de los Cuatro Jinetes en relaciones",
+        "Apoyo para culpa invertida y sobreexplicación",
+        "Conciencia de patrones que dañan relaciones",
         "Entrenamiento de inteligencia emocional para hombres y chicos",
       ],
     },
@@ -615,6 +682,14 @@ function localizedCorrectiveActions(lang = "en") {
       copy: "Las necesidades se atienden con acción repetida. Elige cuándo revisarás si la petición, límite o reparación realmente funcionó.",
     },
   ];
+}
+
+function glossaryIdForShadow(shadow) {
+  if (!shadow) return "";
+  if (shadow.id === "darvo") return "darvo";
+  if (shadow.id === "jade") return "jade";
+  if (shadow.id === "projection") return "projection";
+  return "shadow";
 }
 
 const TRANSFORMATION_PATHS = [
@@ -1657,6 +1732,39 @@ function Button({ children, onClick, variant = "primary", className = "", disabl
   );
 }
 
+function Term({ id, children, lang = "en", className = "" }) {
+  const [open, setOpen] = useState(false);
+  const item = GLOSSARY[id];
+  if (!item) return <>{children}</>;
+  const plain = lang === "es" ? item.esPlain || item.plain : item.plain;
+  const term = lang === "es" ? item.esTerm || item.term : item.term;
+  const body = lang === "es" ? item.esBody || item.body : item.body;
+
+  return (
+    <span className={cls("inline-flex max-w-full flex-col items-start align-baseline", className)}>
+      <button
+        type="button"
+        className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-left text-[0.92em] font-bold text-emerald-950 underline decoration-emerald-500/50 underline-offset-2 hover:bg-emerald-100"
+        aria-expanded={open}
+        title={`${plain} (${term}): ${body}`}
+        onClick={(event) => {
+          event.stopPropagation();
+          setOpen((value) => !value);
+        }}
+      >
+        {children || plain}
+        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] font-black text-emerald-900">?</span>
+      </button>
+      {open ? (
+        <span className="mt-2 inline-block w-72 max-w-[80vw] rounded-lg border border-stone-200 bg-white p-3 text-left text-xs leading-5 text-stone-700 shadow-xl">
+          <span className="block font-black text-stone-950">{plain} <span className="font-semibold text-stone-500">({term})</span></span>
+          <span className="mt-1 block">{body}</span>
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
 function SupportActions({ className = "", t = makeTranslator("en") }) {
   return (
     <div className={cls("grid gap-2 sm:grid-cols-3", className)}>
@@ -2397,7 +2505,9 @@ function GuidedCheckIn({ rows, saveReport, setTab, lang = "en", t = makeTranslat
             </div>
             {relevantShadows.length ? (
               <div className="rounded-lg border border-stone-200 bg-white p-4">
-                <div className="text-sm font-black text-stone-950">{t("checkin.labels.commonShadows")}</div>
+                <div className="text-sm font-black text-stone-950">
+                  <Term id="shadow" lang={lang}>{t("checkin.labels.commonShadows")}</Term>
+                </div>
                 <p className="mt-1 text-sm leading-6 text-stone-600">
                   {t("checkin.labels.commonShadowsCopy")}
                 </p>
@@ -2422,14 +2532,14 @@ function GuidedCheckIn({ rows, saveReport, setTab, lang = "en", t = makeTranslat
                     <div className="text-sm font-black text-stone-950">{selectedShadow.label}</div>
                     <p className="mt-2 text-sm leading-6 text-stone-700">{selectedShadow.signal}</p>
                     <p className="mt-2 text-sm leading-6 text-stone-700">
-                      <strong>{t("checkin.labels.pattern")}:</strong> {selectedShadow.tactic}
+                      <strong><Term id="pattern" lang={lang}>{t("checkin.labels.pattern")}</Term>:</strong> {selectedShadow.tactic}
                     </p>
                     <p className="mt-2 text-sm leading-6 text-stone-700">
-                      <strong>{t("checkin.labels.horsemen")}:</strong> {selectedShadow.horseman}
+                      <strong><Term id="fourHorsemen" lang={lang}>{t("checkin.labels.horsemen")}</Term>:</strong> {selectedShadow.horseman}
                     </p>
                     {selectedShadow.wound ? (
                       <p className="mt-2 text-sm leading-6 text-stone-700">
-                        <strong>{t("checkin.labels.coreWound")}:</strong> {selectedShadow.wound}
+                        <strong><Term id="coreWound" lang={lang}>{t("checkin.labels.coreWound")}</Term>:</strong> {selectedShadow.wound}
                       </p>
                     ) : null}
                     {selectedShadow.need ? (
@@ -2444,7 +2554,7 @@ function GuidedCheckIn({ rows, saveReport, setTab, lang = "en", t = makeTranslat
                     ) : null}
                     {selectedShadow.repair ? (
                       <p className="mt-2 text-sm leading-6 text-stone-700">
-                        <strong>{t("checkin.labels.repair")}:</strong> {selectedShadow.repair}
+                        <strong><Term id="repair" lang={lang}>{t("checkin.labels.repair")}</Term>:</strong> {selectedShadow.repair}
                       </p>
                     ) : null}
                     <p className="mt-2 text-sm leading-6 text-stone-700">
@@ -2695,7 +2805,7 @@ function Explore({ rows, saveReport, setTab }) {
         </div>
         {signalShadows.length ? (
           <div className="mt-4 rounded-lg border border-stone-200 bg-white p-3">
-            <div className="text-sm font-black">Shadow to watch</div>
+            <div className="text-sm font-black"><Term id="shadow">Protective pattern to watch</Term></div>
             <p className="mt-1 text-sm leading-6 text-stone-700">
               <strong>{signalShadows[0].label}:</strong> {signalShadows[0].move}
             </p>
@@ -2776,7 +2886,7 @@ function Scripts({ latest }) {
   );
 }
 
-function Reports({ reports }) {
+function Reports({ reports, lang = "en" }) {
   const [selectedId, setSelectedId] = useState(reports[0]?.id || "");
   const report = reports.find((item) => item.id === selectedId) || reports[0];
   useEffect(() => {
@@ -2922,16 +3032,16 @@ function Reports({ reports }) {
         </div>
       </div>
       <div className="rounded-lg border border-stone-200 bg-white p-4">
-        <div className="text-sm font-black text-stone-950">Shadow work</div>
+        <div className="text-sm font-black text-stone-950"><Term id="shadow" lang={lang}>Protective patterns</Term></div>
         <div className="mt-3 grid gap-3">
           {(report.shadows || []).map((shadow) => (
             <div key={shadow.id} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
               <div className="text-sm font-black text-stone-950">{shadow.label}</div>
               <p className="mt-1 text-sm leading-6 text-stone-700">{shadow.signal}</p>
-              <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Pattern:</strong> {shadow.tactic}</p>
-              <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Four Horsemen link:</strong> {shadow.horseman}</p>
+              <p className="mt-1 text-sm leading-6 text-stone-700"><strong><Term id="pattern" lang={lang}>Pattern</Term>:</strong> {shadow.tactic}</p>
+              <p className="mt-1 text-sm leading-6 text-stone-700"><strong><Term id="fourHorsemen" lang={lang}>Four Horsemen link</Term>:</strong> {shadow.horseman}</p>
               {shadow.practice ? <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Practice:</strong> {shadow.practice}</p> : null}
-              {shadow.repair ? <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Repair:</strong> {shadow.repair}</p> : null}
+              {shadow.repair ? <p className="mt-1 text-sm leading-6 text-stone-700"><strong><Term id="repair" lang={lang}>Repair</Term>:</strong> {shadow.repair}</p> : null}
               <p className="mt-1 text-sm leading-6 text-stone-700"><strong>Move:</strong> {shadow.move}</p>
             </div>
           ))}
@@ -3009,13 +3119,13 @@ function ShadowLibrary() {
       label: "I defend, explain, or reverse blame",
       category: "accountability",
       shadowId: "darvo",
-      copy: "Start with accountability distortions: DARVO, JADE, projection, and shame collapse.",
+      copy: "Start with accountability patterns: flipping blame, over-explaining, putting it on them, and shame collapse.",
     },
     {
       label: "I over-give or abandon myself",
       category: "codependent",
       shadowId: "rescue",
-      copy: "Start with codependent survival: rescue, approval seeking, compliance, and JADE.",
+      copy: "Start with codependent survival: rescue, approval seeking, compliance, and over-explaining.",
     },
   ];
   const category = SHADOW_CATEGORIES.find((item) => item.id === categoryId) || SHADOW_CATEGORIES[0];
@@ -3054,28 +3164,28 @@ function ShadowLibrary() {
   return (
     <div className="mx-auto max-w-5xl space-y-4">
       <SectionTitle
-        title="Shadow Work Library"
-        copy="Search by pattern, tactic, wound, need, or repair move. Pick one shadow and work the repair path one step at a time."
+        title="Protective Pattern Library"
+        copy="Search by plain behavior, need, old pain, or repair move. The deeper shadow language is here if it helps, but you do not need it to use the tool."
       />
 
       <div className="rounded-lg border border-stone-200 bg-white p-3">
-        <label className="text-sm font-black text-stone-950" htmlFor="shadow-search">Find a shadow pattern</label>
+        <label className="text-sm font-black text-stone-950" htmlFor="shadow-search">Find what is happening</label>
         <div className="relative mt-2">
           <Search className="absolute left-3 top-3 text-stone-400" size={18} />
           <input
             id="shadow-search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search control, DARVO, shame, attack, repair..."
+            placeholder="Search control, blame, shame, attack, make it right..."
             className="h-11 w-full rounded-lg border border-stone-200 bg-white pl-10 pr-3 text-sm text-stone-950 outline-none focus:border-emerald-800"
           />
         </div>
       </div>
 
       <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-        <div className="text-sm font-black text-emerald-950">What is running me right now?</div>
+        <div className="text-sm font-black text-emerald-950">What is happening in me right now?</div>
         <p className="mt-1 text-sm leading-6 text-emerald-950">
-          Pick the closest pattern. This jumps you to the most likely shadow category and repair path.
+          Pick the closest pattern. This jumps you to the most likely protective pattern and repair path.
         </p>
         <div className="mt-3 grid gap-2 md:grid-cols-2">
           {finderPrompts.map((prompt) => (
@@ -3131,6 +3241,9 @@ function ShadowLibrary() {
               )}
             >
               <div className="text-sm font-black">{shadow.label}</div>
+              <div className={cls("mt-1 text-xs font-semibold", selectedShadow?.id === shadow.id ? "text-stone-100" : "text-emerald-800")}>
+                {GLOSSARY[glossaryIdForShadow(shadow)]?.plain}
+              </div>
               <div className={cls("mt-1 line-clamp-2 text-xs leading-5", selectedShadow?.id === shadow.id ? "text-stone-100" : "text-stone-500")}>
                 {shadow.tactic}
               </div>
@@ -3138,7 +3251,7 @@ function ShadowLibrary() {
           ))}
           {!filtered.length ? (
             <div className="rounded-lg border border-stone-200 bg-white p-4 text-sm leading-6 text-stone-700">
-              No shadow patterns match that search. Try control, shame, repair, JADE, or shutdown.
+              No patterns match that search. Try control, shame, make it right, over-explaining, or shutdown.
             </div>
           ) : null}
         </aside>
@@ -3148,25 +3261,30 @@ function ShadowLibrary() {
             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <h3 className="text-2xl font-black text-stone-950">{selectedShadow.label}</h3>
+                <div className="mt-2">
+                  <Term id={glossaryIdForShadow(selectedShadow)}>
+                    {GLOSSARY[glossaryIdForShadow(selectedShadow)]?.plain || "protective pattern"}
+                  </Term>
+                </div>
                 <p className="mt-2 text-sm leading-6 text-stone-700">{selectedShadow.signal}</p>
               </div>
               <Button variant="secondary" onClick={() => copyText(`${selectedShadow.label}\n${selectedShadow.repair}\n\n${ATTR_LINE}`)}>
                 <Clipboard size={16} />
-                Copy repair
+                Copy make-it-right move
               </Button>
             </div>
 
             <div className="mt-4 grid gap-3 md:grid-cols-2">
               <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
-                <div className="text-sm font-black text-stone-950">Core wound</div>
+                <div className="text-sm font-black text-stone-950"><Term id="coreWound">Old pain underneath</Term></div>
                 <p className="mt-1 text-sm leading-6 text-stone-700">{selectedShadow.wound}</p>
               </div>
               <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
-                <div className="text-sm font-black text-stone-950">Common pattern</div>
+                <div className="text-sm font-black text-stone-950"><Term id="pattern">What it can look like</Term></div>
                 <p className="mt-1 text-sm leading-6 text-stone-700">{selectedShadow.tactic}</p>
               </div>
               <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
-                <div className="text-sm font-black text-stone-950">Four Horsemen link</div>
+                <div className="text-sm font-black text-stone-950"><Term id="fourHorsemen">Relationship damage pattern</Term></div>
                 <p className="mt-1 text-sm leading-6 text-stone-700">{selectedShadow.horseman}</p>
               </div>
               <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
@@ -3176,7 +3294,7 @@ function ShadowLibrary() {
             </div>
 
             <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
-              <div className="text-sm font-black text-emerald-950">Practical repair path</div>
+              <div className="text-sm font-black text-emerald-950"><Term id="repair">Practical make-it-right path</Term></div>
               <div className="mt-3 grid gap-2">
                 {repairSteps.map(([label, copy]) => (
                   <div key={label} className="rounded-lg border border-emerald-200 bg-white p-3">
@@ -3282,7 +3400,7 @@ function HelpWiki({ setTab }) {
   const topics = [
     {
       title: "What this is",
-      body: "This is a guided emotional intelligence tool, unmet needs explorer, shadow work app, relationship repair guide, and pattern tracker. It helps you move from a charged feeling into the unmet need, shadow pattern, repair language, and practical next action.",
+      body: <>This is a guided emotional intelligence tool, unmet needs explorer, protective pattern library, relationship <Term id="repair">make-it-right</Term> guide, and pattern tracker. It helps you move from a charged feeling into the unmet need, protective pattern, repair language, and practical next action.</>,
     },
     {
       title: "What it is not",
@@ -3290,7 +3408,7 @@ function HelpWiki({ setTab }) {
     },
     {
       title: "What a need means",
-      body: "A need is the human value underneath the emotion. Examples include respect, safety, clarity, support, dignity, repair, autonomy, connection, rest, and reassurance.",
+      body: <>A need is the human value underneath the emotion. Examples include respect, safety, clarity, support, dignity, <Term id="repair">make-it-right</Term>, autonomy, connection, rest, and reassurance.</>,
     },
     {
       title: "How the check-in works",
@@ -3298,19 +3416,19 @@ function HelpWiki({ setTab }) {
     },
     {
       title: "How to use the report",
-      body: "Read the frame first. Then choose one corrective action, one script, one shadow pattern to watch, and one growth plan practice. Copy or share the report when it helps you stay clear in a conversation.",
+      body: <>Read the frame first. Then choose one corrective action, one script, one <Term id="shadow">protective pattern</Term> to watch, and one growth plan practice. Copy or share the report when it helps you stay clear in a conversation.</>,
     },
     {
-      title: "What shadow work means",
-      body: "A shadow is a protective pattern that can move emotional energy off target. Examples include control, withdrawal, attack, approval seeking, DARVO, JADE, rescue, grandiosity, and reality distortion.",
+      title: "What protective pattern means",
+      body: <>A <Term id="shadow">protective pattern</Term> is a habit that can move emotional energy off target. Examples include control, withdrawal, attack, approval seeking, <Term id="darvo">flipping blame</Term>, <Term id="jade">over-explaining</Term>, rescue, grandiosity, and reality distortion.</>,
     },
     {
-      title: "Four Horsemen",
-      body: "Criticism, contempt, defensiveness, and stonewalling are warning signs in relationships. The shadow guidance points out where these patterns may be entering the moment.",
+      title: "Relationship damage patterns",
+      body: <><Term id="fourHorsemen">Relationship damage patterns</Term> are criticism, contempt, defensiveness, and stonewalling. The guidance points out where these patterns may be entering the moment.</>,
     },
     {
-      title: "DARVO and JADE",
-      body: "DARVO means deny, attack, reverse victim and offender. JADE means justify, argue, defend, explain. Both can keep people stuck when accountability or boundaries are needed.",
+      title: "Flipping blame and over-explaining",
+      body: <><Term id="darvo">Flipping blame</Term> and <Term id="jade">over-explaining</Term> can keep people stuck when accountability or boundaries are needed.</>,
     },
     {
       title: "When to slow down",
@@ -3322,7 +3440,7 @@ function HelpWiki({ setTab }) {
     },
     {
       title: "Why pattern tracking matters",
-      body: "One check-in gives clarity. Repeated reports show the transformation path: recurring needs, recurring shadows, repeated triggers, and the practices that actually change behavior.",
+      body: <>One check-in gives clarity. Repeated reports show the transformation path: recurring needs, recurring protective patterns, repeated triggers, and the practices that actually change behavior.</>,
     },
   ];
 
@@ -3360,7 +3478,7 @@ function HelpWiki({ setTab }) {
       <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
         <div className="text-sm font-black text-emerald-950">Simple operating rule</div>
         <p className="mt-2 text-sm leading-6 text-emerald-950">
-          Name what happened, notice the body, identify the feeling, find the need, watch the shadow, choose one clean move.
+          Name what happened, notice the body, identify the feeling, find the need, watch the protective pattern, choose one clean move.
         </p>
       </div>
       <SupportActions />
@@ -3440,7 +3558,7 @@ export default function App() {
       {tab === "explore" && <Explore rows={rows} saveReport={saveReport} setTab={setTab} />}
       {tab === "shadows" && <ShadowLibrary />}
       {tab === "scripts" && <Scripts latest={latestReport} />}
-      {tab === "reports" && <Reports reports={reports} />}
+      {tab === "reports" && <Reports reports={reports} lang={lang} />}
       {tab === "tracker" && <PatternTracker reports={reports} setTab={setTab} />}
       {tab === "help" && <HelpWiki setTab={setTab} />}
     </AppShell>
