@@ -106,7 +106,7 @@ const I18N = {
       ],
     },
     checkin: {
-      progress: ["Who", "Mode", "Event", "Body", "Feeling", "Need", "Report"],
+      progress: ["Who", "Mode", "Event", "Body", "Feeling", "Report"],
       breadcrumb: {
         currentPath: "Current path",
         who: "Who",
@@ -260,7 +260,7 @@ const I18N = {
       ],
     },
     checkin: {
-      progress: ["Quién", "Modo", "Evento", "Cuerpo", "Emoción", "Necesidad", "Plan"],
+      progress: ["Quién", "Modo", "Evento", "Cuerpo", "Emoción", "Plan"],
       breadcrumb: {
         currentPath: "Ruta actual",
         who: "Quién",
@@ -1839,7 +1839,7 @@ function ProgressRail({ step, t = makeTranslator("en") }) {
   const steps = t("checkin.progress");
   return (
     <div className="overflow-hidden rounded-lg border border-stone-200 bg-stone-50 p-3 md:p-4">
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
         {steps.map((label, idx) => (
           <div key={label} className="flex flex-col items-center gap-2 sm:flex-row sm:justify-center">
             <div
@@ -2076,7 +2076,7 @@ function GuidedCheckIn({ rows, saveReport, setTab, lang = "en", t = makeTranslat
   const [selectedPath, setSelectedPath] = useState(null);
   const [selectedShadowId, setSelectedShadowId] = useState(null);
 
-  const maxStep = 6;
+  const maxStep = 5;
   const modeRaw = CHECKIN_MODES.find((item) => item.id === modeId) || CHECKIN_MODES[0];
   const mode = localizeEntity("modes", modeRaw, lang);
   const audienceRaw = AUDIENCES.find((item) => item.id === audience) || AUDIENCES[0];
@@ -2218,7 +2218,7 @@ function GuidedCheckIn({ rows, saveReport, setTab, lang = "en", t = makeTranslat
         situation={step >= 2 ? situation : null}
         bodySignals={step >= 3 ? selectedBody : []}
         activePath={step >= 4 ? activePath : null}
-        needs={step >= 5 ? inferredNeeds : []}
+        needs={step >= maxStep ? inferredNeeds : []}
         lang={lang}
         t={t}
       />
@@ -2366,27 +2366,6 @@ function GuidedCheckIn({ rows, saveReport, setTab, lang = "en", t = makeTranslat
         {step === 5 && (
           <div className="space-y-5">
             <SectionTitle
-              title={t("checkin.steps.needTitle")}
-              copy={t("checkin.steps.needCopy")}
-            />
-            <NeedPillHelp t={t} />
-            <NeedBadges needs={inferredNeeds} lang={lang} />
-            <div className="grid gap-2">
-              {inferredNeeds.slice(0, 6).map((need) => (
-                <div key={need} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
-                  <div className="text-sm font-black capitalize text-stone-950">{localizeNeed(need, lang)}</div>
-                  <div className="mt-1 text-sm leading-6 text-stone-600">
-                    {localizeNeedExplainer(need, lang) || t("checkin.fallbackNeed")}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {step === 6 && (
-          <div className="space-y-5">
-            <SectionTitle
               title={t("checkin.steps.reportTitle")}
               copy={t("checkin.steps.reportCopy")}
             />
@@ -2396,6 +2375,25 @@ function GuidedCheckIn({ rows, saveReport, setTab, lang = "en", t = makeTranslat
                 {t("checkin.labels.frame")}
               </div>
               <p className="mt-3 text-lg font-semibold leading-8 text-emerald-950">{actionFrame}</p>
+            </div>
+            <div className="rounded-lg border border-stone-200 bg-white p-4">
+              <div className="text-sm font-black text-stone-950">{t("checkin.labels.unmetNeeds")}</div>
+              <p className="mt-1 text-sm leading-6 text-stone-600">
+                {t("checkin.steps.needCopy")}
+              </p>
+              <div className="mt-3">
+                <NeedBadges needs={inferredNeeds} lang={lang} />
+              </div>
+              <div className="mt-3 grid gap-2 md:grid-cols-2">
+                {inferredNeeds.slice(0, 4).map((need) => (
+                  <div key={need} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
+                    <div className="text-sm font-black capitalize text-stone-950">{localizeNeed(need, lang)}</div>
+                    <div className="mt-1 text-sm leading-6 text-stone-600">
+                      {localizeNeedExplainer(need, lang) || t("checkin.fallbackNeed")}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
             {relevantShadows.length ? (
               <div className="rounded-lg border border-stone-200 bg-white p-4">
